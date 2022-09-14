@@ -1,0 +1,378 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    text-align: start;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+aside {
+    background-color: #024942;
+    width: fit-content;
+    padding: 1.5rem 1.5rem;
+    border-right: 2px solid #04b6aa;
+    height: 100%;
+}
+
+.home, .projects {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: 1.5rem;
+}
+
+.home button, .projects button {
+    color: #04b6aa;
+}
+
+.home h3 {
+    color: #fff;
+}
+
+.projects h3 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .75rem;
+    color: #fff;
+}
+
+.projects h3 span button {
+    margin: 0;
+    font-size: 1.5rem;
+    padding: 0 .5rem;
+    background-color: #04b6aa;
+    color: white;
+}
+
+main {
+    padding: 3rem 2rem 3rem 4rem;
+    position: relative;
+    width: 100%;
+}
+
+.todo-container {
+    width: 12rem;
+    height: 11rem;
+    border: 2px solid #04b6aa;
+    position: relative;
+    overflow: hidden;
+}
+
+.todo-container .top {
+    padding: .25rem;
+    margin-bottom: .5rem;
+    display: flex;
+    justify-content: space-between;
+    background-color: #04b6aa;
+    color: white;
+}
+
+.todo-container .top p {
+    margin: 0;
+}
+
+.todo-container h4 {
+    width: 11rem;
+    text-decoration: underline;
+    font-size: 1.25rem;
+    margin: .75rem auto 0;
+    text-align: center;
+    overflow: auto;
+    height: 3rem;
+}
+
+.todo-container p {
+    margin-bottom: 0;
+    width: fit-content;
+}
+
+.todo-container .check-list {
+    width: fit-content;
+}
+
+.todo-container .date {
+    font-weight: 600;
+    width: 100%;
+    
+    text-align: center;
+    padding: 0 0 .5rem;
+}
+
+.todo-container .editables {
+    position: absolute;
+    bottom: 0;
+    outline: 2px solid #04b6aa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2rem;
+    padding: .25rem 0;
+}
+
+.todo-container .editables button {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 .5rem;
+    padding: 0;
+}
+
+.edit  {
+    background-image: url('photos/edit.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.description {
+    background-image: url('photos/info.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.checklist {
+    background-image: url('photos/list.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.remove {
+    background-image: url('photos/trash-2.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
+
+/*---Form---*/
+
+.todo-form {
+    width: clamp(14rem, 100%, 35rem);
+    height: auto;
+    padding: .5rem 2rem 1rem;
+    margin: 0 auto;
+    border: 2px solid #024942;
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* filter: blur(5px); */
+    
+}
+
+.todo-form h1 {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    border-bottom: 2px solid #024942;
+    color: #024942;
+}
+
+.todo-form h1 span {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    font-size: 1rem;
+    color: #024942;
+    padding: 0 .25rem;
+    cursor: pointer;
+}
+
+.todo-form form {
+    width: clamp(14rem, 100%, 35rem);
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));;
+    gap: 1rem;
+}
+
+.todo-form form input, select {
+    width: clamp(14rem, 100%, 40rem);
+    height: 2rem;
+}
+
+select {
+    cursor: pointer;
+}
+
+label {
+    display: flex;
+}
+
+label[for='task'], label[for="time-label"], label[for="priority-label"], label[for="project-label"], label[for="task-info"], .checklist-inputs {
+    position: relative;
+    margin: 0 auto 1rem;
+}
+
+label[for='task']::before, label[for="time-label"]::before, label[for="priority-label"]::before, label[for="project-label"]::before, label[for="task-info"]::before, .checklist-inputs::before {
+    content: 'Title:';
+    position: absolute;
+    left: 0;
+    top: -1.5rem;
+    color:#024942;
+}
+
+label[for="time-label"]::before {
+    content: 'Due Date:'
+}
+
+label[for="priority-label"]::before {
+    content: 'Priority:';
+} 
+
+label[for="project-label"]::before {
+    content: 'Project:'
+}
+
+.checklist-inputs::before {
+    content: 'Add to Checklist';
+}
+
+label[for="task-info"]::before {
+    content: 'Description:';
+}
+
+.todo-form input, .todo-form select {
+    appearance: none;
+    border: 1px solid #024942;
+    padding: 0 1rem;
+    background-color: #04b6aa20;
+}
+
+.todo-form input:focus, .todo-form select:focus {
+    background-color: #fff;
+}
+
+.checklist-inputs label {
+    flex-direction: column;
+    gap: 0rem;
+}
+
+#task-info-label {
+    height: 10rem;
+    width: clamp(14rem, 100%, 40rem);
+
+}
+
+.checklist-inputs p {
+    margin: 0;
+}
+
+.checklist-inputs .addList {
+    background-color: #04b6aa;
+    font-size: 1rem;
+    position: absolute;
+}
+
+
+textarea, .checklist-inputs {
+    border-radius: 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+    height: 10rem;
+    width: clamp(14rem, 100%, 40rem);
+}
+
+textarea {
+    background: none repeat scroll 0 0 #04b6aa20;
+    padding: .75rem;
+}
+
+
+.checklist-inputs input {
+    position: absolute;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background: none repeat scroll 0 0 #04b6aa20;
+    padding: 0 .5rem 0 1.75rem;   
+}
+
+textarea:focus, .checklist-inputs input:focus {
+    background: none repeat scroll 0 0 transparent;
+    outline-width: 0;
+}
+
+.checklist-inputs label {
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.checklist-inputs label[for='firstchecklist'] input {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.checklist-inputs label[for='fifthchecklist'] input {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.checklist-inputs label::before {
+    margin-left: .5rem;
+    color:#024942;
+}
+
+.checklist-inputs label[for='firstchecklist']::before {
+    content: '1.';
+    width: fit-content;
+}
+
+.checklist-inputs label[for='secondchecklist']::before {
+    content: '2.';
+    width: fit-content;
+}
+
+.checklist-inputs label[for='thirdchecklist']::before {
+    content: '3.';
+    width: fit-content;
+}
+.checklist-inputs label[for='fourthchecklist']::before {
+    content: '4.';
+    width: fit-content;
+}
+.checklist-inputs label[for='fifthchecklist']::before {
+    content: '5.';
+    width: fit-content;
+}
+
+.addTask-button {
+    border: 2px solid #024942;
+    color:white;
+    font-size: 1rem;
+    background-color: #04b6aa;
+    text-align: center;
+    margin: 0 auto;
+    width: 6rem;
+    padding: .25rem 0;
+    cursor: pointer;
+    grid-column: 1/-1;
+}
