@@ -5,6 +5,9 @@ import {createForm} from './toDoForm'
 
 // makeToDoBlock();
 
-createForm();
+// createForm();
 
-console.log('hi');
+(function displayToDoForm() {
+    const addToDoButton = document.querySelector('.add-todo');
+    addToDoButton.addEventListener('click', createForm);
+})();

@@ -1,3 +1,5 @@
+import {makeToDoBlock, editToDoBlock} from './toDoBlock';
+
 function createForm() {
     const main = document.querySelector('main');
     const toDoForm = document.createElement('div');
@@ -153,7 +155,150 @@ function createForm() {
     form.appendChild(addTaskButton);
 
     toDoForm.appendChild(form);
+
+    toDoForm.classList.add(projectSelect.value + '-do');
+    toDoForm.dataset.todoNum = 'todo-' + countUp.addNumber();
+
     main.appendChild(toDoForm);
+    
+    addTaskButton.addEventListener('click', applyForm);
+    exit.addEventListener('click', exitForm)
+    blurBackground();
 }
 
-export {createForm}
+const countUp = (function() {
+    let counter = 0;
+    return { addNumber() {
+        return ++counter;
+    } };
+})();
+
+function findOpenForm() {
+    const addTaskButtons = document.querySelectorAll('.addTask-button');
+    const openedForm = [...addTaskButtons].filter((button) => {
+        const cssObj = window.getComputedStyle(button.parentElement.parentElement);
+        if (cssObj.getPropertyValue('display') === 'block') {
+            return button;
+        }
+    });
+    return openedForm[0].parentElement.parentElement;
+}
+
+function applyForm() {
+    makeToDoBlock(setTitle(), setDate(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    removeForm();
+    this.removeEventListener('click', applyForm);
+    unBlurBackground();
+}
+
+function editForm() {
+    editToDoBlock.call(this, setTitle(), setDate(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    removeForm();
+    unBlurBackground();
+}
+
+function openExistingForm() {
+    const addTaskButton = document.querySelectorAll('.addTask-button');
+    addTaskButton.forEach((taskButton) => {
+        if (taskButton.parentElement.parentElement.dataset.todoNum == this.parentElement.parentElement.dataset.todoNum) {
+            taskButton.parentElement.parentElement.style.display = 'block';
+            taskButton.addEventListener('click', editForm);
+        }
+    })
+    blurBackground();
+}
+
+function blurBackground() {
+    const openForm = findOpenForm();
+    const content = document.querySelector('.content');
+    const header = document.querySelector('header');
+    header.style.filter = 'blur(5px)';
+    content.firstElementChild.style.filter = 'blur(5px)';
+    [...content.lastElementChild.children].forEach((child) => {
+        if (child !== openForm) {
+            child.style.filter = 'blur(5px)'
+        }
+    })
+}
+
+function unBlurBackground() {
+    const content = document.querySelector('.content');
+    const header = document.querySelector('header');
+    header.style.filter = 'blur(0px)';
+    content.firstElementChild.style.filter = 'blur(0px)';
+    [...content.lastElementChild.children].forEach((child) => {
+        child.style.filter = 'blur(0px)'
+    })
+}
+
+function setTitle() {
+    const title = findOpenForm().querySelector('#task');
+    return title.value;
+}
+
+function setDate() {
+    const date = findOpenForm().querySelector('#time-label');
+    return date.value;
+}
+
+function setDescription() {
+    const description = findOpenForm().querySelector('#task-info');
+    if (description.value == '') {
+        description.value = 'Nothing to see here, but there could be';
+    }
+    return description.value;
+}
+
+function setChecklist() {
+    const firstChecklist = findOpenForm().querySelector('#firstchecklist');
+    const secondChecklist = findOpenForm().querySelector('#secondchecklist');
+    const thirdChecklist = findOpenForm().querySelector('#thirdchecklist');
+    const fourthChecklist = findOpenForm().querySelector('#fourthchecklist');
+    const fifthChecklist = findOpenForm().querySelector('#fifthchecklist');
+
+    const checklistArray = [firstChecklist.value, secondChecklist.value, thirdChecklist.value, fourthChecklist.value, fifthChecklist.value];
+    
+    let finalList = checklistArray.filter((item) => {
+        if (item !== "") {
+            return item;
+        }
+    });
+    
+    if (finalList.length === 0) {
+        finalList = ['Nothing to see here', 'But there could be'];
+    }
+
+    return finalList;
+}
+
+function setPriority() {
+    const priority = findOpenForm().querySelector('.priority-div select');
+    return priority.value;
+}
+
+function setProject() {
+    const project = findOpenForm().querySelector('.project-div select');
+    return project.value;
+}
+
+function setData() {
+    return findOpenForm().dataset.todoNum;
+}
+
+function removeForm() {
+    findOpenForm().style.display = 'none';
+}
+
+function exitForm() {
+    const form = this.parentElement.parentElement;
+    const data = form.dataset.todoNum
+    const twins = document.querySelectorAll(`[data-todo-num="${data}"]`);
+    if (twins.length > 1) {
+        form.style.display = 'none'
+    } else {
+        form.parentElement.removeChild(form);
+    }
+    unBlurBackground();
+}
+
+export {createForm, openExistingForm}
