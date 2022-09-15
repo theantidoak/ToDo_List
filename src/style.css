@@ -436,3 +436,49 @@ textarea:focus, .checklist-inputs input:focus {
     cursor: pointer;
     grid-column: 1/-1;
 }
+
+
+/*---Project-Form---*/
+
+.project-form {
+    height: 8rem;
+    /* border: 2px solid #024942; */
+    background-color: #024942;
+    width: 16rem;
+    padding: .5rem 1rem;
+}
+
+.project-form label {
+    margin: 2.5rem auto 1rem;
+    height: 2rem; 
+    width: 12rem;
+    position: relative;
+}
+
+.project-form label::before {
+    content: 'Project Title:';
+    position: absolute;
+    top: -2rem;
+    left: 3rem;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.project-form input {
+    width: 100%;
+    height: 2rem;
+    padding: 0 1rem;
+}
+
+.project-button-div {
+    width: 3.5rem;
+    margin: 0 auto;
+}
+
+.project-form button {
+    border: 2px solid #04b6aa;
+    width: 3.5rem;
+    margin: 0 auto;
+    text-align: center;
+    color: #04b6aa
+}

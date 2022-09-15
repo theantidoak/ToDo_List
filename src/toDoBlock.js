@@ -75,7 +75,7 @@ function makeToDoBlock(title, timeDate, description, checklist, priorityValue, p
 
     main.appendChild(toDoContainer);
 
-    toDoContainer.classList.add(projectContent.textContent + '-do');
+    toDoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
 
     
     editButton.addEventListener('click', openExistingForm);

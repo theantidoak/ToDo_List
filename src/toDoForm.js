@@ -136,12 +136,8 @@ function createForm() {
     const projectLabel = document.createElement('label');
     projectLabel.setAttribute('for', 'project-label');
     const projectSelect = document.createElement('select');
-    const defaultValue = document.createElement('option');
-    defaultValue.value = 'default';
-    const defaultContent = document.createTextNode('Default');
+    createProjectOptions(projectSelect);
 
-    defaultValue.appendChild(defaultContent);
-    projectSelect.appendChild(defaultValue);
     projectLabel.appendChild(projectSelect);
     projectDiv.appendChild(projectLabel);
     form.appendChild(projectDiv);
@@ -156,7 +152,7 @@ function createForm() {
 
     toDoForm.appendChild(form);
 
-    toDoForm.classList.add(projectSelect.value + '-do');
+    toDoForm.classList.add(projectSelect.value.toLowerCase());
     toDoForm.dataset.todoNum = 'todo-' + countUp.addNumber();
 
     main.appendChild(toDoForm);
@@ -172,6 +168,18 @@ const countUp = (function() {
         return ++counter;
     } };
 })();
+
+
+function createProjectOptions(select) {
+    const projects = document.querySelectorAll('.project-name');
+    for(let i = 0; i < projects.length; i++) {
+        const option = document.createElement('option');
+        const optionContent = document.createTextNode(projects[i].textContent);
+        option.value = projects[i].textContent;
+        option.appendChild(optionContent);
+        select.appendChild(option);
+    }
+}
 
 function findOpenForm() {
     const addTaskButtons = document.querySelectorAll('.addTask-button');
