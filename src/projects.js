@@ -1,7 +1,12 @@
+import {blurBackground, unBlurBackground} from './toDoForm'
+
 function createNewProject() {
     const main = document.querySelector('main');
     const projectFormDiv = document.createElement('div');
     projectFormDiv.classList.add('project-form');
+    const exitButton = document.createElement('button');
+    exitButton.classList.add('project-exit');
+    const exitButtonContent = document.createTextNode('X');
     const projectForm = document.createElement('form');
     const projectLabel = document.createElement('label');
     projectLabel.setAttribute('for', 'projects-title');
@@ -15,17 +20,21 @@ function createNewProject() {
     button.setAttribute('type', 'button');
     const buttonContent = document.createTextNode('Add');
 
-
+    exitButton.appendChild(exitButtonContent);
+    
     button.appendChild(buttonContent);
     buttonDiv.appendChild(button);
     
     projectLabel.appendChild(projectInput);
     projectForm.appendChild(projectLabel);
     projectForm.appendChild(buttonDiv);
+    projectFormDiv.appendChild(exitButton);
     projectFormDiv.appendChild(projectForm);
     main.appendChild(projectFormDiv);
 
     button.addEventListener('click', applyProject);
+    bindExitButton();
+    blurBackground(projectFormDiv);
 
 }
 
@@ -53,6 +62,8 @@ function makeValueIntoID(value) {
 function applyProject() {
     const projectForm = document.querySelector('#project-title');
     addProject(projectForm.value);
+    closeProjectForm();
+    unBlurBackground();
 }
 
 function renderProjectToDos() {
@@ -71,6 +82,17 @@ function renderProjectToDos() {
 function bindProjectTitleButtons() {
     const buttons = document.querySelectorAll('.projects .project-name');
     buttons.forEach(button => button.addEventListener('click', renderProjectToDos));
+}
+
+function bindExitButton() {
+    const exitButton = document.querySelector('.project-exit');
+    exitButton.addEventListener('click', closeProjectForm);
+}
+
+function closeProjectForm() {
+    const projectForm = document.querySelector('.project-form')
+    projectForm.parentElement.removeChild(projectForm);
+    unBlurBackground();
 }
 
 export {bindProjectButton, bindProjectTitleButtons}

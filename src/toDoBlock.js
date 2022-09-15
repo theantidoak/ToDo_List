@@ -103,7 +103,7 @@ function editToDoBlock(title, timeDate, description, checklist, priorityValue, p
     const date = todoContainer.querySelector('.date');
     const descriptionBox = todoContainer.querySelector('.description-div p');
     const checklistBox = todoContainer.querySelector('.checklist-div');
-    const oldOl = document.querySelector('.checklist-div ol');
+    const oldOl = todoContainer.querySelector('.checklist-div ol');
     const ol = document.createElement('ol');
     const priority = todoContainer.querySelector('.priority');
     const project = todoContainer.querySelector('.project');

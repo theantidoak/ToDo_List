@@ -159,7 +159,7 @@ function createForm() {
     
     addTaskButton.addEventListener('click', applyForm);
     exit.addEventListener('click', exitForm)
-    blurBackground();
+    blurBackground(findOpenForm());
 }
 
 const countUp = (function() {
@@ -213,17 +213,16 @@ function openExistingForm() {
             taskButton.addEventListener('click', editForm);
         }
     })
-    blurBackground();
+    blurBackground(findOpenForm());
 }
 
-function blurBackground() {
-    const openForm = findOpenForm();
+function blurBackground(form) {
     const content = document.querySelector('.content');
     const header = document.querySelector('header');
     header.style.filter = 'blur(5px)';
     content.firstElementChild.style.filter = 'blur(5px)';
     [...content.lastElementChild.children].forEach((child) => {
-        if (child !== openForm) {
+        if (child != form) {
             child.style.filter = 'blur(5px)'
         }
     })
@@ -309,4 +308,4 @@ function exitForm() {
     unBlurBackground();
 }
 
-export {createForm, openExistingForm}
+export {createForm, openExistingForm, blurBackground, unBlurBackground}
