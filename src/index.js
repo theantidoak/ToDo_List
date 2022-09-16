@@ -5,7 +5,7 @@ import {createForm} from './toDoForm'
 import {bindProjectButton, bindProjectTitleButtons, createNewProject} from './projects'
 import {bindAllButton} from './homeProjects'
 
-makeToDoBlock();
+// makeToDoBlock();
 
 // createForm();
 

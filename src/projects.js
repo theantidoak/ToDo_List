@@ -45,13 +45,22 @@ function bindProjectButton() {
 
 function addProject(newProject) {
     const projects = document.querySelector('.projects');
+    const newProjectDiv = document.createElement('div');
+    newProjectDiv.classList.add('titled-project-div');
     const newProjectButton = document.createElement('button');
     const newProjectButtonContent = document.createTextNode(newProject);
     newProjectButton.classList.add('project-name');
     newProjectButton.classList.add(makeValueIntoID(newProject));
+    const deleteProjectButton = document.createElement('span');
+    deleteProjectButton.classList.add('delete-span');
+    const deleteProjectButtonContent = document.createTextNode('-');
+    deleteProjectButton.appendChild(deleteProjectButtonContent);
     newProjectButton.appendChild(newProjectButtonContent);
-    projects.appendChild(newProjectButton);
+    newProjectDiv.appendChild(newProjectButton);
+    newProjectDiv.appendChild(deleteProjectButton);
+    projects.appendChild(newProjectDiv);
     bindProjectTitleButtons();
+    deleteProjectButton.addEventListener('click', removeProject);
 }
 
 function makeValueIntoID(value) {
@@ -60,7 +69,8 @@ function makeValueIntoID(value) {
 
 function applyProject() {
     const projectForm = document.querySelector('#project-title');
-    addProject(projectForm.value);
+    const output = projectForm.value || 'No name';
+    addProject(output);
     closeProjectForm();
     unBlurBackground();
 }
@@ -92,6 +102,10 @@ function closeProjectForm() {
     const projectForm = document.querySelector('.project-form')
     projectForm.parentElement.removeChild(projectForm);
     unBlurBackground();
+}
+
+function removeProject() {
+    this.parentElement.parentElement.removeChild(this.parentElement);
 }
 
 export {bindProjectButton, bindProjectTitleButtons, createNewProject}

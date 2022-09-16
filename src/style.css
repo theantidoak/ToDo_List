@@ -74,7 +74,7 @@ aside {
     padding-left: 0;
 }
 
-.home button:hover, .projects button:hover {
+.home button:hover, .projects button:not(.projects-title button):hover {
     transform: scale(1.1);
     font-weight: 600;
 }
@@ -82,6 +82,34 @@ aside {
 .projects-title button {
     min-width: 1.5rem;
     margin: 0;
+    padding-right: 0;
+}
+
+.titled-project-div {
+    display: flex;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    max-width: 6rem;
+}
+
+.projects button {
+    line-break:anywhere;
+}
+
+.project-name {
+    padding-right: 0;
+}
+
+.delete-span {
+    transform: scale(2) translateY(-2px);
+    cursor: pointer;
+}
+
+.delete-span:hover {
+    color: var(--coral);
 }
 
 .home h3 {
@@ -112,6 +140,10 @@ aside {
 
 .projects h3:hover {
     color: var(--celadon-blue);
+}
+
+.projects h3:hover button {
+    background-color: var(--celadon-blue);
 }
 
 .projects h3 button {
@@ -157,10 +189,16 @@ main {
     padding: 0;
     font-weight: 200;
     color: var(--maya-blue);
+    transition: all ease 1s;
+    transform-origin: 50% 67.5%;
 }
 
 .add-todo:hover {
     color: var(--celadon-blue);
+}
+
+.add-todo:focus {
+    transform: rotate(90deg);
 }
 
 
@@ -182,6 +220,7 @@ main {
     margin-bottom: .5rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: var(--coral);
     color: white;
 }
@@ -200,6 +239,8 @@ main {
     top: -.2rem;
     right: -.2rem;
     cursor: pointer;
+    position: relative;
+    top: -.125rem;
 }
 
 .top input:checked {
@@ -331,7 +372,7 @@ main {
     height: auto;
     padding: .5rem 2rem 1rem;
     margin: 0 auto;
-    border: 10px solid #FF8458;
+    border: 5px solid #FF8458;
     position: absolute;
     top: .25rem;
     left: 0;
@@ -361,6 +402,10 @@ main {
     color: var(--celadon-blue);
     padding: 0 .25rem;
     cursor: pointer;
+}
+
+.todo-form h1 span:hover {
+    color: var(--coral);
 }
 
 .todo-form form {
@@ -399,6 +444,12 @@ label[for='task']::before, label[for="time-label"]::before, label[for="priority-
     left: 0;
     top: -1.5rem;
     color: var(--coral);
+}
+
+label[for="time-label"] input {
+    cursor: pointer;
+    
+    /* opacity: 0; */
 }
 
 label[for="time-label"]::before {
@@ -531,10 +582,10 @@ textarea:focus, .checklist-inputs input:focus {
 }
 
 .addTask-button {
-    border: 2px solid var(--coral);
+    border: 2px solid var(--celadon-blue);
     background-color: #fff;
     font-size: 1rem;
-    color: var(--coral);
+    color: var(--celadon-blue);
     text-align: center;
     margin: 0 auto;
     width: 6rem;
@@ -542,6 +593,11 @@ textarea:focus, .checklist-inputs input:focus {
     cursor: pointer;
     grid-column: 1/-1;
     border-radius: 20px;
+}
+
+.addTask-button:hover {
+    border-color: var(--coral);
+    color: var(--coral);
 }
 
 
@@ -570,6 +626,11 @@ textarea:focus, .checklist-inputs input:focus {
     text-align: center;
     color: #fff;
     margin: 0;
+}
+
+.project-exit:hover {
+    color: var(--coral);
+    /* font-weight: 700; */
 }
 
 .project-form label {
@@ -608,6 +669,10 @@ textarea:focus, .checklist-inputs input:focus {
     border-radius: 20px;
 }
 
+.project-form button:not(.project-exit):hover {
+    color: var(--celadon-blue);
+    border-color: var(--celadon-blue);
+}
 
 .overlay {
     display: none;

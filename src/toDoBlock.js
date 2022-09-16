@@ -122,10 +122,9 @@ function editToDoBlock(title, timeDate, dateID, description, checklist, priority
 }
 
 function displayDescription() {
-    const todoContainer = this.parentElement.parentElement;
-    const descriptionDiv = todoContainer.querySelector('.description-div');
-    const checklistDiv = todoContainer.querySelector('.checklist-div');
-    if (descriptionDiv.style.display == 'none') {
+    const descriptionDiv = this.firstElementChild;
+    const checklistDiv = this.parentElement.children[2].firstElementChild;
+    if (descriptionDiv.style.display == 'none' || descriptionDiv.style.display === '') {
         checklistDiv.style.display = 'none';
         descriptionDiv.style.display = 'block';
     } else {
@@ -134,10 +133,9 @@ function displayDescription() {
 }
 
 function displayChecklist() {
-    const todoContainer = this.parentElement.parentElement;
-    const checklistDiv = todoContainer.querySelector('.checklist-div');
-    const descriptionDiv = todoContainer.querySelector('.description-div');
-    if (checklistDiv.style.display == 'none') {
+    const checklistDiv = this.firstElementChild;
+    const descriptionDiv = this.parentElement.children[1].firstElementChild;
+    if (checklistDiv.style.display === 'none' || checklistDiv.style.display === '') {
         descriptionDiv.style.display = 'none';
         checklistDiv.style.display = 'block';
     } else {
