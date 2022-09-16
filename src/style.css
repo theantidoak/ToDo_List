@@ -47,7 +47,7 @@ aside {
     width: clamp(6rem, 20%, 8.5rem);
     padding: 1.5rem clamp(.5rem, 3vw, 1rem);
     position: relative;
-    min-height: 87vh;
+    min-height: 90vh;
     /* border-right: 2px solid #04b6aa; */
 }
 
@@ -99,11 +99,12 @@ aside {
 }
 
 main {
-    padding: 3rem 2rem 1rem 4rem;
+    padding: 3.5rem 2rem 1rem clamp(1rem, 7%, 4rem);
     width: 87%;
     min-height: 87vh;
     display: grid;
     grid-template-columns: repeat(auto-fit, clamp(12rem, 30%, 16rem));
+    grid-auto-rows: 12.25rem;
     gap: 2rem;
 }
 
@@ -125,6 +126,7 @@ main {
 .todo-container {
     width: 12rem;
     height: 12.25rem;
+    margin: 0 auto;
     border: 2px solid #04b6aa;
     position: relative;
     overflow: hidden;
@@ -469,6 +471,9 @@ textarea:focus, .checklist-inputs input:focus {
     width: 16rem;
     padding: .5rem 1rem;
     position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     top: 2rem;
     z-index: 2;
 }
@@ -519,7 +524,7 @@ textarea:focus, .checklist-inputs input:focus {
 }
 
 
-@media screen and (max-width: 635px) {
+@media screen and (max-width: 640px) {
     .projects h3::before, .home h3::before {
         content: '';
     }
@@ -531,5 +536,8 @@ textarea:focus, .checklist-inputs input:focus {
         background-size: cover;
         width: 1.5rem;
         height: 1.5rem;
+    }
+    main {
+        justify-content: center;
     }
 }

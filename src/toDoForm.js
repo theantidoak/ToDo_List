@@ -1,4 +1,5 @@
 import {makeToDoBlock, editToDoBlock} from './toDoBlock';
+import {format} from 'date-fns'
 
 function createForm() {
     const main = document.querySelector('main');
@@ -193,14 +194,14 @@ function findOpenForm() {
 }
 
 function applyForm() {
-    makeToDoBlock(setTitle(), setDate(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    makeToDoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     removeForm();
     this.removeEventListener('click', applyForm);
     unBlurBackground();
 }
 
 function editForm() {
-    editToDoBlock.call(this, setTitle(), setDate(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    editToDoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
     removeForm();
     unBlurBackground();
 }
@@ -243,9 +244,18 @@ function setTitle() {
     return title.value;
 }
 
-function setDate() {
+function setDateAsID() {
     const date = findOpenForm().querySelector('#time-label');
     return date.value;
+}
+
+function setDate() {
+    const date = findOpenForm().querySelector('#time-label');
+    if (date.value != '') {
+        return format(new Date(date.value), 'EE, dd/MM/yyyy HH:mm');
+    } else {
+        return date.value;
+    }
 }
 
 function setDescription() {

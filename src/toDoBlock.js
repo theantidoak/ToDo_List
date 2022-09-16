@@ -1,6 +1,6 @@
 import {openExistingForm} from './toDoForm'
 
-function makeToDoBlock(title, timeDate, description, checklist, priorityValue, projectValue, dataID) {
+function makeToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
     const main = document.querySelector('main');
     const toDoContainer = document.createElement('div');
     toDoContainer.classList.add('todo-container');
@@ -16,6 +16,7 @@ function makeToDoBlock(title, timeDate, description, checklist, priorityValue, p
     const task = document.createElement('h4');
     const date = document.createElement('p');
     date.classList.add('date');
+    date.dataset.dateTime = dateID;
     const editables = document.createElement('div');
     editables.classList.add('editables');
     const editButton = document.createElement('button');
@@ -82,6 +83,7 @@ function makeToDoBlock(title, timeDate, description, checklist, priorityValue, p
     descriptionButton.addEventListener('click', displayDescription);
     checklistButton.addEventListener('click', displayChecklist);
     removeButton.addEventListener('click', deleteToDo);
+    checkBox.addEventListener('input', markCompleted);
 
 }
 
@@ -95,12 +97,13 @@ function makeChecklist(checklist, ol) {
     }
 }
 
-function editToDoBlock(title, timeDate, description, checklist, priorityValue, projectValue) {
+function editToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {
     
     const form = this.parentElement.parentElement;
     const todoContainer = document.querySelectorAll(`[data-todo-num="${form.dataset.todoNum}"]`)[1];
     const task = todoContainer.querySelector('h4');
     const date = todoContainer.querySelector('.date');
+    date.dataset.dateTime = dateID;
     const descriptionBox = todoContainer.querySelector('.description-div p');
     const checklistBox = todoContainer.querySelector('.checklist-div');
     const oldOl = todoContainer.querySelector('.checklist-div ol');
@@ -147,6 +150,18 @@ function deleteToDo() {
     const form = document.querySelector(`[data-todo-num="${dataset}"]`)
     todoContainer.parentElement.removeChild(form);
     todoContainer.parentElement.removeChild(todoContainer);
+}
+
+function markCompleted() {
+    const todoContainer = this.parentElement.parentElement; 
+    const project = todoContainer.querySelector('.project').textContent.toLowerCase();
+    if (this.checked === true) {
+        todoContainer.classList.add('completed-todo');
+        todoContainer.classList.remove(project);
+    } else if (this.checked === false) {
+        todoContainer.classList.remove('completed-todo');
+        todoContainer.classList.add(project);
+    }
 }
 
 
