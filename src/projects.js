@@ -39,9 +39,8 @@ function createNewProject() {
 }
 
 function bindProjectButton() {
-    const addProjectButton = document.querySelector('.projects-title button');
-
-    addProjectButton.addEventListener('click', createNewProject);
+    const addProjectH3 = document.querySelector('.projects-title');
+    addProjectH3.addEventListener('click', createNewProject);
 }
 
 function addProject(newProject) {
@@ -95,4 +94,4 @@ function closeProjectForm() {
     unBlurBackground();
 }
 
-export {bindProjectButton, bindProjectTitleButtons}
+export {bindProjectButton, bindProjectTitleButtons, createNewProject}

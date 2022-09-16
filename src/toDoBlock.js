@@ -88,6 +88,7 @@ function makeToDoBlock(title, timeDate, dateID, description, checklist, priority
 }
 
 function makeChecklist(checklist, ol) {
+    checklist = checklist || ['The checklist starts here!'];
     for(let i=0; i < checklist.length; i++) {
         const checklistLi = document.createElement('li');
         // checklistLi.classList.add(`checklist${i}`);

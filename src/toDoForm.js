@@ -59,6 +59,7 @@ function createForm() {
     firstChecklist.setAttribute('for', 'firstchecklist');
     const firstChecklistInput = document.createElement('input');
     firstChecklistInput.setAttribute('type', 'text');
+    firstChecklistInput.setAttribute('autocomplete', "off");
     firstChecklistInput.classList.add('check-list');
     firstChecklistInput.id = 'firstchecklist';
 
@@ -69,6 +70,7 @@ function createForm() {
     secondChecklist.setAttribute('for', 'secondchecklist');
     const secondChecklistInput = document.createElement('input');
     secondChecklistInput.setAttribute('type', 'text');
+    secondChecklistInput.setAttribute('autocomplete', "off");
     secondChecklistInput.classList.add('check-list');
     secondChecklistInput.id = 'secondchecklist';
 
@@ -79,6 +81,7 @@ function createForm() {
     thirdChecklist.setAttribute('for', 'thirdchecklist');
     const thirdChecklistInput = document.createElement('input');
     thirdChecklistInput.setAttribute('type', 'text');
+    thirdChecklistInput.setAttribute('autocomplete', "off");
     thirdChecklistInput.classList.add('check-list');
     thirdChecklistInput.id = 'thirdchecklist';
 
@@ -89,6 +92,7 @@ function createForm() {
     fourthChecklist.setAttribute('for', 'fourthchecklist');
     const fourthChecklistInput = document.createElement('input');
     fourthChecklistInput.setAttribute('type', 'text');
+    fourthChecklistInput.setAttribute('autocomplete', "off");
     fourthChecklistInput.classList.add('check-list');
     fourthChecklistInput.id = 'fourthchecklist';
 
@@ -99,6 +103,7 @@ function createForm() {
     fifthChecklist.setAttribute('for', 'fifthchecklist');
     const fifthChecklistInput = document.createElement('input');
     fifthChecklistInput.setAttribute('type', 'text');
+    fifthChecklistInput.setAttribute('autocomplete', "off");
     fifthChecklistInput.classList.add('check-list');
     fifthChecklistInput.id = 'fifthchecklist';
 
@@ -217,26 +222,18 @@ function openExistingForm() {
     blurBackground(findOpenForm());
 }
 
-function blurBackground(form) {
-    const content = document.querySelector('.content');
-    const header = document.querySelector('header');
-    header.style.filter = 'blur(5px)';
-    content.firstElementChild.style.filter = 'blur(5px)';
-    [...content.lastElementChild.children].forEach((child) => {
-        if (child != form) {
-            child.style.filter = 'blur(5px)'
-        }
-    })
+function blurBackground() {
+    const overlay = document.querySelector('.overlay');
+    const overlayedHeader = document.querySelector('.overlayed-header');
+    overlay.style.display = 'block';
+    overlayedHeader.style.display = 'block';
 }
 
 function unBlurBackground() {
-    const content = document.querySelector('.content');
-    const header = document.querySelector('header');
-    header.style.filter = 'blur(0px)';
-    content.firstElementChild.style.filter = 'blur(0px)';
-    [...content.lastElementChild.children].forEach((child) => {
-        child.style.filter = 'blur(0px)'
-    })
+    const overlay = document.querySelector('.overlay');
+    const overlayedHeader = document.querySelector('.overlayed-header');
+    overlay.style.display = 'none';
+    overlayedHeader.style.display = 'none';
 }
 
 function setTitle() {

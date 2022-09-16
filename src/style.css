@@ -1,5 +1,10 @@
 * {
     box-sizing: border-box;
+    --coral: #FF8458;
+    --maya-blue: #50D0FF;
+    --mustard: #FFD750;
+    --celadon-blue: #0080AF;
+    /* --fiery-rose: #FF5079; */
 }
 
 html {
@@ -22,6 +27,7 @@ body {
     position: relative;
     display: flex;
     flex: 1;
+    z-index: 2;
 }
 
 button {
@@ -33,24 +39,27 @@ button {
 }
 
 header {
-    background-color: #04b6aa;
-    color: #024942;
+    background-color: var(--celadon-blue);
+    color: var(--maya-blue);
     font-size: 1.25rem;
+    z-index: 2;
+    position: relative;
 }
 
 header h1 {
     margin: 0;
     padding: 1rem 0 1rem 1.5rem;
+    color: #fff;
 }
 
 
 
 aside {
-    background-color: #024942;
+    background-color: var(--maya-blue);
     width: clamp(6rem, 20%, 8.5rem);
     padding: 1.5rem clamp(.75rem, 3vw, 1rem) 1.5rem clamp(.5rem, 2.5vw, 1rem);
     position: relative;
-    /* border-right: 2px solid #04b6aa; */
+    /* border-right: 2px solid var(--coral); */
 }
 
 .home, .projects {
@@ -61,8 +70,13 @@ aside {
 }
 
 .home button, .projects button {
-    color: #04b6aa;
+    color: var(--celadon-blue);
     padding-left: 0;
+}
+
+.home button:hover, .projects button:hover {
+    transform: scale(1.1);
+    font-weight: 600;
 }
 
 .projects-title button {
@@ -75,12 +89,17 @@ aside {
     margin: 0 0 .5rem;
 }
 
+.home h3:hover {
+    color: var(--celadon-blue);
+}
+
 .home button {
     font-size: (.8rem, 1vw, 1rem);
 }
 
 .home h3::before {
     content: 'Home';
+    cursor: pointer;
 }
 
 .projects h3 {
@@ -88,16 +107,29 @@ aside {
     align-items: center;
     margin: 0 0 .5rem;
     color: #fff;
+    cursor: pointer;
+}
+
+.projects h3:hover {
+    color: var(--celadon-blue);
 }
 
 .projects h3 button {
-    background-image: url('photos/folder-plus.svg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    mask-image: url('photos/folder-plus.svg');
+    -webkit-mask-image: url('photos/folder-plus.svg');
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    background-color: white;
     height: 1.5rem;
     width: 1.5rem;
-    /* margin: 0 0 0 .5rem; */
+}
+
+.projects h3 button:hover {
+    background-color: var(--celadon-blue);
 }
 
 .projects h3::before {
@@ -124,6 +156,11 @@ main {
     margin: 0;
     padding: 0;
     font-weight: 200;
+    color: var(--maya-blue);
+}
+
+.add-todo:hover {
+    color: var(--celadon-blue);
 }
 
 
@@ -133,10 +170,11 @@ main {
     width: 12rem;
     height: 12.25rem;
     margin: 0 auto;
-    border: 2px solid #04b6aa;
+    border: 3px solid var(--coral);
     position: relative;
     overflow: hidden;
     z-index: 1;
+    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
 }
 
 .todo-container .top {
@@ -144,12 +182,31 @@ main {
     margin-bottom: .5rem;
     display: flex;
     justify-content: space-between;
-    background-color: #04b6aa;
+    background-color: var(--coral);
     color: white;
 }
 
 .todo-container .top p {
     margin: 0;
+}
+
+.top input {
+    appearance: none;
+    width: .75rem;
+    height: .75rem;
+    outline: 1px solid var(--celadon-blue);
+    background-color: white;
+    position: relative;
+    top: -.2rem;
+    right: -.2rem;
+    cursor: pointer;
+}
+
+.top input:checked {
+    background-color: var(--celadon-blue);
+    background-image: url('photos/check.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .todo-container h4 {
@@ -171,12 +228,13 @@ main {
 .todo-container .project {
     margin: 0 auto;
     text-transform: capitalize;
+    color: var(--celadon-blue);
 }
 
 .todo-container .date {
-    font-weight: 600;
+    font-weight: 100;
     width: 100%;
-    
+    /* color: var(--coral); */
     text-align: center;
     padding: 0 0 2.5rem;
 }
@@ -184,7 +242,7 @@ main {
 .todo-container .editables {
     position: absolute;
     bottom: 0;
-    outline: 2px solid #04b6aa;
+    outline: 1px solid var(--coral);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -195,9 +253,14 @@ main {
 
 .todo-container .editables button {
     width: 1.25rem;
-    height: 1.25rem;
+    height: 100%;
     margin: 0 .5rem;
     padding: 0;
+    position: relative;
+}
+
+.todo-container .editables button:hover {
+    background-size: 1.45rem; 
 }
 
 .edit  {
@@ -231,14 +294,18 @@ main {
 .description-div, .checklist-div {
     display: none;
     position: absolute;
-    top: -6.9rem;
-    left: 0;
-    height: 6.75rem;
-    width: 100%;
+    top: -8.25rem;
+    left: -3.55rem;
+    height: 7.9rem;
+    width: 11.5rem;
     overflow: auto;
     background-color: #fff;
     color: black;
     z-index: 2;
+}
+
+.checklist-div {
+    left: -6.7rem;
 }
 
 .description-div p {
@@ -257,20 +324,22 @@ main {
 
 
 
-/*---Form---*/
+/*---To Do Form---*/
 
 .todo-form {
     width: clamp(14rem, 90%, 35rem);
     height: auto;
     padding: .5rem 2rem 1rem;
     margin: 0 auto;
-    border: 2px solid #024942;
+    border: 10px solid #FF8458;
     position: absolute;
-    top: 0;
+    top: .25rem;
     left: 0;
     right: 0;
-    z-index: 2;
+    z-index: 4;
     background-color: #fff;
+    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
+    border-radius: 15px;
     /* filter: blur(5px); */
     
 }
@@ -280,8 +349,8 @@ main {
     margin: 0;
     margin-bottom: 2.5rem;
     text-align: center;
-    border-bottom: 2px solid #024942;
-    color: #024942;
+    border-bottom: 2px solid var(--celadon-blue);
+    color: var(--celadon-blue);
 }
 
 .todo-form h1 span {
@@ -289,7 +358,7 @@ main {
     top: .5rem;
     right: .5rem;
     font-size: 1rem;
-    color: #024942;
+    color: var(--celadon-blue);
     padding: 0 .25rem;
     cursor: pointer;
 }
@@ -329,7 +398,7 @@ label[for='task']::before, label[for="time-label"]::before, label[for="priority-
     position: absolute;
     left: 0;
     top: -1.5rem;
-    color:#024942;
+    color: var(--coral);
 }
 
 label[for="time-label"]::before {
@@ -354,14 +423,14 @@ label[for="task-info"]::before {
 
 .todo-form input, .todo-form select {
     appearance: none;
-    border: 1px solid #024942;
+    border: 1px solid var(--celadon-blue);
     padding: 0 1rem;
-    background-color: #04b6aa20;
-}
-
-.todo-form input:focus, .todo-form select:focus {
     background-color: #fff;
 }
+
+/* .todo-form input:focus, .todo-form select:focus {
+    background-color: #fff;
+} */
 
 .checklist-inputs label {
     flex-direction: column;
@@ -379,7 +448,7 @@ label[for="task-info"]::before {
 }
 
 .checklist-inputs .addList {
-    background-color: #04b6aa;
+    background-color: var(--coral);
     font-size: 1rem;
     position: absolute;
 }
@@ -395,7 +464,7 @@ textarea, .checklist-inputs {
 }
 
 textarea {
-    background: none repeat scroll 0 0 #04b6aa20;
+    background: none repeat scroll 0 0 #50D0FF20;
     padding: .75rem;
 }
 
@@ -405,13 +474,15 @@ textarea {
     border: none;
     width: 100%;
     height: 100%;
-    background: none repeat scroll 0 0 #04b6aa20;
+    background: none repeat scroll 0 0 #50D0FF20;
     padding: 0 .5rem 0 1.75rem;   
+    /* color: white; */
 }
 
 textarea:focus, .checklist-inputs input:focus {
     background: none repeat scroll 0 0 transparent;
     outline-width: 0;
+    
 }
 
 .checklist-inputs label {
@@ -433,7 +504,7 @@ textarea:focus, .checklist-inputs input:focus {
 
 .checklist-inputs label::before {
     margin-left: .5rem;
-    color:#024942;
+    color:var(--coral);
 }
 
 .checklist-inputs label[for='firstchecklist']::before {
@@ -460,24 +531,24 @@ textarea:focus, .checklist-inputs input:focus {
 }
 
 .addTask-button {
-    border: 2px solid #024942;
-    color:white;
+    border: 2px solid var(--coral);
+    background-color: #fff;
     font-size: 1rem;
-    background-color: #04b6aa;
+    color: var(--coral);
     text-align: center;
     margin: 0 auto;
     width: 6rem;
     padding: .25rem 0;
     cursor: pointer;
     grid-column: 1/-1;
+    border-radius: 20px;
 }
 
 
 /*---Project-Form---*/
 
 .project-form {
-    height: 8rem;
-    background-color: #024942;
+    background-color: var(--maya-blue);
     width: 16rem;
     padding: .5rem 1rem;
     position: absolute;
@@ -485,7 +556,10 @@ textarea:focus, .checklist-inputs input:focus {
     right: 0;
     margin: 0 auto;
     top: 2rem;
-    z-index: 2;
+    z-index: 4;
+    border-radius: 10px;
+    border: 8px solid var(--celadon-blue);
+    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
 }
 
 .project-exit {
@@ -494,7 +568,7 @@ textarea:focus, .checklist-inputs input:focus {
     width: 1rem;
     padding: 0;
     text-align: center;
-    color: #04b6aa;
+    color: #fff;
     margin: 0;
 }
 
@@ -510,7 +584,7 @@ textarea:focus, .checklist-inputs input:focus {
     position: absolute;
     top: -2rem;
     left: 3rem;
-    color: white;
+    color: #fff;
     font-size: 1.25rem;
 }
 
@@ -526,13 +600,33 @@ textarea:focus, .checklist-inputs input:focus {
 }
 
 .project-form button:not(.project-exit) {
-    border: 2px solid #04b6aa;
+    border: 2px solid #fff;
     width: 3.5rem;
     margin: 0 auto;
     text-align: center;
-    color: #04b6aa
+    color: #fff;
+    border-radius: 20px;
 }
 
+
+.overlay {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    z-index: 3;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.overlayed-header {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: absolute;
+    z-index: 4;
+    background-color: rgba(0,0,0,0.5);
+    top: 0;
+}
 
 @media screen and (max-width: 640px) {
     .projects h3::before, .home h3::before {
