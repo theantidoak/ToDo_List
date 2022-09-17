@@ -1,9 +1,11 @@
-import {openExistingForm} from './toDoForm'
+import {openExistingForm, countUp} from './toDoForm'
+import {removeStorageItem} from './localStorage'
 
 function makeToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
     const main = document.querySelector('main');
     const toDoContainer = document.createElement('div');
     toDoContainer.classList.add('todo-container');
+    toDoContainer.classList.add('storable');
     toDoContainer.dataset.todoNum = dataID;
     const topDiv = document.createElement('div');
     topDiv.classList.add('top');
@@ -149,6 +151,7 @@ function deleteToDo() {
     const form = document.querySelector(`[data-todo-num="${dataset}"]`)
     todoContainer.parentElement.removeChild(form);
     todoContainer.parentElement.removeChild(todoContainer);
+    removeStorageItem(dataset.replace(/\D/g, ''))
 }
 
 function markCompleted() {

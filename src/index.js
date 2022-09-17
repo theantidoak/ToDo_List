@@ -4,12 +4,16 @@ import {makeToDoBlock} from './toDoBlock'
 import {createForm} from './toDoForm'
 import {bindProjectButton, bindProjectTitleButtons, createNewProject} from './projects'
 import {bindAllButton} from './homeProjects'
+import { setStorage } from './localStorage';
+
 
 // makeToDoBlock();
 
 // createForm();
 
 // createNewProject();
+// localStorage.clear();
+setStorage();
 
 (function displayToDoForm() {
     const addToDoButton = document.querySelector('.add-todo');
@@ -19,3 +23,5 @@ import {bindAllButton} from './homeProjects'
 bindProjectButton();
 bindProjectTitleButtons();
 bindAllButton();
+
+// storageFunction();
