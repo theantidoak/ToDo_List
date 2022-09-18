@@ -1,4 +1,4 @@
-import {openExistingForm, countUp} from './toDoForm'
+import {openExistingForm} from './toDoForm'
 import {removeStorageItem} from './localStorage'
 
 function makeToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {

@@ -172,13 +172,15 @@ function createForm(title, storageCounter) {
         applyForm(projectName, toDoForm);
     } else {
         blurBackground();
-        const formNumber = countUp.addNumber();
-        toDoForm.dataset.todoNum = 'todo-' + formNumber;
         addTaskButton.addEventListener('click', applyForm);
     }
     
     
     exit.addEventListener('click', exitForm)
+}
+
+function giveDatasetNum(toDoForm) {
+    toDoForm.dataset.todoNum = 'todo-' + countUp('todo');
 }
 
 function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
@@ -195,28 +197,18 @@ function useLocalStorageInputs(task, date, description, first, second, third, fo
     project.value = localStorage.getItem(`project${formNumber}`);
 }
 
-const countUp = (function() {
-    let counter = 0;
-    let projectCounter = 0;
-    return { 
-        addNumber(negative) {
-        const containers = document.querySelectorAll('.todo-container');
-        counter = containers.length || 0;
-        let nextNumber;
-        if (negative) {
-            nextNumber = --counter;
-        } else {
-            nextNumber = ++counter;
-        }
-        localStorage.setItem('counter', nextNumber);
-        return nextNumber;
-        },
-        addProjectNumber() {
-            let nextProjectNumber = ++projectCounter
-            return nextProjectNumber;
-        }
-};
-})();
+function countUp(indicator) {
+    let counter;
+    if (indicator === 'todo') {
+        counter = document.querySelectorAll('.todo-container').length || 0;
+        return ++counter;
+    } else {
+        counter = document.querySelectorAll('.titled-project-div').length || 0;
+        return counter++;
+    }
+}
+
+
 
 
 function createProjectOptions(select) {
@@ -234,7 +226,6 @@ function findOpenForm() {
     const addTaskButtons = document.querySelectorAll('.addTask-button');
     const openedForm = [...addTaskButtons].filter((button) => {
         const cssObj = window.getComputedStyle(button.parentElement.parentElement);
-        
         if (cssObj.getPropertyValue('display') === 'block') {
             return button;
         }
@@ -243,7 +234,7 @@ function findOpenForm() {
 }
 
 function applyForm(storageSelected, storageForm) {
-    if (storageForm) {
+    if (storageForm && storageSelected) {
         const projectClass = storageSelected.split(' ').join('').toLowerCase();
         storageForm.classList.add(projectClass);
     } else {
@@ -251,6 +242,7 @@ function applyForm(storageSelected, storageForm) {
         if (projectSelect == '') return;
         
         this.parentElement.parentElement.classList.add(projectSelect.split(' ').join('').toLowerCase());
+        giveDatasetNum(this.parentElement.parentElement);
         makeToDoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
         removeForm();
         unBlurBackground();

@@ -41,12 +41,33 @@ function removeStorageItem(num) {
     localStorage.removeItem(`finalList${num}`);
     localStorage.removeItem(`priority${num}`);
     localStorage.removeItem(`project${num}`);
-    --localStorage.counter;
-    setTimeout(lowerDataNumbers(num), 500);
+
+    lowerDataNumbers(num);
 }
 
+function removeProjectStorageItem(num) {
+    localStorage.removeItem(`${num}project`);
 
-//HHHHHHHHHHH
+    lowerProjectDataNumbers(num);
+}
+
+function lowerProjectDataNumbers(num) {
+
+    Object.keys(localStorage).sort().forEach(key => {
+        const keyNum = key.replace(/\D/g, '');
+        if (!Number.isInteger(+keyNum)) return;
+        if (keyNum > num) {
+            const newKey = key.replace(keyNum, keyNum-1);
+            const value = localStorage[key];
+            localStorage.removeItem(key);
+            localStorage.setItem(newKey, value);
+        }
+    })
+
+
+} 
+
+
 function lowerDataNumbers(num) {
     
     Object.keys(localStorage).forEach(key => {
@@ -64,9 +85,7 @@ function lowerDataNumbers(num) {
             } else {
                 const finalValue = value.replace(newValue, newValue-1);
                 localStorage.setItem(newKey, finalValue);
-            }
-            
-            
+            } 
         }
       });
 }
@@ -113,4 +132,4 @@ function storageFunction() {
 
 // export {storageFunction, populateStorage}
 
-export {renderStorage, setStorage, removeStorageItem}
+export {renderStorage, setStorage, removeStorageItem, removeProjectStorageItem}

@@ -1,4 +1,4 @@
-import { renderStorage } from './localStorage';
+import { renderStorage, removeProjectStorageItem } from './localStorage';
 import {blurBackground, unBlurBackground, countUp} from './toDoForm'
 
 function createNewProject() {
@@ -69,34 +69,17 @@ function makeValueIntoID(value) {
 }
 
 function applyProject(storage) {
-    const projectForm = document.querySelector('#project-title');
-    
-    let output;
-    if (storage == true) {
-        const projects = Object.keys(localStorage).filter(key => {
-            if (Number.isInteger(+key[0])) {
-                return key;
-            }
-        })
-        const num = projects.length;
-        for (let i = 1; i <= num; i++) {
-            console.log(localStorage);
-            console.log(i);
-            console.log(localStorage.getItem(`${i}project`));
-            
-            output = localStorage.getItem(`${i}project`);
-            addProject(output);
-        }
-        
-        
+    if (storage === true) {
+        const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
+        projects.sort().forEach(project => addProject(localStorage.getItem(project)));  
     } else {
-        output = projectForm.value || 'No name';
+        const projectForm = document.querySelector('#project-title');
+        const output = projectForm.value || 'No name';
         addProject(output);
         closeProjectForm();
         unBlurBackground();
+        renderStorage(`${countUp()}project`, output);
     }
-    renderStorage(`${countUp.addProjectNumber()}project`, output);
-    
 }
 
 function renderProjectToDos() {
@@ -129,6 +112,13 @@ function closeProjectForm() {
 }
 
 function removeProject() {
+    const projects = document.querySelectorAll('.titled-project-div');
+    const projectSearch = [...projects].map(project => project == this.parentElement);
+    console.log(projectSearch);
+    const num = projectSearch.indexOf(true);
+    console.log(localStorage);
+    removeProjectStorageItem(+num + 1);
+    console.log(localStorage);
     this.parentElement.parentElement.removeChild(this.parentElement);
 }
 
