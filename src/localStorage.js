@@ -13,8 +13,9 @@ function setStorage() {
     const keys = Object.keys(localStorage).sort();
     const laststorageItem = keys[localStorage.length-1];
     const amountOfItems = laststorageItem.replace(/\D/g, '');
-    
+    // console.log(amountOfItems);
     for (let i = 1; i <= amountOfItems; i++) {
+        // console.log(localStorage.getItem(`dataSet${i}`));
         createForm(true, localStorage.getItem(`dataSet${i}`));
         makeToDoBlock(localStorage.getItem(`title${i}`), localStorage.getItem(`date${i}`), localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
     }
@@ -36,27 +37,32 @@ function removeStorageItem(num) {
     localStorage.removeItem(`priority${num}`);
     localStorage.removeItem(`project${num}`);
     --localStorage.counter;
-
-    lowerDataNumbers(num)
+    setTimeout(lowerDataNumbers(num), 500);
 }
 
+
+//HHHHHHHHHHH
 function lowerDataNumbers(num) {
     
     Object.keys(localStorage).forEach(key => {
         const keyNum = key.replace(/\D/g, '');
-        const valueNum = localStorage[key].replace(/\D/g, '');
+        const numbers = key.split('')[key.split('').length-1];
+        if (!Number.isInteger(+numbers)) return;
         if (keyNum > num) {
-            const newValue = localStorage[key].replace(valueNum, valueNum - 1);
             const newKey = key.replace(keyNum, keyNum-1);
+            const value = localStorage[key];
+            const numbersValue = value.split('')[value.split('').length-1];
+            const newValue = value.replace(/\D/g, '');
             localStorage.removeItem(key);
-            if (Number.isInteger(localStorage[key].charAt(localStorage[key].length-1))) {
-                localStorage.setItem(newKey, newValue);
+            if (!Number.isInteger(+numbersValue)) {
+                localStorage.setItem(newKey, value);
             } else {
-                localStorage.setItem(newKey, localStorage[key]);
+                const finalValue = value.replace(newValue, newValue-1);
+                localStorage.setItem(newKey, finalValue);
             }
             
+            
         }
-        
       });
 }
 

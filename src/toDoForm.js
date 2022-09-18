@@ -168,6 +168,7 @@ function createForm(title, storageCounter) {
         useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, storageCounter);
         toDoForm.style.display = 'none';
         toDoForm.dataset.todoNum = storageCounter;
+        console.log(storageCounter);
         const formNumber = storageCounter.replace(/\D/g, '');
         const projectName = localStorage.getItem(`project${formNumber}`);
         applyForm(projectName, toDoForm);
