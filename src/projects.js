@@ -1,4 +1,5 @@
-import {blurBackground, unBlurBackground} from './toDoForm'
+import { renderStorage } from './localStorage';
+import {blurBackground, unBlurBackground, countUp} from './toDoForm'
 
 function createNewProject() {
     const main = document.querySelector('main');
@@ -67,12 +68,35 @@ function makeValueIntoID(value) {
     return value.toLowerCase().split(' ').join('');
 }
 
-function applyProject() {
+function applyProject(storage) {
     const projectForm = document.querySelector('#project-title');
-    const output = projectForm.value || 'No name';
-    addProject(output);
-    closeProjectForm();
-    unBlurBackground();
+    
+    let output;
+    if (storage == true) {
+        const projects = Object.keys(localStorage).filter(key => {
+            if (Number.isInteger(+key[0])) {
+                return key;
+            }
+        })
+        const num = projects.length;
+        for (let i = 1; i <= num; i++) {
+            console.log(localStorage);
+            console.log(i);
+            console.log(localStorage.getItem(`${i}project`));
+            
+            output = localStorage.getItem(`${i}project`);
+            addProject(output);
+        }
+        
+        
+    } else {
+        output = projectForm.value || 'No name';
+        addProject(output);
+        closeProjectForm();
+        unBlurBackground();
+    }
+    renderStorage(`${countUp.addProjectNumber()}project`, output);
+    
 }
 
 function renderProjectToDos() {
@@ -99,7 +123,7 @@ function bindExitButton() {
 }
 
 function closeProjectForm() {
-    const projectForm = document.querySelector('.project-form')
+    const projectForm = document.querySelector('.project-form');
     projectForm.parentElement.removeChild(projectForm);
     unBlurBackground();
 }
@@ -108,4 +132,4 @@ function removeProject() {
     this.parentElement.parentElement.removeChild(this.parentElement);
 }
 
-export {bindProjectButton, bindProjectTitleButtons, createNewProject}
+export {bindProjectButton, bindProjectTitleButtons, createNewProject, applyProject}

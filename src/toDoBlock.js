@@ -101,7 +101,6 @@ function makeChecklist(checklist, ol) {
 }
 
 function editToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {
-    
     const form = this.parentElement.parentElement;
     const todoContainer = document.querySelectorAll(`[data-todo-num="${form.dataset.todoNum}"]`)[1];
     const task = todoContainer.querySelector('h4');

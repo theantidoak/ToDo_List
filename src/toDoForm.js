@@ -1,6 +1,5 @@
 import {makeToDoBlock, editToDoBlock} from './toDoBlock';
 import {format} from 'date-fns';
-// import {storageFunction} from './localStorage'
 import {renderStorage} from './localStorage'
 
 function createForm(title, storageCounter) {
@@ -168,7 +167,6 @@ function createForm(title, storageCounter) {
         useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, storageCounter);
         toDoForm.style.display = 'none';
         toDoForm.dataset.todoNum = storageCounter;
-        console.log(storageCounter);
         const formNumber = storageCounter.replace(/\D/g, '');
         const projectName = localStorage.getItem(`project${formNumber}`);
         applyForm(projectName, toDoForm);
@@ -176,13 +174,15 @@ function createForm(title, storageCounter) {
         blurBackground();
         const formNumber = countUp.addNumber();
         toDoForm.dataset.todoNum = 'todo-' + formNumber;
+        addTaskButton.addEventListener('click', applyForm);
     }
     
-    addTaskButton.addEventListener('click', applyForm);
+    
     exit.addEventListener('click', exitForm)
 }
 
 function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
+    formNumber = formNumber.replace(/\D/g, '');
     task.value = localStorage.getItem(`title${formNumber}`);
     date.value = localStorage.getItem(`date${formNumber}`);
     description.value = localStorage.getItem(`description${formNumber}`);
@@ -197,7 +197,9 @@ function useLocalStorageInputs(task, date, description, first, second, third, fo
 
 const countUp = (function() {
     let counter = 0;
-    return { addNumber(negative) {
+    let projectCounter = 0;
+    return { 
+        addNumber(negative) {
         const containers = document.querySelectorAll('.todo-container');
         counter = containers.length || 0;
         let nextNumber;
@@ -208,7 +210,12 @@ const countUp = (function() {
         }
         localStorage.setItem('counter', nextNumber);
         return nextNumber;
-    } };
+        },
+        addProjectNumber() {
+            let nextProjectNumber = ++projectCounter
+            return nextProjectNumber;
+        }
+};
 })();
 
 
@@ -227,6 +234,7 @@ function findOpenForm() {
     const addTaskButtons = document.querySelectorAll('.addTask-button');
     const openedForm = [...addTaskButtons].filter((button) => {
         const cssObj = window.getComputedStyle(button.parentElement.parentElement);
+        
         if (cssObj.getPropertyValue('display') === 'block') {
             return button;
         }
@@ -241,6 +249,7 @@ function applyForm(storageSelected, storageForm) {
     } else {
         const projectSelect = this.previousSibling.firstElementChild.firstElementChild.value;
         if (projectSelect == '') return;
+        
         this.parentElement.parentElement.classList.add(projectSelect.split(' ').join('').toLowerCase());
         makeToDoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
         removeForm();
@@ -256,10 +265,19 @@ function editForm() {
     unBlurBackground();
 }
 
+function addNewProjectToExistingForms(taskButton) {
+    const projectSelect = taskButton.previousSibling.firstElementChild.firstElementChild;
+    while (projectSelect.firstChild) {
+        projectSelect.removeChild(projectSelect.lastChild);
+    }
+    createProjectOptions(projectSelect);
+}
+
 function openExistingForm() {
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
         if (taskButton.parentElement.parentElement.dataset.todoNum == this.parentElement.parentElement.dataset.todoNum) {
+            addNewProjectToExistingForms(taskButton);
             taskButton.parentElement.parentElement.style.display = 'block';
             taskButton.addEventListener('click', editForm);
         }
@@ -285,7 +303,8 @@ function setTitle() {
     const title = findOpenForm().querySelector('#task');
     const dataNumber = findOpenForm().dataset.todoNum;
     renderStorage(`title${dataNumber.replace(/\D/g, '')}`, title.value);
-    return title.value;
+    return title.value; 
+    
 }
 
 function setDateAsID() {
@@ -343,17 +362,18 @@ function setChecklist() {
 function setPriority() {
     const priority = findOpenForm().querySelector('.priority-div select');
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
 
+    renderStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
     return priority.value;
+
 }
 
 function setProject() {
     const project = findOpenForm().querySelector('.project-div select');
     const dataNumber = findOpenForm().dataset.todoNum;
     renderStorage(`project${dataNumber.replace(/\D/g, '')}`, project.value);
-
     return project.value;
+
 }
 
 function setData() {
@@ -376,7 +396,6 @@ function exitForm() {
         form.parentElement.removeChild(form);
     }
     unBlurBackground();
-    // countUp.addNumber(true);
 }
 
 export {createForm, openExistingForm, blurBackground, unBlurBackground, countUp}

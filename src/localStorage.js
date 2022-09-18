@@ -1,30 +1,35 @@
 import {makeToDoBlock} from './toDoBlock'
 import {createForm} from './toDoForm'
+import {format} from 'date-fns'
+import {applyProject} from './projects'
 
-function populateStorage(callName, item) {
-    if (callName == 'finalList') {
-        localStorage.setItem(callName, JSON.stringify(item));
-    } else {
-        localStorage.setItem(callName, item);
-    }
-}
 function setStorage() {
     if (localStorage.length == 0) return;
     const keys = Object.keys(localStorage).sort();
     const laststorageItem = keys[localStorage.length-1];
     const amountOfItems = laststorageItem.replace(/\D/g, '');
-    // console.log(amountOfItems);
+    applyProject(true);
+    if (!localStorage.getItem('dataSet1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
-        // console.log(localStorage.getItem(`dataSet${i}`));
+        const dateTime = localStorage.getItem(`date${i}`);
+        let renderedTime;
+        if (dateTime != '') {
+            renderedTime = format(new Date(dateTime), 'EE, dd/MM/yyyy HH:mm');
+        } else {
+            renderedTime = dateTime;
+        }
         createForm(true, localStorage.getItem(`dataSet${i}`));
-        makeToDoBlock(localStorage.getItem(`title${i}`), localStorage.getItem(`date${i}`), localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
+        makeToDoBlock(localStorage.getItem(`title${i}`), renderedTime, localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
     }
+    
 }
 
 function renderStorage (callName, item) {
-    if (!localStorage.getItem(callName)) {
-        populateStorage(callName, item);
-      } 
+    if (callName == 'finalList') {
+        localStorage.setItem(callName, JSON.stringify(item));
+    } else {
+        localStorage.setItem(callName, item);
+    }
 }
 
 function removeStorageItem(num) {
@@ -108,4 +113,4 @@ function storageFunction() {
 
 // export {storageFunction, populateStorage}
 
-export {populateStorage, renderStorage, setStorage, removeStorageItem}
+export {renderStorage, setStorage, removeStorageItem}
