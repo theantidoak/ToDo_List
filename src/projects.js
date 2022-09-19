@@ -1,4 +1,4 @@
-import { renderStorage, removeProjectStorageItem } from './localStorage';
+import { populateStorage, removeProjectStorageItem } from './localStorage';
 import { blurBackground, unBlurBackground, countUp } from './toDoForm'
 
 function createNewProjectForm() {
@@ -81,7 +81,7 @@ function renderProjectToPage() {
     addProjectButton(projectTitle);
     closeProjectForm();
     unBlurBackground();
-    renderStorage(`${countUp()}project`, projectTitle);
+    populateStorage(`${countUp()}project`, projectTitle);
 }
 
 
@@ -107,6 +107,7 @@ function closeProjectForm() {
 
 function removeProject() { 
     const projectButton = this.parentElement;
+    console.log(projectButton);
     removeProjectStorageItem(findProjectIndex(projectButton));
     projectButton.parentElement.removeChild(projectButton);
 }

@@ -3,12 +3,29 @@ import {createForm} from './toDoForm'
 import {format} from 'date-fns'
 import { addProjectButton } from './projects'
 
-function setStorage() {
+function populateStorage(callName, item) {
+    if (callName == 'finalList') {
+        localStorage.setItem(callName, JSON.stringify(item));
+    } else {
+        localStorage.setItem(callName, item);
+    }
+}
+
+function renderStorageOnPage() {
     if (localStorage.length == 0) return;
+    findProjectStorageAndRender();
+    findTodoStorageAndRender();
+}
+
+function findProjectStorageAndRender() {
+    const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
+    projects.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
+}
+
+function findTodoStorageAndRender() {
     const keys = Object.keys(localStorage).sort();
     const laststorageItem = keys[localStorage.length-1];
     const amountOfItems = laststorageItem.replace(/\D/g, '');
-    findProjectStorageAndRender();
     if (!localStorage.getItem('dataSet1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
         const dateTime = localStorage.getItem(`date${i}`);
@@ -20,15 +37,6 @@ function setStorage() {
         }
         createForm(true, localStorage.getItem(`dataSet${i}`));
         makeTodoBlock(localStorage.getItem(`title${i}`), renderedTime, localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
-    }
-    
-}
-
-function renderStorage (callName, item) {
-    if (callName == 'finalList') {
-        localStorage.setItem(callName, JSON.stringify(item));
-    } else {
-        localStorage.setItem(callName, item);
     }
 }
 
@@ -70,7 +78,8 @@ function lowerProjectDataNumbers(num) {
 
     Object.keys(localStorage).sort().forEach(key => {
         const keyNum = key.replace(/\D/g, '');
-        if (!Number.isInteger(+keyNum)) return;
+        console.log(key[0]);
+        if (!Number.isInteger(+keyNum) || !Number.isInteger(+key[0])) return;
         if (keyNum > num) {
             const newKey = key.replace(keyNum, keyNum-1);
             const value = localStorage[key];
@@ -105,10 +114,13 @@ function lowerDataNumbers(num) {
       });
 }
 
-function findProjectStorageAndRender() {
-    const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
-    projects.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
-
+function reOrderStorage(sortedTodos) {
+    console.log(localStorage);
+    for (let i = 0; i < sortedTodos.length; i++) {
+        const todo = sortedTodos[i];
+        console.log(sortedTodos);
+        populateStorage(`dataSet${i}`, todo.dataset.todoNum);
+    }
 }
 
 
@@ -137,4 +149,4 @@ function findProjectStorageAndRender() {
 //     }
 // }
 
-export {renderStorage, setStorage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs}
+export {reOrderStorage, populateStorage, renderStorageOnPage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs, findTodoStorageAndRender}

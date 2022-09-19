@@ -1,6 +1,6 @@
 import {makeTodoBlock, editTodoBlock} from './toDoBlock';
 import {format} from 'date-fns';
-import {renderStorage, useLocalStorageInputs} from './localStorage'
+import {populateStorage, useLocalStorageInputs} from './localStorage'
 
 function createForm(calledFromStorage, formNumber) {
 
@@ -145,11 +145,12 @@ function createForm(calledFromStorage, formNumber) {
     exit.addEventListener('click', exitForm);
     addTaskButton.addEventListener('click', applyForm);
 
+    giveDatasetNum(todoForm);
     blurBackground();
     
     if (calledFromStorage === true) {
         useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, formNumber);
-        createtodoFromStorage(todoForm, formNumber, addTaskButton);
+        createTodoFromStorage(todoForm, formNumber, addTaskButton);
     }
 }
 
@@ -164,9 +165,11 @@ function createProjectOptions(select) {
     }
 }
 
-function createtodoFromStorage(todoForm, formNumber, addTaskButton) {
+function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
     const formIndex = formNumber.replace(/\D/g, '');
-    const projectClass = localStorage.getItem(`project${formIndex}`).split(' ').join('').toLowerCase();
+    const projectTitle = localStorage.getItem(`project${formIndex}`);
+
+    const projectClass = projectTitle.split(' ').join('').toLowerCase();
     todoForm.classList.add(projectClass);
     todoForm.style.display = 'none';
     todoForm.dataset.todoNum = formNumber;
@@ -203,7 +206,7 @@ function applyForm() {
     const projectSelectValue = todoForm.querySelector('.project-div select').value
     if (projectSelectValue == '') return;
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
-    giveDatasetNum(this.parentElement.parentElement);
+    
     makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     exitForm.call(this);
     unBlurBackground();
@@ -260,7 +263,7 @@ function unBlurBackground() {
 function setTitle() {
     const title = findOpenForm().querySelector('#task');
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`title${dataNumber.replace(/\D/g, '')}`, title.value);
+    populateStorage(`title${dataNumber.replace(/\D/g, '')}`, title.value);
     return title.value; 
     
 }
@@ -268,7 +271,7 @@ function setTitle() {
 function setDateAsID() {
     const date = findOpenForm().querySelector('#time-label');
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`dateID${dataNumber.replace(/\D/g, '')}`, date.value);
+    populateStorage(`dateID${dataNumber.replace(/\D/g, '')}`, date.value);
     return date.value;
 }
 
@@ -276,7 +279,7 @@ function setDate() {
     const date = findOpenForm().querySelector('#time-label');
     const value = date.value != '' ? format(new Date(date.value), 'EE, dd/MM/yyyy HH:mm') : date.value;
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`date${dataNumber.replace(/\D/g, '')}`, date.value);
+    populateStorage(`date${dataNumber.replace(/\D/g, '')}`, date.value);
     return value;
 }
 
@@ -286,7 +289,7 @@ function setDescription() {
     if (description.value == '') {
         description.value = 'Nothing to see here, but there could be';
     }
-    renderStorage(`description${dataNumber.replace(/\D/g, '')}`, description.value);
+    populateStorage(`description${dataNumber.replace(/\D/g, '')}`, description.value);
 
     return description.value;
 }
@@ -304,14 +307,14 @@ function setChecklist() {
     const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
     let finalList = checklistArray.filter((item) => item !== ''); 
     finalList = finalList.length === 0 ? ['Nothing to see here', 'But there could be'] : finalList; 
-    renderStorage(`finalList${dataNumber.replace(/\D/g, '')}`, JSON.stringify(finalList));
+    populateStorage(`finalList${dataNumber.replace(/\D/g, '')}`, JSON.stringify(finalList));
     return finalList;
 }
 
 function setPriority() {
     const priority = findOpenForm().querySelector('.priority-div select');
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
+    populateStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
     return priority.value;
 
 }
@@ -319,14 +322,14 @@ function setPriority() {
 function setProject() {
     const project = findOpenForm().querySelector('.project-div select');
     const dataNumber = findOpenForm().dataset.todoNum;
-    renderStorage(`project${dataNumber.replace(/\D/g, '')}`, project.value);
+    populateStorage(`project${dataNumber.replace(/\D/g, '')}`, project.value);
     return project.value;
 
 }
 
 function setData() {
     const dataSet = findOpenForm().dataset.todoNum;
-    renderStorage(`dataSet${dataSet.replace(/\D/g, '')}`, dataSet)
+    populateStorage(`dataSet${dataSet.replace(/\D/g, '')}`, dataSet)
     return dataSet;
 }
 

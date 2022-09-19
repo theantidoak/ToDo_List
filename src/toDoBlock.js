@@ -1,5 +1,5 @@
 import {openExistingForm} from './toDoForm'
-import {removeStorageItem} from './localStorage'
+import {reOrderStorage, removeStorageItem, findTodoStorageAndRender, populateStorage} from './localStorage'
 
 function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
     
@@ -72,7 +72,7 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     todoContainer.appendChild(editables);
     main.appendChild(todoContainer);
 
-    ordertodosChronologically();
+    orderTodosChronologically();
 
     //Set parameters
     descriptionButton.otherDivClass = '.checklist-div';
@@ -84,7 +84,7 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     editButton.addEventListener('click', openExistingForm);
     descriptionButton.addEventListener('click', displayHiddenText);
     checklistButton.addEventListener('click', displayHiddenText);
-    removeButton.addEventListener('click', deletetodo);
+    removeButton.addEventListener('click', deleteTodo);
     checkBox.addEventListener('input', markCompleted);
 
 }
@@ -128,6 +128,7 @@ function editTodoBlock(title, timeDate, dateID, description, checklist, priority
     checklistBox.replaceChild(ol, oldOl);
     priority.textContent = priorityValue;
     project.textContent = projectValue;
+    orderTodosChronologically();
 }
 
 function displayHiddenText(e) {
@@ -141,12 +142,14 @@ function displayHiddenText(e) {
     }
 }
 
-function deletetodo(e) {
+function deleteTodo(e) {
     const todoContainer = e.currentTarget.todoContainer;
     const dataset = todoContainer.dataset.todoNum;
-    const form = document.querySelector(`[data-todo-num="${dataset}"]`)
+    const form = document.querySelector(`[data-todo-num="${dataset}"]`);
     todoContainer.parentElement.removeChild(form);
+    
     todoContainer.parentElement.removeChild(todoContainer);
+    orderTodosChronologically();
     removeStorageItem(dataset.replace(/\D/g, ''))
 }
 
@@ -162,7 +165,7 @@ function markCompleted(e) {
     }
 }
 
-function sorttodos(todos) {
+function sortTodos(todos) {
     return [...todos].sort((a, b) => {
         const timeA = a.querySelector('.date').dataset.dateTime;
         const timeB = b.querySelector('.date').dataset.dateTime;
@@ -178,46 +181,56 @@ function sorttodos(todos) {
     });
 }
 
-function sortForms(todoForms) {
-    return [...todoForms].sort((a, b) => a.dataset.todoNum.replace(/\D/g, '') - b.dataset.todoNum.replace(/\D/g, ''));
+function sortForms(todoForms, sortedTodos) {
+    return [...todoForms].sort((a,b) => {
+        const datasetNumA = a.dataset.todoNum;
+        const datasetNumB = b.dataset.todoNum;
+        const correspondingTodoA = sortedTodos.map(todo => todo.dataset.todoNum == datasetNumA);
+        const correspondingTodoB = sortedTodos.map(todo => todo.dataset.todoNum == datasetNumB);
+
+        return (correspondingTodoA.indexOf(true) + 1) - (correspondingTodoB.indexOf(true) + 1);
+    })
 }
 
-function changeDataset(todoForms, sortedtodos) {
+function changeDataset(todoForms, sortedTodos) {
     todoForms.forEach(form => {
         const dataNum = form.dataset.todoNum;
-        const todoFound = sortedtodos.map(todo => todo.dataset.todoNum == dataNum);
+        const todoFound = sortedTodos.map(todo => todo.dataset.todoNum == dataNum);
         const index = todoFound.indexOf(true) + 1;
         form.dataset.todoNum = `todo-${index}`;
-    })
-    sortedtodos.forEach(todo => {
-        const dataNum = sortedtodos.indexOf(todo) + 1;
-        todo.dataset.todoNum = `todo-${dataNum}`;
+       
     });
+    sortedTodos.forEach(todo => {
+        const dataNum = sortedTodos.indexOf(todo) + 1;
+        todo.dataset.todoNum = `todo-${dataNum}`;
+
+    });
+    // reOrderStorage(sortedTodos);
 }
 
 function removePrevioustodos(todoForms, todos) {
     const main = document.querySelector('main');
-    todoForms.forEach(form => main.removeChild(form));
-    todos.forEach(todo => main.removeChild(todo));
+    [...todoForms].sort().forEach(form => main.removeChild(form));
+    [...todos].sort().forEach(todo => main.removeChild(todo));
 }
 
-function appendSortedtodos(sortedForms, sortedtodos) {
+function appendsortedTodos(sortedForms, sortedTodos) {
     const main = document.querySelector('main');
     for (let i =0; i< sortedForms.length; i++) {
         main.appendChild(sortedForms[i]);
-        main.appendChild(sortedtodos[i]);
+        main.appendChild(sortedTodos[i]);
     }
 }
 
-function ordertodosChronologically() {
+function orderTodosChronologically() {
     const todos = document.querySelectorAll('.todo-container');
     const todoForms = document.querySelectorAll('.todo-form');
-    const sortedtodos = sorttodos(todos);
-    const sortedForms = sortForms(todoForms);
+    const sortedTodos = sortTodos(todos);
+    const sortedForms = sortForms(todoForms, sortedTodos);
     
-    changeDataset(todoForms, sortedtodos);
+    changeDataset(todoForms, sortedTodos);
     removePrevioustodos(todoForms, todos);
-    appendSortedtodos(sortedForms, sortedtodos);
+    appendsortedTodos(sortedForms, sortedTodos);
 }
 
 
