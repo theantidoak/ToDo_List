@@ -1,55 +1,50 @@
 import {isToday, isThisWeek} from 'date-fns'
 
-function displayAll() {
+function displayAllToDos() {
     const todos = document.querySelectorAll('.todo-container');
     todos.forEach(todo => {
-        if (!todo.classList.contains('completed-todo')) {
-            todo.style.display = 'block';
-        } else {
-            todo.style.display = 'none';
-        }
+        const todoType = !todo.classList.contains('completed-todo');
+        todo.style.display = todoType ? 'block' : 'none';
     })
 }
 
-
-function displayUpcoming(e) {
+function displayUpcomingToDos(e) {
     const todos = document.querySelectorAll('.todo-container');
-    todos.forEach((todo) => {
-        const dates = [...todo.children].filter(child => child.classList.contains('date'));
-        const dateContainer = [...dates].filter(date => e.currentTarget.isUpcoming(new Date(date.dataset.dateTime), { weekStartsOn: 1 }) === true);
-        if (dateContainer.length > 0) {
-            todo.style.display = 'block';
-        } else {
-            todo.style.display = 'none';
-        };
+    todos.forEach((todo) => {     
+        const dueDate = todo.querySelector('.date').dataset.dateTime;
+        const todoType = e.currentTarget.isUpcoming(new Date(dueDate), { weekStartsOn: 1 });
+        todo.style.display = todoType ? 'block' : 'none';
     });
 }
 
-function displayCompleted() {
+function displayCompletedToDos() {
     const todos = document.querySelectorAll('.todo-container');
     todos.forEach(todo => {
-        if (todo.classList.contains('completed-todo')) {
-            todo.style.display = 'block';
-        } else {
-            todo.style.display = 'none';
-        }
+        const todoType = todo.classList.contains('completed-todo');
+        todo.style.display = todoType ? 'block' : 'none';
     })
 }
 
 
-function bindAllButton() {
+function bindHomeButtons() {
+
+    //Cache DOM
     const allButton = document.querySelector('.all');
     const homeButton = document.querySelector('.home-title');
     const todayButton = document.querySelector('.today');
     const thisWeekButton = document.querySelector('.upcoming');
     const completedButton = document.querySelector('.completed');
-    allButton.addEventListener('click', displayAll);
-    homeButton.addEventListener('click', displayAll);
-    completedButton.addEventListener('click', displayCompleted);
-    todayButton.addEventListener('click', displayUpcoming);
+
+    //Set Date modification parameters
     todayButton.isUpcoming = isToday;
-    thisWeekButton.addEventListener('click', displayUpcoming);
     thisWeekButton.isUpcoming = isThisWeek;
+    
+    //Bind events
+    allButton.addEventListener('click', displayAllToDos);
+    homeButton.addEventListener('click', displayAllToDos);
+    completedButton.addEventListener('click', displayCompletedToDos);
+    todayButton.addEventListener('click', displayUpcomingToDos);
+    thisWeekButton.addEventListener('click', displayUpcomingToDos);
 }
 
-export {bindAllButton}
+export {bindHomeButtons}

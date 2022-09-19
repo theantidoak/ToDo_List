@@ -1,108 +1,102 @@
 import { renderStorage, removeProjectStorageItem } from './localStorage';
-import {blurBackground, unBlurBackground, countUp} from './toDoForm'
+import { blurBackground, unBlurBackground, countUp } from './toDoForm'
 
-function createNewProject() {
+function createNewProjectForm() {
+
+    //Cache DOM
     const main = document.querySelector('main');
+
+    //Create Elements
     const projectFormDiv = document.createElement('div');
-    projectFormDiv.classList.add('project-form');
     const exitButton = document.createElement('button');
-    exitButton.classList.add('project-exit');
     const exitButtonContent = document.createTextNode('X');
     const projectForm = document.createElement('form');
     const projectLabel = document.createElement('label');
-    projectLabel.setAttribute('for', 'projects-title');
     const projectInput = document.createElement('input');
+    const projectButtonDiv = document.createElement('div'); 
+    const projectButton = document.createElement('button');
+    const projectButtonContent = document.createTextNode('Add');
+
+    //Set Attributes
+    projectFormDiv.classList.add('project-form');
+    exitButton.classList.add('project-exit');
+    projectLabel.setAttribute('for', 'projects-title');
     projectInput.setAttribute('type', 'text');
     projectInput.id = 'project-title';
-    const buttonDiv = document.createElement('div');
-    buttonDiv.classList.add('project-button-div');
-    const button = document.createElement('button');
-    button.classList.add('addProject');
-    button.setAttribute('type', 'button');
-    const buttonContent = document.createTextNode('Add');
+    projectButtonDiv.classList.add('project-button-div');
+    projectButton.classList.add('addProject');
+    projectButton.setAttribute('type', 'button');
 
+    //Render Elements
     exitButton.appendChild(exitButtonContent);
-    
-    button.appendChild(buttonContent);
-    buttonDiv.appendChild(button);
-    
+    projectButton.appendChild(projectButtonContent);
+    projectButtonDiv.appendChild(projectButton);
     projectLabel.appendChild(projectInput);
     projectForm.appendChild(projectLabel);
-    projectForm.appendChild(buttonDiv);
+    projectForm.appendChild(projectButtonDiv);
     projectFormDiv.appendChild(exitButton);
     projectFormDiv.appendChild(projectForm);
     main.appendChild(projectFormDiv);
 
-    button.addEventListener('click', applyProject);
-    bindExitButton();
+    //Bind Event Listeners
+    projectButton.addEventListener('click', renderProjectToPage);
+    exitButton.addEventListener('click', closeProjectForm);
+    
     blurBackground(projectFormDiv);
-
 }
 
-function bindProjectButton() {
-    const addProjectH3 = document.querySelector('.projects-title');
-    addProjectH3.addEventListener('click', createNewProject);
-}
+function addProjectButton(newProjectTitle) {
 
-function addProject(newProject) {
+    //Cache DOM
     const projects = document.querySelector('.projects');
+
+    //Create Elements
     const newProjectDiv = document.createElement('div');
-    newProjectDiv.classList.add('titled-project-div');
     const newProjectButton = document.createElement('button');
-    const newProjectButtonContent = document.createTextNode(newProject);
-    newProjectButton.classList.add('project-name');
-    newProjectButton.classList.add(makeValueIntoID(newProject));
+    const newProjectButtonContent = document.createTextNode(newProjectTitle);
     const deleteProjectButton = document.createElement('span');
-    deleteProjectButton.classList.add('delete-span');
     const deleteProjectButtonContent = document.createTextNode('-');
+
+    //Set Attributes
+    newProjectDiv.classList.add('titled-project-div');
+    newProjectButton.classList.add('project-name');
+    newProjectButton.classList.add(makeProjectNameIntoID(newProjectTitle));
+    deleteProjectButton.classList.add('delete-span');
+
+    //Render Elements
     deleteProjectButton.appendChild(deleteProjectButtonContent);
     newProjectButton.appendChild(newProjectButtonContent);
     newProjectDiv.appendChild(newProjectButton);
     newProjectDiv.appendChild(deleteProjectButton);
     projects.appendChild(newProjectDiv);
-    bindProjectTitleButtons();
+    
+    //Bind Event Listeners
+    newProjectButton.addEventListener('click', displayProjectToDos);
     deleteProjectButton.addEventListener('click', removeProject);
 }
 
-function makeValueIntoID(value) {
-    return value.toLowerCase().split(' ').join('');
+function renderProjectToPage() {
+    const projectForm = document.querySelector('#project-title');
+    const projectTitle = projectForm.value || 'No name';
+    addProjectButton(projectTitle);
+    closeProjectForm();
+    unBlurBackground();
+    renderStorage(`${countUp()}project`, projectTitle);
 }
 
-function applyProject(storage) {
-    if (storage === true) {
-        const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
-        projects.sort().forEach(project => addProject(localStorage.getItem(project)));  
-    } else {
-        const projectForm = document.querySelector('#project-title');
-        const output = projectForm.value || 'No name';
-        addProject(output);
-        closeProjectForm();
-        unBlurBackground();
-        renderStorage(`${countUp()}project`, output);
-    }
+
+function makeProjectNameIntoID(projectTitle) {
+    return projectTitle.toLowerCase().split(' ').join('');
 }
 
-function renderProjectToDos() {
+//Project Form and Button Functions
+
+function displayProjectToDos() {
     const projectTitle = this.getAttribute('class').split(' ')[1];
-
     const todoContainers = document.querySelectorAll('.todo-container');
     todoContainers.forEach(todo => {
-        if (!todo.classList.contains(projectTitle)) {
-            todo.style.display = 'none';
-        } else {
-            todo.style.display = 'block';
-        }
+        todo.style.display = !todo.classList.contains(projectTitle) ? 'none' : 'block';
     })
-}
-
-function bindProjectTitleButtons() {
-    const buttons = document.querySelectorAll('.projects .project-name');
-    buttons.forEach(button => button.addEventListener('click', renderProjectToDos));
-}
-
-function bindExitButton() {
-    const exitButton = document.querySelector('.project-exit');
-    exitButton.addEventListener('click', closeProjectForm);
 }
 
 function closeProjectForm() {
@@ -111,15 +105,31 @@ function closeProjectForm() {
     unBlurBackground();
 }
 
-function removeProject() {
-    const projects = document.querySelectorAll('.titled-project-div');
-    const projectSearch = [...projects].map(project => project == this.parentElement);
-    console.log(projectSearch);
-    const num = projectSearch.indexOf(true);
-    console.log(localStorage);
-    removeProjectStorageItem(+num + 1);
-    console.log(localStorage);
-    this.parentElement.parentElement.removeChild(this.parentElement);
+function removeProject() { 
+    const projectButton = this.parentElement;
+    removeProjectStorageItem(findProjectIndex(projectButton));
+    projectButton.parentElement.removeChild(projectButton);
 }
 
-export {bindProjectButton, bindProjectTitleButtons, createNewProject, applyProject}
+function findProjectIndex(projectButton) {
+    const projects = document.querySelectorAll('.titled-project-div');
+    const projectSearch = [...projects].map(project => project == projectButton);
+    const projectIndex = projectSearch.indexOf(true) + 1;
+    return projectIndex;
+}
+
+
+//Bind Functions
+
+function bindProjectButtons() {
+
+    //Cache DOM
+    const addProjectH3 = document.querySelector('.projects-title');
+    const defaultProjectButton = document.querySelector('.default');
+
+    //Bind Events
+    addProjectH3.addEventListener('click', createNewProjectForm);
+    defaultProjectButton.addEventListener('click', displayProjectToDos);
+}
+
+export {bindProjectButtons, createNewProjectForm, addProjectButton}

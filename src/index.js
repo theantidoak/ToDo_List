@@ -1,18 +1,16 @@
 import './style.css';
-
-import {makeToDoBlock} from './toDoBlock'
-import {createForm} from './toDoForm'
-import {bindProjectButton, bindProjectTitleButtons, createNewProject} from './projects'
-import {bindAllButton} from './homeProjects'
+import { makeToDoBlock } from './toDoBlock'
+import { createForm } from './toDoForm'
+import { bindProjectButtons , createNewProjectForm } from './projects'
+import { bindHomeButtons } from './homeProjects'
 import { setStorage } from './localStorage';
 
 
 // makeToDoBlock();
-
 // createForm();
-
-// createNewProject();
+// createNewProjectForm();
 // localStorage.clear();
+
 setStorage();
 
 (function displayToDoForm() {
@@ -20,8 +18,5 @@ setStorage();
     addToDoButton.addEventListener('click', createForm);
 })();
 
-bindProjectButton();
-bindProjectTitleButtons();
-bindAllButton();
-
-// storageFunction();
+bindProjectButtons();
+bindHomeButtons();

@@ -183,6 +183,21 @@ function giveDatasetNum(toDoForm) {
     toDoForm.dataset.todoNum = 'todo-' + countUp('todo');
 }
 
+
+
+function orderToDosChronologically() {
+    const main = document.querySelector('main');
+    const todos = document.querySelectorAll('.todo-container');
+    const sortedToDos = [...todos].sort((a, b) => {
+        const toDoA = new Date(a.querySelector('.date').dataset.dateTime);
+        const toDoB = new Date(b.querySelector('.date').dataset.dateTime);
+        return toDoA - toDoB
+    });
+    
+    todos.forEach(todo => main.removeChild(todo));
+    sortedToDos.forEach(todo => main.appendChild(todo));
+}
+
 function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
     formNumber = formNumber.replace(/\D/g, '');
     task.value = localStorage.getItem(`title${formNumber}`);
@@ -234,7 +249,7 @@ function findOpenForm() {
 }
 
 function applyForm(storageSelected, storageForm) {
-    if (storageForm && storageSelected) {
+    if (storageForm) {
         const projectClass = storageSelected.split(' ').join('').toLowerCase();
         storageForm.classList.add(projectClass);
     } else {

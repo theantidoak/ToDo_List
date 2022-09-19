@@ -1,14 +1,14 @@
 import {makeToDoBlock} from './toDoBlock'
 import {createForm} from './toDoForm'
 import {format} from 'date-fns'
-import {applyProject} from './projects'
+import { addProjectButton } from './projects'
 
 function setStorage() {
     if (localStorage.length == 0) return;
     const keys = Object.keys(localStorage).sort();
     const laststorageItem = keys[localStorage.length-1];
     const amountOfItems = laststorageItem.replace(/\D/g, '');
-    applyProject(true);
+    findProjectStorageAndRender();
     if (!localStorage.getItem('dataSet1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
         const dateTime = localStorage.getItem(`date${i}`);
@@ -47,7 +47,6 @@ function removeStorageItem(num) {
 
 function removeProjectStorageItem(num) {
     localStorage.removeItem(`${num}project`);
-
     lowerProjectDataNumbers(num);
 }
 
@@ -64,13 +63,12 @@ function lowerProjectDataNumbers(num) {
         }
     })
 
-
 } 
 
 
 function lowerDataNumbers(num) {
     
-    Object.keys(localStorage).forEach(key => {
+    Object.keys(localStorage).sort().forEach(key => {
         const keyNum = key.replace(/\D/g, '');
         const numbers = key.split('')[key.split('').length-1];
         if (!Number.isInteger(+numbers)) return;
@@ -80,7 +78,8 @@ function lowerDataNumbers(num) {
             const numbersValue = value.split('')[value.split('').length-1];
             const newValue = value.replace(/\D/g, '');
             localStorage.removeItem(key);
-            if (!Number.isInteger(+numbersValue)) {
+            
+            if (!Number.isInteger(+numbersValue) || Number.isInteger(+value[0])) {
                 localStorage.setItem(newKey, value);
             } else {
                 const finalValue = value.replace(newValue, newValue-1);
@@ -89,6 +88,13 @@ function lowerDataNumbers(num) {
         }
       });
 }
+
+function findProjectStorageAndRender() {
+    const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
+    projects.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
+
+}
+
 
 // function storageAvailable(type) {
 //     let storage;
@@ -114,22 +120,5 @@ function lowerDataNumbers(num) {
 //             (storage && storage.length !== 0);
 //     }
 // }
-
-function storageFunction() {
-    
-}
-
-// function populateStorage() {
-//     localStorage.setItem('content', JSON.stringify(document.querySelector('.content')));
-    
-//     renderStorage();
-// }
-
-// function renderStorage() {
-//     document.body.appendChild(localStorage.getItem('content'));
-// }
-
-
-// export {storageFunction, populateStorage}
 
 export {renderStorage, setStorage, removeStorageItem, removeProjectStorageItem}
