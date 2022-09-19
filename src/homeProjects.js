@@ -1,6 +1,6 @@
 import {isToday, isThisWeek} from 'date-fns'
 
-function displayAllToDos() {
+function displayAlltodos() {
     const todos = document.querySelectorAll('.todo-container');
     todos.forEach(todo => {
         const todoType = !todo.classList.contains('completed-todo');
@@ -8,7 +8,7 @@ function displayAllToDos() {
     })
 }
 
-function displayUpcomingToDos(e) {
+function displayUpcomingtodos(e) {
     const todos = document.querySelectorAll('.todo-container');
     todos.forEach((todo) => {     
         const dueDate = todo.querySelector('.date').dataset.dateTime;
@@ -17,7 +17,7 @@ function displayUpcomingToDos(e) {
     });
 }
 
-function displayCompletedToDos() {
+function displayCompletedtodos() {
     const todos = document.querySelectorAll('.todo-container');
     todos.forEach(todo => {
         const todoType = todo.classList.contains('completed-todo');
@@ -40,11 +40,11 @@ function bindHomeButtons() {
     thisWeekButton.isUpcoming = isThisWeek;
     
     //Bind events
-    allButton.addEventListener('click', displayAllToDos);
-    homeButton.addEventListener('click', displayAllToDos);
-    completedButton.addEventListener('click', displayCompletedToDos);
-    todayButton.addEventListener('click', displayUpcomingToDos);
-    thisWeekButton.addEventListener('click', displayUpcomingToDos);
+    allButton.addEventListener('click', displayAlltodos);
+    homeButton.addEventListener('click', displayAlltodos);
+    completedButton.addEventListener('click', displayCompletedtodos);
+    todayButton.addEventListener('click', displayUpcomingtodos);
+    thisWeekButton.addEventListener('click', displayUpcomingtodos);
 }
 
 export {bindHomeButtons}

@@ -1,4 +1,4 @@
-import {makeToDoBlock} from './toDoBlock'
+import {makeTodoBlock} from './toDoBlock'
 import {createForm} from './toDoForm'
 import {format} from 'date-fns'
 import { addProjectButton } from './projects'
@@ -19,7 +19,7 @@ function setStorage() {
             renderedTime = dateTime;
         }
         createForm(true, localStorage.getItem(`dataSet${i}`));
-        makeToDoBlock(localStorage.getItem(`title${i}`), renderedTime, localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
+        makeTodoBlock(localStorage.getItem(`title${i}`), renderedTime, localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
     }
     
 }
@@ -31,6 +31,22 @@ function renderStorage (callName, item) {
         localStorage.setItem(callName, item);
     }
 }
+
+
+function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
+    const indexNumber = formNumber.replace(/\D/g, '');
+    task.value = localStorage.getItem(`title${indexNumber}`);
+    date.value = localStorage.getItem(`date${indexNumber}`);
+    description.value = localStorage.getItem(`description${indexNumber}`);
+    first.value = localStorage.getItem(`finalList${indexNumber}[0]`);
+    second.value = localStorage.getItem(`finalList${indexNumber}[1]`);
+    third.value = localStorage.getItem(`finalList${indexNumber}[2]`);
+    fourth.value = localStorage.getItem(`finalList${indexNumber}[3]`);
+    fifth.value = localStorage.getItem(`finalList${indexNumber}[4]`);
+    priority.value = localStorage.getItem(`priority${indexNumber}`);
+    project.value = localStorage.getItem(`project${indexNumber}`);
+}
+
 
 function removeStorageItem(num) {
     localStorage.removeItem(`title${num}`);
@@ -121,4 +137,4 @@ function findProjectStorageAndRender() {
 //     }
 // }
 
-export {renderStorage, setStorage, removeStorageItem, removeProjectStorageItem}
+export {renderStorage, setStorage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs}

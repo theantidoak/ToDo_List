@@ -1,134 +1,124 @@
-import {makeToDoBlock, editToDoBlock} from './toDoBlock';
+import {makeTodoBlock, editTodoBlock} from './toDoBlock';
 import {format} from 'date-fns';
-import {renderStorage} from './localStorage'
+import {renderStorage, useLocalStorageInputs} from './localStorage'
 
-function createForm(title, storageCounter) {
+function createForm(calledFromStorage, formNumber) {
+
+    //Cache DOM
     const main = document.querySelector('main');
-    const toDoForm = document.createElement('div');
-    toDoForm.classList.add('todo-form');
-    toDoForm.classList.add('storable');
+
+    //Create elements
+    const todoForm = document.createElement('div');
     const newTask = document.createElement('h1');
     const exit = document.createElement('span');
     const newTaskContent = document.createTextNode('New Task');
     const exitContent = document.createTextNode('X');
-
-    exit.appendChild(exitContent);
-    newTask.appendChild(newTaskContent);
-    newTask.appendChild(exit);
-    toDoForm.appendChild(newTask);
-
-
     const form = document.createElement('form');
-    
     const taskDiv = document.createElement('div');
-    taskDiv.classList.add('task-div');
     const taskLabel = document.createElement('label');
-    taskLabel.setAttribute('for', 'task');
     const taskInput = document.createElement('input');
+    const dateDiv = document.createElement('div');
+    const dateLabel = document.createElement('label');
+    const dateInput = document.createElement('input');
+    const descriptionLabel = document.createElement('label');
+    const textArea = document.createElement('textarea');
+    const checkListInputs = document.createElement('div');
+    const firstChecklist = document.createElement('label');
+    const firstChecklistInput = document.createElement('input');
+    const secondChecklist = document.createElement('label');
+    const secondChecklistInput = document.createElement('input');
+    const thirdChecklist = document.createElement('label');
+    const thirdChecklistInput = document.createElement('input');
+    const fourthChecklist = document.createElement('label');
+    const fourthChecklistInput = document.createElement('input');
+    const fifthChecklist = document.createElement('label');
+    const fifthChecklistInput = document.createElement('input');
+    const priorityDiv = document.createElement('div');
+    const priorityLabel = document.createElement('label');
+    const prioritySelect = document.createElement('select');
+    const high = document.createElement('option');
+    const highContent = document.createTextNode('High');
+    const medium = document.createElement('option');
+    const mediumContent = document.createTextNode('Medium');
+    const low = document.createElement('option');
+    const lowContent = document.createTextNode('Low');
+    const projectDiv = document.createElement('div');
+    const projectLabel = document.createElement('label');
+    const projectSelect = document.createElement('select');
+    const addTaskButton = document.createElement('button');
+    const taskButtonContent = document.createTextNode('Add Task');
+
+    //Set attributes
+    todoForm.classList.add('todo-form');
+    todoForm.classList.add('storable');
+    taskDiv.classList.add('task-div');
+    taskLabel.setAttribute('for', 'task');
     taskInput.setAttribute('type', 'text');
     taskInput.id = 'task';
-
-    taskLabel.appendChild(taskInput);
-    taskDiv.appendChild(taskLabel);
-    form.appendChild(taskDiv);
-
-    const dateDiv = document.createElement('div');
     dateDiv.classList.add('date-div');
-    const dateLabel = document.createElement('label');
     dateLabel.setAttribute('for', 'time-label');
-    const dateInput = document.createElement('input');
     dateInput.setAttribute('type', 'datetime-local');
     dateInput.id = 'time-label';
-
-    dateLabel.appendChild(dateInput);
-    dateDiv.appendChild(dateLabel);
-    form.appendChild(dateDiv);
-
-    const descriptionLabel = document.createElement('label');
     descriptionLabel.setAttribute('for', 'task-info');
     descriptionLabel.id = 'task-info-label';
-    const textArea = document.createElement('textarea');
     textArea.setAttribute('type', 'text');
     textArea.id = 'task-info';
-
-    descriptionLabel.appendChild(textArea);
-    form.appendChild(descriptionLabel);
-
-    const checkListInputs = document.createElement('div');
     checkListInputs.classList.add('checklist-inputs');
-    
-    const firstChecklist = document.createElement('label');
     firstChecklist.setAttribute('for', 'firstchecklist');
-    const firstChecklistInput = document.createElement('input');
     firstChecklistInput.setAttribute('type', 'text');
     firstChecklistInput.setAttribute('autocomplete', "off");
     firstChecklistInput.classList.add('check-list');
     firstChecklistInput.id = 'firstchecklist';
-
-    firstChecklist.appendChild(firstChecklistInput);
-    checkListInputs.appendChild(firstChecklist);
-
-    const secondChecklist = document.createElement('label');
     secondChecklist.setAttribute('for', 'secondchecklist');
-    const secondChecklistInput = document.createElement('input');
     secondChecklistInput.setAttribute('type', 'text');
     secondChecklistInput.setAttribute('autocomplete', "off");
     secondChecklistInput.classList.add('check-list');
     secondChecklistInput.id = 'secondchecklist';
-
-    secondChecklist.appendChild(secondChecklistInput);
-    checkListInputs.appendChild(secondChecklist);
-
-    const thirdChecklist = document.createElement('label');
     thirdChecklist.setAttribute('for', 'thirdchecklist');
-    const thirdChecklistInput = document.createElement('input');
     thirdChecklistInput.setAttribute('type', 'text');
     thirdChecklistInput.setAttribute('autocomplete', "off");
     thirdChecklistInput.classList.add('check-list');
     thirdChecklistInput.id = 'thirdchecklist';
-
-    thirdChecklist.appendChild(thirdChecklistInput);
-    checkListInputs.appendChild(thirdChecklist);
-
-    const fourthChecklist = document.createElement('label');
     fourthChecklist.setAttribute('for', 'fourthchecklist');
-    const fourthChecklistInput = document.createElement('input');
     fourthChecklistInput.setAttribute('type', 'text');
     fourthChecklistInput.setAttribute('autocomplete', "off");
     fourthChecklistInput.classList.add('check-list');
     fourthChecklistInput.id = 'fourthchecklist';
-
-    fourthChecklist.appendChild(fourthChecklistInput);
-    checkListInputs.appendChild(fourthChecklist);
-
-    const fifthChecklist = document.createElement('label');
     fifthChecklist.setAttribute('for', 'fifthchecklist');
-    const fifthChecklistInput = document.createElement('input');
     fifthChecklistInput.setAttribute('type', 'text');
     fifthChecklistInput.setAttribute('autocomplete', "off");
     fifthChecklistInput.classList.add('check-list');
     fifthChecklistInput.id = 'fifthchecklist';
+    priorityDiv.classList.add('priority-div');
+    priorityLabel.setAttribute('for', 'priority-label');
+    high.value = '1';
+    medium.value = '2';
+    low.value = '3';
+    projectDiv.classList.add('project-div');
+    projectLabel.setAttribute('for', 'project-label');
+    addTaskButton.setAttribute('type', 'button');
+    addTaskButton.classList.add('addTask-button');
 
+    //Render elements
+    exit.appendChild(exitContent);
+    newTask.appendChild(newTaskContent);
+    newTask.appendChild(exit);
+    todoForm.appendChild(newTask);
+    taskLabel.appendChild(taskInput);
+    taskDiv.appendChild(taskLabel);
+    dateLabel.appendChild(dateInput);
+    dateDiv.appendChild(dateLabel);
+    descriptionLabel.appendChild(textArea);
+    firstChecklist.appendChild(firstChecklistInput);
+    checkListInputs.appendChild(firstChecklist);
+    secondChecklist.appendChild(secondChecklistInput);
+    checkListInputs.appendChild(secondChecklist);
+    thirdChecklist.appendChild(thirdChecklistInput);
+    checkListInputs.appendChild(thirdChecklist);
+    fourthChecklist.appendChild(fourthChecklistInput);
+    checkListInputs.appendChild(fourthChecklist);
     fifthChecklist.appendChild(fifthChecklistInput);
     checkListInputs.appendChild(fifthChecklist);
-
-    form.appendChild(checkListInputs);
-
-    const priorityDiv = document.createElement('div');
-    priorityDiv.classList.add('priority-div');
-    const priorityLabel = document.createElement('label');
-    priorityLabel.setAttribute('for', 'priority-label');
-    const prioritySelect = document.createElement('select');
-    const high = document.createElement('option');
-    high.value = '1';
-    const highContent = document.createTextNode('High');
-    const medium = document.createElement('option');
-    medium.value = '2';
-    const mediumContent = document.createTextNode('Medium');
-    const low = document.createElement('option');
-    low.value = '3';
-    const lowContent = document.createTextNode('Low');
-
     high.appendChild(highContent);
     medium.appendChild(mediumContent);
     low.appendChild(lowContent);
@@ -137,80 +127,53 @@ function createForm(title, storageCounter) {
     prioritySelect.appendChild(low);
     priorityLabel.appendChild(prioritySelect);
     priorityDiv.appendChild(priorityLabel);
-    form.appendChild(priorityDiv);
-
-    const projectDiv = document.createElement('div');
-    projectDiv.classList.add('project-div');
-    const projectLabel = document.createElement('label');
-    projectLabel.setAttribute('for', 'project-label');
-    const projectSelect = document.createElement('select');
     createProjectOptions(projectSelect);
-
     projectLabel.appendChild(projectSelect);
     projectDiv.appendChild(projectLabel);
-    form.appendChild(projectDiv);
-
-    const addTaskButton = document.createElement('button');
-    addTaskButton.setAttribute('type', 'button');
-    addTaskButton.classList.add('addTask-button');
-    const taskButtonContent = document.createTextNode('Add Task');
-
     addTaskButton.appendChild(taskButtonContent);
+    form.appendChild(taskDiv);
+    form.appendChild(dateDiv);
+    form.appendChild(descriptionLabel);
+    form.appendChild(checkListInputs);
+    form.appendChild(priorityDiv);
+    form.appendChild(projectDiv);
     form.appendChild(addTaskButton);
+    todoForm.appendChild(form);
+    main.appendChild(todoForm);
 
-    toDoForm.appendChild(form);
+    //Bind events
+    exit.addEventListener('click', exitForm);
+    addTaskButton.addEventListener('click', applyForm);
 
-    main.appendChild(toDoForm);
-
+    blurBackground();
     
-    if (title === true) {
-        useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, storageCounter);
-        toDoForm.style.display = 'none';
-        toDoForm.dataset.todoNum = storageCounter;
-        const formNumber = storageCounter.replace(/\D/g, '');
-        const projectName = localStorage.getItem(`project${formNumber}`);
-        applyForm(projectName, toDoForm);
-    } else {
-        blurBackground();
-        addTaskButton.addEventListener('click', applyForm);
+    if (calledFromStorage === true) {
+        useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, formNumber);
+        createtodoFromStorage(todoForm, formNumber, addTaskButton);
     }
-    
-    
-    exit.addEventListener('click', exitForm)
 }
 
-function giveDatasetNum(toDoForm) {
-    toDoForm.dataset.todoNum = 'todo-' + countUp('todo');
+function createProjectOptions(select) {
+    const projects = document.querySelectorAll('.project-name');
+    for(let i = 0; i < projects.length; i++) {
+        const option = document.createElement('option');
+        const optionContent = document.createTextNode(projects[i].textContent);
+        option.value = projects[i].textContent;
+        option.appendChild(optionContent);
+        select.appendChild(option);
+    }
 }
 
-
-
-function orderToDosChronologically() {
-    const main = document.querySelector('main');
-    const todos = document.querySelectorAll('.todo-container');
-    const sortedToDos = [...todos].sort((a, b) => {
-        const toDoA = new Date(a.querySelector('.date').dataset.dateTime);
-        const toDoB = new Date(b.querySelector('.date').dataset.dateTime);
-        return toDoA - toDoB
-    });
-    
-    todos.forEach(todo => main.removeChild(todo));
-    sortedToDos.forEach(todo => main.appendChild(todo));
+function createtodoFromStorage(todoForm, formNumber, addTaskButton) {
+    const formIndex = formNumber.replace(/\D/g, '');
+    const projectClass = localStorage.getItem(`project${formIndex}`).split(' ').join('').toLowerCase();
+    todoForm.classList.add(projectClass);
+    todoForm.style.display = 'none';
+    todoForm.dataset.todoNum = formNumber;
+    addTaskButton.removeEventListener('click', applyForm);
+    unBlurBackground();
 }
 
-function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
-    formNumber = formNumber.replace(/\D/g, '');
-    task.value = localStorage.getItem(`title${formNumber}`);
-    date.value = localStorage.getItem(`date${formNumber}`);
-    description.value = localStorage.getItem(`description${formNumber}`);
-    first.value = localStorage.getItem(`finalList${formNumber}[0]`);
-    second.value = localStorage.getItem(`finalList${formNumber}[1]`);
-    third.value = localStorage.getItem(`finalList${formNumber}[2]`);
-    fourth.value = localStorage.getItem(`finalList${formNumber}[3]`);
-    fifth.value = localStorage.getItem(`finalList${formNumber}[4]`);
-    priority.value = localStorage.getItem(`priority${formNumber}`);
-    project.value = localStorage.getItem(`project${formNumber}`);
-}
 
 function countUp(indicator) {
     let counter;
@@ -224,19 +187,6 @@ function countUp(indicator) {
 }
 
 
-
-
-function createProjectOptions(select) {
-    const projects = document.querySelectorAll('.project-name');
-    for(let i = 0; i < projects.length; i++) {
-        const option = document.createElement('option');
-        const optionContent = document.createTextNode(projects[i].textContent);
-        option.value = projects[i].textContent;
-        option.appendChild(optionContent);
-        select.appendChild(option);
-    }
-}
-
 function findOpenForm() {
     const addTaskButtons = document.querySelectorAll('.addTask-button');
     const openedForm = [...addTaskButtons].filter((button) => {
@@ -248,32 +198,31 @@ function findOpenForm() {
     return openedForm[0].parentElement.parentElement;
 }
 
-function applyForm(storageSelected, storageForm) {
-    if (storageForm) {
-        const projectClass = storageSelected.split(' ').join('').toLowerCase();
-        storageForm.classList.add(projectClass);
-    } else {
-        const projectSelect = this.previousSibling.firstElementChild.firstElementChild.value;
-        if (projectSelect == '') return;
-        
-        this.parentElement.parentElement.classList.add(projectSelect.split(' ').join('').toLowerCase());
-        giveDatasetNum(this.parentElement.parentElement);
-        makeToDoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
-        removeForm();
-        unBlurBackground();
-        this.removeEventListener('click', applyForm);
-    } 
-    
+function applyForm() {
+    const todoForm = this.parentElement.parentElement;
+    const projectSelectValue = todoForm.querySelector('.project-div select').value
+    if (projectSelectValue == '') return;
+    todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
+    giveDatasetNum(this.parentElement.parentElement);
+    makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    exitForm.call(this);
+    unBlurBackground();
+    this.removeEventListener('click', applyForm);  
+}
+
+function giveDatasetNum(todoForm) {
+    todoForm.dataset.todoNum = 'todo-' + countUp('todo');
 }
 
 function editForm() {
-    editToDoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
-    removeForm();
+    editTodoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    exitForm.call(this);
     unBlurBackground();
 }
 
 function addNewProjectToExistingForms(taskButton) {
-    const projectSelect = taskButton.previousSibling.firstElementChild.firstElementChild;
+    const todoForm = taskButton.parentElement.parentElement;
+    const projectSelect = todoForm.querySelector('.project-div select');
     while (projectSelect.firstChild) {
         projectSelect.removeChild(projectSelect.lastChild);
     }
@@ -283,9 +232,11 @@ function addNewProjectToExistingForms(taskButton) {
 function openExistingForm() {
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
-        if (taskButton.parentElement.parentElement.dataset.todoNum == this.parentElement.parentElement.dataset.todoNum) {
+        const todoForm = taskButton.parentElement.parentElement;
+        const todoContainer = this.parentElement.parentElement;
+        if (todoForm.dataset.todoNum === todoContainer.dataset.todoNum) {
             addNewProjectToExistingForms(taskButton);
-            taskButton.parentElement.parentElement.style.display = 'block';
+            todoForm.style.display = 'block';
             taskButton.addEventListener('click', editForm);
         }
     })
@@ -341,35 +292,25 @@ function setDescription() {
 }
 
 function setChecklist() {
-    const firstChecklist = findOpenForm().querySelector('#firstchecklist');
-    const secondChecklist = findOpenForm().querySelector('#secondchecklist');
-    const thirdChecklist = findOpenForm().querySelector('#thirdchecklist');
-    const fourthChecklist = findOpenForm().querySelector('#fourthchecklist');
-    const fifthChecklist = findOpenForm().querySelector('#fifthchecklist');
 
-    const checklistArray = [firstChecklist.value, secondChecklist.value, thirdChecklist.value, fourthChecklist.value, fifthChecklist.value];
-    
+    //Cache DOM
     const dataNumber = findOpenForm().dataset.todoNum;
-
-    let finalList = checklistArray.filter((item) => {
-        if (item !== "") {
-            return item;
-        }
-    });
+    const firstCLVal = findOpenForm().querySelector('#firstchecklist').value;
+    const secondCLVal = findOpenForm().querySelector('#secondchecklist').value;
+    const thirdCLVal = findOpenForm().querySelector('#thirdchecklist').value;
+    const fourthCLVal = findOpenForm().querySelector('#fourthchecklist').value;
+    const fifthCLVal = findOpenForm().querySelector('#fifthchecklist').value;
     
-    if (finalList.length === 0) {
-        finalList = ['Nothing to see here', 'But there could be'];
-    }
-    
+    const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
+    let finalList = checklistArray.filter((item) => item !== ''); 
+    finalList = finalList.length === 0 ? ['Nothing to see here', 'But there could be'] : finalList; 
     renderStorage(`finalList${dataNumber.replace(/\D/g, '')}`, JSON.stringify(finalList));
-
     return finalList;
 }
 
 function setPriority() {
     const priority = findOpenForm().querySelector('.priority-div select');
     const dataNumber = findOpenForm().dataset.todoNum;
-
     renderStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
     return priority.value;
 
@@ -389,19 +330,11 @@ function setData() {
     return dataSet;
 }
 
-function removeForm() {
-    findOpenForm().style.display = 'none';
-}
-
 function exitForm() {
-    const form = this.parentElement.parentElement;
-    const data = form.dataset.todoNum
+    const todoForm = this.parentElement.parentElement;
+    const data = todoForm.dataset.todoNum
     const twins = document.querySelectorAll(`[data-todo-num="${data}"]`);
-    if (twins.length > 1) {
-        form.style.display = 'none'
-    } else {
-        form.parentElement.removeChild(form);
-    }
+    twins.length > 1 ? todoForm.style.display =  'none' : todoForm.parentElement.removeChild(todoForm);
     unBlurBackground();
 }
 

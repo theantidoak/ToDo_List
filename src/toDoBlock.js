@@ -1,13 +1,13 @@
 import {openExistingForm} from './toDoForm'
 import {removeStorageItem} from './localStorage'
 
-function makeToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
+function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
     
     //Cache DOM
     const main = document.querySelector('main');
 
     //Create Elements
-    const toDoContainer = document.createElement('div');
+    const todoContainer = document.createElement('div');
     const topDiv = document.createElement('div');
     const checkBox = document.createElement('input');
     const priority = document.createElement('p'); 
@@ -31,10 +31,10 @@ function makeToDoBlock(title, timeDate, dateID, description, checklist, priority
     const removeButton = document.createElement('button');
     
     //Set Attributes
-    toDoContainer.classList.add('todo-container');
-    toDoContainer.classList.add('storable');
-    toDoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
-    toDoContainer.dataset.todoNum = dataID;
+    todoContainer.classList.add('todo-container');
+    todoContainer.classList.add('storable');
+    todoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
+    todoContainer.dataset.todoNum = dataID;
     topDiv.classList.add('top');
     checkBox.setAttribute('type', 'checkbox');
     priority.classList.add('priority');
@@ -65,20 +65,26 @@ function makeToDoBlock(title, timeDate, dateID, description, checklist, priority
     editables.appendChild(descriptionButton);
     editables.appendChild(checklistButton);
     editables.appendChild(removeButton);
-    toDoContainer.appendChild(topDiv);
-    toDoContainer.appendChild(task);
-    toDoContainer.appendChild(project);
-    toDoContainer.appendChild(date);
-    toDoContainer.appendChild(editables);
-    main.appendChild(toDoContainer);
+    todoContainer.appendChild(topDiv);
+    todoContainer.appendChild(task);
+    todoContainer.appendChild(project);
+    todoContainer.appendChild(date);
+    todoContainer.appendChild(editables);
+    main.appendChild(todoContainer);
 
-    orderToDosChronologically();
+    ordertodosChronologically();
+
+    //Set parameters
+    descriptionButton.otherDivClass = '.checklist-div';
+    checklistButton.otherDivClass = '.description-div';
+    removeButton.todoContainer = todoContainer;
+    checkBox.todoContainer = todoContainer;
     
     //Bind Event Listeners
     editButton.addEventListener('click', openExistingForm);
-    descriptionButton.addEventListener('click', displayDescription);
-    checklistButton.addEventListener('click', displayChecklist);
-    removeButton.addEventListener('click', deleteToDo);
+    descriptionButton.addEventListener('click', displayHiddenText);
+    checklistButton.addEventListener('click', displayHiddenText);
+    removeButton.addEventListener('click', deletetodo);
     checkBox.addEventListener('input', markCompleted);
 
 }
@@ -94,8 +100,11 @@ function makeChecklist(checklist, ol) {
     }
 }
 
-function editToDoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {
-    
+
+//Editables 
+
+
+function editTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {  
     //cache DOM
     const form = this.parentElement.parentElement;
     const todoContainer = document.querySelectorAll(`[data-todo-num="${form.dataset.todoNum}"]`)[1];
@@ -121,30 +130,19 @@ function editToDoBlock(title, timeDate, dateID, description, checklist, priority
     project.textContent = projectValue;
 }
 
-function displayDescription() {
-    const descriptionDiv = this.firstElementChild;
-    const checklistDiv = this.parentElement.children[2].firstElementChild;
-    if (descriptionDiv.style.display == 'none' || descriptionDiv.style.display === '') {
-        checklistDiv.style.display = 'none';
-        descriptionDiv.style.display = 'block';
+function displayHiddenText(e) {
+    const controlledDiv = this.firstElementChild;
+    const otherDiv = this.parentElement.querySelector(e.currentTarget.otherDivClass);
+    if (controlledDiv.style.display == 'none' || controlledDiv.style.display === '') {
+        otherDiv.style.display = 'none';
+        controlledDiv.style.display = 'block';
     } else {
-        descriptionDiv.style.display = 'none';
+        controlledDiv.style.display = 'none';
     }
 }
 
-function displayChecklist() {
-    const checklistDiv = this.firstElementChild;
-    const descriptionDiv = this.parentElement.children[1].firstElementChild;
-    if (checklistDiv.style.display === 'none' || checklistDiv.style.display === '') {
-        descriptionDiv.style.display = 'none';
-        checklistDiv.style.display = 'block';
-    } else {
-        checklistDiv.style.display = 'none';
-    }
-}
-
-function deleteToDo() {
-    const todoContainer = this.parentElement.parentElement;
+function deletetodo(e) {
+    const todoContainer = e.currentTarget.todoContainer;
     const dataset = todoContainer.dataset.todoNum;
     const form = document.querySelector(`[data-todo-num="${dataset}"]`)
     todoContainer.parentElement.removeChild(form);
@@ -152,8 +150,8 @@ function deleteToDo() {
     removeStorageItem(dataset.replace(/\D/g, ''))
 }
 
-function markCompleted() {
-    const todoContainer = this.parentElement.parentElement; 
+function markCompleted(e) {
+    const todoContainer = e.currentTarget.todoContainer;
     const project = todoContainer.querySelector('.project').textContent.toLowerCase();
     if (this.checked === true) {
         todoContainer.classList.add('completed-todo');
@@ -164,18 +162,18 @@ function markCompleted() {
     }
 }
 
-function sortToDos(todos) {
+function sorttodos(todos) {
     return [...todos].sort((a, b) => {
         const timeA = a.querySelector('.date').dataset.dateTime;
         const timeB = b.querySelector('.date').dataset.dateTime;
-        const toDoA = new Date(timeA);
-        const toDoB = new Date(timeB);
+        const todoA = new Date(timeA);
+        const todoB = new Date(timeB);
         if (timeA == '') {
             return 1;
         } else if (timeB == '') {
             return -1;
         } else {
-            return toDoA - toDoB;
+            return todoA - todoB;
         }
     });
 }
@@ -184,43 +182,43 @@ function sortForms(todoForms) {
     return [...todoForms].sort((a, b) => a.dataset.todoNum.replace(/\D/g, '') - b.dataset.todoNum.replace(/\D/g, ''));
 }
 
-function changeDataset(todoForms, sortedToDos) {
+function changeDataset(todoForms, sortedtodos) {
     todoForms.forEach(form => {
         const dataNum = form.dataset.todoNum;
-        const todoFound = sortedToDos.map(todo => todo.dataset.todoNum == dataNum);
+        const todoFound = sortedtodos.map(todo => todo.dataset.todoNum == dataNum);
         const index = todoFound.indexOf(true) + 1;
         form.dataset.todoNum = `todo-${index}`;
     })
-    sortedToDos.forEach(todo => {
-        const dataNum = sortedToDos.indexOf(todo) + 1;
+    sortedtodos.forEach(todo => {
+        const dataNum = sortedtodos.indexOf(todo) + 1;
         todo.dataset.todoNum = `todo-${dataNum}`;
     });
 }
 
-function removePreviousTodos(todoForms, todos) {
+function removePrevioustodos(todoForms, todos) {
     const main = document.querySelector('main');
     todoForms.forEach(form => main.removeChild(form));
     todos.forEach(todo => main.removeChild(todo));
 }
 
-function appendSortedTodos(sortedForms, sortedToDos) {
+function appendSortedtodos(sortedForms, sortedtodos) {
     const main = document.querySelector('main');
     for (let i =0; i< sortedForms.length; i++) {
         main.appendChild(sortedForms[i]);
-        main.appendChild(sortedToDos[i]);
+        main.appendChild(sortedtodos[i]);
     }
 }
 
-function orderToDosChronologically() {
+function ordertodosChronologically() {
     const todos = document.querySelectorAll('.todo-container');
     const todoForms = document.querySelectorAll('.todo-form');
-    const sortedToDos = sortToDos(todos);
+    const sortedtodos = sorttodos(todos);
     const sortedForms = sortForms(todoForms);
     
-    changeDataset(todoForms, sortedToDos);
-    removePreviousTodos(todoForms, todos);
-    appendSortedTodos(sortedForms, sortedToDos);
+    changeDataset(todoForms, sortedtodos);
+    removePrevioustodos(todoForms, todos);
+    appendSortedtodos(sortedForms, sortedtodos);
 }
 
 
-export { makeToDoBlock, editToDoBlock }
+export { makeTodoBlock, editTodoBlock }

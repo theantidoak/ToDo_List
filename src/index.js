@@ -1,21 +1,21 @@
 import './style.css';
-import { makeToDoBlock } from './toDoBlock'
+import { maketodoBlock } from './toDoBlock'
 import { createForm } from './toDoForm'
 import { bindProjectButtons , createNewProjectForm } from './projects'
 import { bindHomeButtons } from './homeProjects'
 import { setStorage } from './localStorage';
 
 
-// makeToDoBlock();
+// maketodoBlock();
 // createForm();
 // createNewProjectForm();
 // localStorage.clear();
 
 setStorage();
 
-(function displayToDoForm() {
-    const addToDoButton = document.querySelector('.add-todo');
-    addToDoButton.addEventListener('click', createForm);
+(function displaytodoForm() {
+    const addtodoButton = document.querySelector('.add-todo');
+    addtodoButton.addEventListener('click', createForm);
 })();
 
 bindProjectButtons();

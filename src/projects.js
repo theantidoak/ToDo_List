@@ -71,7 +71,7 @@ function addProjectButton(newProjectTitle) {
     projects.appendChild(newProjectDiv);
     
     //Bind Event Listeners
-    newProjectButton.addEventListener('click', displayProjectToDos);
+    newProjectButton.addEventListener('click', displayProjecttodos);
     deleteProjectButton.addEventListener('click', removeProject);
 }
 
@@ -91,7 +91,7 @@ function makeProjectNameIntoID(projectTitle) {
 
 //Project Form and Button Functions
 
-function displayProjectToDos() {
+function displayProjecttodos() {
     const projectTitle = this.getAttribute('class').split(' ')[1];
     const todoContainers = document.querySelectorAll('.todo-container');
     todoContainers.forEach(todo => {
@@ -129,7 +129,7 @@ function bindProjectButtons() {
 
     //Bind Events
     addProjectH3.addEventListener('click', createNewProjectForm);
-    defaultProjectButton.addEventListener('click', displayProjectToDos);
+    defaultProjectButton.addEventListener('click', displayProjecttodos);
 }
 
 export {bindProjectButtons, createNewProjectForm, addProjectButton}
