@@ -1,4 +1,4 @@
-import {makeTodoBlock, editTodoBlock} from './toDoBlock';
+import {makeTodoBlock, editTodoBlock } from './toDoBlock';
 import {format} from 'date-fns';
 import {populateStorage, useLocalStorageInputs} from './localStorage'
 
@@ -151,7 +151,8 @@ function createForm(calledFromStorage, formNumber) {
     if (calledFromStorage === true) {
         useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, formNumber);
         createTodoFromStorage(todoForm, formNumber, addTaskButton);
-    }
+    } 
+
 }
 
 function createProjectOptions(select) {
@@ -166,13 +167,11 @@ function createProjectOptions(select) {
 }
 
 function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
-    const formIndex = formNumber.replace(/\D/g, '');
-    const projectTitle = localStorage.getItem(`project${formIndex}`);
-
+    const projectTitle = JSON.parse(localStorage.getItem(`array${formNumber}`))[7]
     const projectClass = projectTitle.split(' ').join('').toLowerCase();
     todoForm.classList.add(projectClass);
     todoForm.style.display = 'none';
-    todoForm.dataset.todoNum = formNumber;
+    todoForm.dataset.todoNum = `todo-${formNumber}`;
     addTaskButton.removeEventListener('click', applyForm);
     unBlurBackground();
 }
@@ -207,7 +206,9 @@ function applyForm() {
     if (projectSelectValue == '') return;
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
     
+    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    
     exitForm.call(this);
     unBlurBackground();
     this.removeEventListener('click', applyForm);  
@@ -219,6 +220,7 @@ function giveDatasetNum(todoForm) {
 
 function editForm() {
     editTodoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     exitForm.call(this);
     unBlurBackground();
 }
@@ -260,36 +262,38 @@ function unBlurBackground() {
     overlayedHeader.style.display = 'none';
 }
 
+function createStorageArray(title, date, dateID, description, checklist, priority, project, data) {
+    const array = [];
+    array.push(title, date, dateID, description, checklist, priority, project, data);
+    const dataNumber = findOpenForm().dataset.todoNum;
+    populateStorage(`array${dataNumber.replace(/\D/g, '')}`, JSON.stringify(array));
+    // console.log(localStorage);
+    
+}
+
 function setTitle() {
     const title = findOpenForm().querySelector('#task');
-    const dataNumber = findOpenForm().dataset.todoNum;
-    populateStorage(`title${dataNumber.replace(/\D/g, '')}`, title.value);
     return title.value; 
     
 }
 
 function setDateAsID() {
     const date = findOpenForm().querySelector('#time-label');
-    const dataNumber = findOpenForm().dataset.todoNum;
-    populateStorage(`dateID${dataNumber.replace(/\D/g, '')}`, date.value);
     return date.value;
 }
 
 function setDate() {
     const date = findOpenForm().querySelector('#time-label');
     const value = date.value != '' ? format(new Date(date.value), 'EE, dd/MM/yyyy HH:mm') : date.value;
-    const dataNumber = findOpenForm().dataset.todoNum;
-    populateStorage(`date${dataNumber.replace(/\D/g, '')}`, date.value);
     return value;
 }
 
 function setDescription() {
     const description = findOpenForm().querySelector('#task-info');
-    const dataNumber = findOpenForm().dataset.todoNum;
+
     if (description.value == '') {
         description.value = 'Nothing to see here, but there could be';
     }
-    populateStorage(`description${dataNumber.replace(/\D/g, '')}`, description.value);
 
     return description.value;
 }
@@ -297,7 +301,6 @@ function setDescription() {
 function setChecklist() {
 
     //Cache DOM
-    const dataNumber = findOpenForm().dataset.todoNum;
     const firstCLVal = findOpenForm().querySelector('#firstchecklist').value;
     const secondCLVal = findOpenForm().querySelector('#secondchecklist').value;
     const thirdCLVal = findOpenForm().querySelector('#thirdchecklist').value;
@@ -307,29 +310,23 @@ function setChecklist() {
     const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
     let finalList = checklistArray.filter((item) => item !== ''); 
     finalList = finalList.length === 0 ? ['Nothing to see here', 'But there could be'] : finalList; 
-    populateStorage(`finalList${dataNumber.replace(/\D/g, '')}`, JSON.stringify(finalList));
     return finalList;
 }
 
 function setPriority() {
     const priority = findOpenForm().querySelector('.priority-div select');
-    const dataNumber = findOpenForm().dataset.todoNum;
-    populateStorage(`priority${dataNumber.replace(/\D/g, '')}`, priority.value);
     return priority.value;
 
 }
 
 function setProject() {
     const project = findOpenForm().querySelector('.project-div select');
-    const dataNumber = findOpenForm().dataset.todoNum;
-    populateStorage(`project${dataNumber.replace(/\D/g, '')}`, project.value);
     return project.value;
 
 }
 
 function setData() {
     const dataSet = findOpenForm().dataset.todoNum;
-    populateStorage(`dataSet${dataSet.replace(/\D/g, '')}`, dataSet)
     return dataSet;
 }
 

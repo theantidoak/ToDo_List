@@ -1,7 +1,7 @@
 import {openExistingForm} from './toDoForm'
-import {reOrderStorage, removeStorageItem, findTodoStorageAndRender, populateStorage} from './localStorage'
+import {reOrderStorage, removeStorageItem } from './localStorage'
 
-function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
+function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID, storage) {
     
     //Cache DOM
     const main = document.querySelector('main');
@@ -72,7 +72,10 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     todoContainer.appendChild(editables);
     main.appendChild(todoContainer);
 
-    orderTodosChronologically();
+    if (!storage) {
+        orderTodosChronologically();
+    } 
+    
 
     //Set parameters
     descriptionButton.otherDivClass = '.checklist-div';
@@ -143,14 +146,14 @@ function displayHiddenText(e) {
 }
 
 function deleteTodo(e) {
+    const main = document.querySelector('main');
     const todoContainer = e.currentTarget.todoContainer;
     const dataset = todoContainer.dataset.todoNum;
-    const form = document.querySelector(`[data-todo-num="${dataset}"]`);
+    const form = todoContainer.previousSibling;
     todoContainer.parentElement.removeChild(form);
-    
-    todoContainer.parentElement.removeChild(todoContainer);
+    main.removeChild(todoContainer);
+    removeStorageItem(dataset.replace(/\D/g, ''));
     orderTodosChronologically();
-    removeStorageItem(dataset.replace(/\D/g, ''))
 }
 
 function markCompleted(e) {
@@ -169,14 +172,18 @@ function sortTodos(todos) {
     return [...todos].sort((a, b) => {
         const timeA = a.querySelector('.date').dataset.dateTime;
         const timeB = b.querySelector('.date').dataset.dateTime;
+        const datasetNumA = a.dataset.todoNum;
+        const datasetNumB = b.dataset.todoNum;
         const todoA = new Date(timeA);
         const todoB = new Date(timeB);
-        if (timeA == '') {
-            return 1;
+        if (timeA != '' && timeB != '') {
+            return todoA - todoB;
+        } else if (timeA == '' && timeB == '') {
+            return datasetNumA[datasetNumA-1] - datasetNumB[datasetNumB-1];
+        } else if (timeA == '') {
+            return 1
         } else if (timeB == '') {
             return -1;
-        } else {
-            return todoA - todoB;
         }
     });
 }
@@ -192,20 +199,10 @@ function sortForms(todoForms, sortedTodos) {
     })
 }
 
-function changeDataset(todoForms, sortedTodos) {
-    todoForms.forEach(form => {
-        const dataNum = form.dataset.todoNum;
-        const todoFound = sortedTodos.map(todo => todo.dataset.todoNum == dataNum);
-        const index = todoFound.indexOf(true) + 1;
-        form.dataset.todoNum = `todo-${index}`;
-       
-    });
-    sortedTodos.forEach(todo => {
-        const dataNum = sortedTodos.indexOf(todo) + 1;
-        todo.dataset.todoNum = `todo-${dataNum}`;
-
-    });
-    // reOrderStorage(sortedTodos);
+function changeTodoNum(sortedTodos) {
+    for (let i = 0; i < sortedTodos.length; i++) {
+        sortedTodos[i].dataset.todoNum = `todo-${i+1}`;
+    }
 }
 
 function removePrevioustodos(todoForms, todos) {
@@ -214,9 +211,9 @@ function removePrevioustodos(todoForms, todos) {
     [...todos].sort().forEach(todo => main.removeChild(todo));
 }
 
-function appendsortedTodos(sortedForms, sortedTodos) {
+function appendSortedTodos(sortedForms, sortedTodos) {
     const main = document.querySelector('main');
-    for (let i =0; i< sortedForms.length; i++) {
+    for (let i = 0; i< sortedForms.length; i++) {
         main.appendChild(sortedForms[i]);
         main.appendChild(sortedTodos[i]);
     }
@@ -228,10 +225,11 @@ function orderTodosChronologically() {
     const sortedTodos = sortTodos(todos);
     const sortedForms = sortForms(todoForms, sortedTodos);
     
-    changeDataset(todoForms, sortedTodos);
     removePrevioustodos(todoForms, todos);
-    appendsortedTodos(sortedForms, sortedTodos);
+    appendSortedTodos(sortedForms, sortedTodos);
+    reOrderStorage();
+    changeTodoNum(sortedTodos);
 }
 
 
-export { makeTodoBlock, editTodoBlock }
+export { makeTodoBlock, editTodoBlock, sortTodos }

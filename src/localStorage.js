@@ -1,7 +1,7 @@
-import {makeTodoBlock} from './toDoBlock'
-import {createForm} from './toDoForm'
-import {format} from 'date-fns'
+import { makeTodoBlock } from './toDoBlock'
+import { createForm } from './toDoForm'
 import { addProjectButton } from './projects'
+
 
 function populateStorage(callName, item) {
     if (callName == 'finalList') {
@@ -26,46 +26,31 @@ function findTodoStorageAndRender() {
     const keys = Object.keys(localStorage).sort();
     const laststorageItem = keys[localStorage.length-1];
     const amountOfItems = laststorageItem.replace(/\D/g, '');
-    if (!localStorage.getItem('dataSet1')) return;
+    if (!localStorage.getItem('array1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
-        const dateTime = localStorage.getItem(`date${i}`);
-        let renderedTime;
-        if (dateTime != '') {
-            renderedTime = format(new Date(dateTime), 'EE, dd/MM/yyyy HH:mm');
-        } else {
-            renderedTime = dateTime;
-        }
-        createForm(true, localStorage.getItem(`dataSet${i}`));
-        makeTodoBlock(localStorage.getItem(`title${i}`), renderedTime, localStorage.getItem(`dateID${i}`), localStorage.getItem(`description${i}`), JSON.parse(localStorage.getItem(`finalList${i}`)), localStorage.getItem(`priority${i}`), localStorage.getItem(`project${i}`), localStorage.getItem(`dataSet${i}`));
+        createForm(true, i);
+        makeTodoBlock(JSON.parse(localStorage.getItem(`array${i}`))[0], JSON.parse(localStorage.getItem(`array${i}`))[1], JSON.parse(localStorage.getItem(`array${i}`))[2], JSON.parse(localStorage.getItem(`array${i}`))[3], JSON.parse(localStorage.getItem(`array${i}`))[4], JSON.parse(localStorage.getItem(`array${i}`))[5], JSON.parse(localStorage.getItem(`array${i}`))[6], JSON.parse(localStorage.getItem(`array${i}`))[7], true);  
     }
 }
 
 
 function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
-    const indexNumber = formNumber.replace(/\D/g, '');
-    task.value = localStorage.getItem(`title${indexNumber}`);
-    date.value = localStorage.getItem(`date${indexNumber}`);
-    description.value = localStorage.getItem(`description${indexNumber}`);
-    first.value = localStorage.getItem(`finalList${indexNumber}[0]`);
-    second.value = localStorage.getItem(`finalList${indexNumber}[1]`);
-    third.value = localStorage.getItem(`finalList${indexNumber}[2]`);
-    fourth.value = localStorage.getItem(`finalList${indexNumber}[3]`);
-    fifth.value = localStorage.getItem(`finalList${indexNumber}[4]`);
-    priority.value = localStorage.getItem(`priority${indexNumber}`);
-    project.value = localStorage.getItem(`project${indexNumber}`);
+    for (let i = 0; i < 7; i++) {
+        if (i === 2) {
+            continue;
+        } else if (i === 4) {
+            for (let j = 0; j < 5; j++) {
+                arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
+            }
+        } else {
+            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
+        }   
+    }
 }
 
 
 function removeStorageItem(num) {
-    localStorage.removeItem(`title${num}`);
-    localStorage.removeItem(`date${num}`);
-    localStorage.removeItem(`dateID${num}`);
-    localStorage.removeItem(`dataSet${num}`);
-    localStorage.removeItem(`description${num}`);
-    localStorage.removeItem(`finalList${num}`);
-    localStorage.removeItem(`priority${num}`);
-    localStorage.removeItem(`project${num}`);
-
+    localStorage.removeItem(`array${num}`);
     lowerDataNumbers(num);
 }
 
@@ -75,10 +60,8 @@ function removeProjectStorageItem(num) {
 }
 
 function lowerProjectDataNumbers(num) {
-
     Object.keys(localStorage).sort().forEach(key => {
         const keyNum = key.replace(/\D/g, '');
-        console.log(key[0]);
         if (!Number.isInteger(+keyNum) || !Number.isInteger(+key[0])) return;
         if (keyNum > num) {
             const newKey = key.replace(keyNum, keyNum-1);
@@ -92,7 +75,6 @@ function lowerProjectDataNumbers(num) {
 
 
 function lowerDataNumbers(num) {
-    
     Object.keys(localStorage).sort().forEach(key => {
         const keyNum = key.replace(/\D/g, '');
         const numbers = key.split('')[key.split('').length-1];
@@ -100,27 +82,53 @@ function lowerDataNumbers(num) {
         if (keyNum > num) {
             const newKey = key.replace(keyNum, keyNum-1);
             const value = localStorage[key];
-            const numbersValue = value.split('')[value.split('').length-1];
-            const newValue = value.replace(/\D/g, '');
+            const valueData = JSON.parse(localStorage.getItem(key))[7];
+            const oldID = valueData.replace(/\D/g, '');
+            const newID = oldID - 1;
+            const newValueData = valueData.replace(oldID, newID);
+            const newValue = value.replace(valueData, newValueData);
             localStorage.removeItem(key);
-            
-            if (!Number.isInteger(+numbersValue) || Number.isInteger(+value[0])) {
-                localStorage.setItem(newKey, value);
-            } else {
-                const finalValue = value.replace(newValue, newValue-1);
-                localStorage.setItem(newKey, finalValue);
-            } 
+            localStorage.setItem(newKey, newValue);
         }
       });
 }
 
-function reOrderStorage(sortedTodos) {
-    console.log(localStorage);
-    for (let i = 0; i < sortedTodos.length; i++) {
-        const todo = sortedTodos[i];
-        console.log(sortedTodos);
-        populateStorage(`dataSet${i}`, todo.dataset.todoNum);
+function reOrderStorage() {
+    const newStorageValueArray = [];
+    const sortedKeys = sortKeysByDate();
+    changeDataID(sortedKeys, newStorageValueArray);
+    for (let i = 0; i < sortedKeys.length; i++) {
+        localStorage.setItem(`array${i+1}`, newStorageValueArray[i]);
     }
+}
+
+function sortKeysByDate() {
+    const sortedKeys = Object.keys(localStorage).sort((a,b) => {
+        const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
+        const dateB = new Date(JSON.parse(localStorage.getItem(b))[2]); 
+        if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
+            return dateA - dateB;
+        } else if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
+            return a[a.length-1] - b[b.length-1];
+        } else if (dateA == 'Invalid Date') {
+            return 1
+        } else if (dateB == 'Invalid Date') {
+            return -1;
+        }
+    });
+    return sortedKeys;
+}
+
+function changeDataID(sortedKeys, newStorageValueArray) {
+    sortedKeys.forEach(key => {
+        const value = localStorage.getItem(key);
+        const valueData = JSON.parse(localStorage.getItem(key))[7];
+        const oldID = valueData.replace(/\D/g, '');
+        const newID = sortedKeys.indexOf(key) + 1;    
+        const newValueData = valueData.replace(oldID, newID);
+        const newValue = value.replace(valueData, newValueData);
+        newStorageValueArray.push(newValue);   
+    })
 }
 
 
