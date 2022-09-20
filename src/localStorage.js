@@ -37,7 +37,7 @@ function findTodoStorageAndRender() {
 }
 
 function renderCheckedStorage(i) {
-    if (isCompleted() === true) {
+    if (isCompleted(i) === true) {
         const todoContainer = document.querySelectorAll('.todo-container')[i-1];
         const todoCheckbox = todoContainer.querySelector('.top input');
         const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
@@ -48,7 +48,7 @@ function renderCheckedStorage(i) {
     }
 }
 
-function isCompleted() {
+function isCompleted(i) {
     if (JSON.parse(localStorage.getItem(`array${i}`))[8] != null) {
         return true;
     }
@@ -121,7 +121,7 @@ function reOrderStorage() {
     setNewValue(sortedKeys, newStorageValueArray);
 }
 
-function setNewValue(sortedKeys) {
+function setNewValue(sortedKeys, newStorageValueArray) {
     for (let i = 0; i < sortedKeys.length; i++) {
         localStorage.setItem(`array${i+1}`, newStorageValueArray[i]);
     }
