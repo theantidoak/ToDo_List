@@ -93,6 +93,7 @@ function lowerDataNumbers(num) {
       });
 }
 
+
 function reOrderStorage() {
     const newStorageValueArray = [];
     const sortedKeys = sortKeysByDate();
@@ -103,18 +104,26 @@ function reOrderStorage() {
 }
 
 function sortKeysByDate() {
-    const sortedKeys = Object.keys(localStorage).sort((a,b) => {
-        const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
-        const dateB = new Date(JSON.parse(localStorage.getItem(b))[2]); 
-        if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
-            return dateA - dateB;
-        } else if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
-            return a[a.length-1] - b[b.length-1];
-        } else if (dateA == 'Invalid Date') {
-            return 1
-        } else if (dateB == 'Invalid Date') {
+    const todoArrayKeys = Object.keys(localStorage).filter(key => !Number.isInteger(+key[0]));
+    const sortedKeys = todoArrayKeys.sort((a,b) => {
+        if (Number.isInteger(+a[0]) === true) {
+            return 1;
+        } else if (Number.isInteger(+b[0]) === true) {
             return -1;
+        } else {
+            const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
+            const dateB = new Date(JSON.parse(localStorage.getItem(b))[2]); 
+            if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
+                return dateA - dateB;
+            } else if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
+                return a[a.length-1] - b[b.length-1];
+            } else if (dateA == 'Invalid Date') {
+                return 1
+            } else if (dateB == 'Invalid Date') {
+                return -1;
+            }
         }
+        
     });
     return sortedKeys;
 }

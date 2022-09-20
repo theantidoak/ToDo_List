@@ -235,6 +235,7 @@ function addNewProjectToExistingForms(taskButton) {
 }
 
 function openExistingForm() {
+    
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
         const todoForm = taskButton.parentElement.parentElement;
