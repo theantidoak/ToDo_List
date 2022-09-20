@@ -1,5 +1,5 @@
-import { makeTodoBlock, markCompleted } from './toDoBlock'
-import { createForm } from './toDoForm'
+import { makeTodoBlock } from './toDoBlock'
+import { createStorageForm } from './toDoForm'
 import { addProjectButton } from './projects'
 
 
@@ -11,16 +11,12 @@ function populateStorage(callName, item) {
     }
 }
 
-function renderStorageOnPage() {
-    
+function renderStorageOnPage() {  
     if (storageAvailable('localStorage')) {
         if (localStorage.length == 0) return;
         findProjectStorageAndRender();
         findTodoStorageAndRender();
-        }
-      else {
-        // Too bad, no localStorage for us
-      }
+    }
 }
 
 function findProjectStorageAndRender() {
@@ -34,20 +30,27 @@ function findTodoStorageAndRender() {
     const amountOfItems = laststorageItem.replace(/\D/g, '');
     if (!localStorage.getItem('array1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
-        createForm(true, i);
+        createStorageForm(JSON.parse(localStorage.getItem(`array${i}`))[7], i);
         makeTodoBlock(JSON.parse(localStorage.getItem(`array${i}`))[0], JSON.parse(localStorage.getItem(`array${i}`))[1], JSON.parse(localStorage.getItem(`array${i}`))[2], JSON.parse(localStorage.getItem(`array${i}`))[3], JSON.parse(localStorage.getItem(`array${i}`))[4], JSON.parse(localStorage.getItem(`array${i}`))[5], JSON.parse(localStorage.getItem(`array${i}`))[6], JSON.parse(localStorage.getItem(`array${i}`))[7]);  
         renderCheckedStorage(i);
     }
 }
 
 function renderCheckedStorage(i) {
-    if (JSON.parse(localStorage.getItem(`array${i}`))[8] != null) {
+    if (isCompleted() === true) {
         const todoContainer = document.querySelectorAll('.todo-container')[i-1];
         const todoCheckbox = todoContainer.querySelector('.top input');
         const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
         todoCheckbox.checked = true;
         todoContainer.classList.add('completed-todo');
         todoContainer.classList.remove(project);
+        todoContainer.style.display = 'none';
+    }
+}
+
+function isCompleted() {
+    if (JSON.parse(localStorage.getItem(`array${i}`))[8] != null) {
+        return true;
     }
 }
 
@@ -115,6 +118,10 @@ function reOrderStorage() {
     const newStorageValueArray = [];
     const sortedKeys = sortKeysByDate();
     changeDataID(sortedKeys, newStorageValueArray);
+    setNewValue(sortedKeys, newStorageValueArray);
+}
+
+function setNewValue(sortedKeys) {
     for (let i = 0; i < sortedKeys.length; i++) {
         localStorage.setItem(`array${i+1}`, newStorageValueArray[i]);
     }
@@ -133,14 +140,13 @@ function sortKeysByDate() {
             if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
                 return dateA - dateB;
             } else if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
-                return a[a.length-1] - b[b.length-1];
+                return a.replace(/\D/g, '') - b.replace(/\D/g, '');
             } else if (dateA == 'Invalid Date') {
                 return 1
             } else if (dateB == 'Invalid Date') {
                 return -1;
             }
         }
-        
     });
     return sortedKeys;
 }

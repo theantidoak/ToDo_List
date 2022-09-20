@@ -192,14 +192,14 @@ function sortTodos(todos) {
     return [...todos].sort((a, b) => {
         const timeA = a.querySelector('.date').dataset.dateTime;
         const timeB = b.querySelector('.date').dataset.dateTime;
-        const datasetNumA = a.dataset.todoNum;
-        const datasetNumB = b.dataset.todoNum;
+        const datasetNumA = a.dataset.todoNum.replace(/\D/g, '');
+        const datasetNumB = b.dataset.todoNum.replace(/\D/g, '');
         const todoA = new Date(timeA);
         const todoB = new Date(timeB);
         if (timeA != '' && timeB != '') {
             return todoA - todoB;
         } else if (timeA == '' && timeB == '') {
-            return datasetNumA[datasetNumA-1] - datasetNumB[datasetNumB-1];
+            return datasetNumA - datasetNumB;
         } else if (timeA == '') {
             return 1
         } else if (timeB == '') {

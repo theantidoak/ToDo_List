@@ -2,7 +2,7 @@ import {makeTodoBlock, editTodoBlock } from './toDoBlock';
 import {format} from 'date-fns';
 import {populateStorage, useLocalStorageInputs} from './localStorage'
 
-function createForm(storage, formNumber) {
+function createForm() {
 
     //Cache DOM
     const main = document.querySelector('main');
@@ -148,10 +148,31 @@ function createForm(storage, formNumber) {
     giveDatasetNum(todoForm);
     blurBackground();
     
-    if (storage === true) {
-        useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, formNumber);
-        createTodoFromStorage(todoForm, formNumber, addTaskButton);
-    } 
+}
+
+function createStorageForm(todoFormID, formNumber) {
+    createForm();
+    const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
+    const inputArray = getInputNodes(todoForm);
+    useLocalStorageInputs(inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6], inputArray[7], inputArray[8], inputArray[9], formNumber);
+    createTodoFromStorage(todoForm, formNumber, inputArray[10]);
+}
+
+function getInputNodes(todoForm) {
+    const taskInput = todoForm.querySelector('.task-div input');
+    const dateInput = todoForm.querySelector('#time-label');
+    const textArea = todoForm.querySelector('#task-info');
+    const firstChecklistInput = todoForm.querySelector('#firstchecklist');
+    const secondChecklistInput = todoForm.querySelector('#secondchecklist');
+    const thirdChecklistInput = todoForm.querySelector('#thirdchecklist');
+    const fourthChecklistInput = todoForm.querySelector('#fourthchecklist');
+    const fifthChecklistInput = todoForm.querySelector('#fifthchecklist');
+    const prioritySelect = todoForm.querySelector('.priority-div select');
+    const projectSelect = todoForm.querySelector('.project-div select');
+    const addTaskButton = todoForm.querySelector('.addTask-button');
+    
+    const inputArray = [taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, addTaskButton];
+    return inputArray;
 }
 
 function createProjectOptions(select) {
@@ -200,10 +221,16 @@ function findOpenForm() {
 }
 
 function applyForm() {
+
+    //Cache DOM
     const todoForm = this.parentElement.parentElement;
     const projectSelectValue = todoForm.querySelector('.project-div select').value
     if (projectSelectValue == '') return;
+
+    //Set attributes
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
+    
+    //Add to Storage, Make Todo, Exit Form, Unblur, Change Form button event listener
     createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData()); 
     exitForm.call(this);
@@ -336,4 +363,4 @@ function displayTodoForm() {
     addtodoButton.addEventListener('click', createForm);
 };
 
-export {createForm, displayTodoForm, openExistingForm, blurBackground, unBlurBackground, countUp}
+export {createForm, createStorageForm, displayTodoForm, openExistingForm, blurBackground, unBlurBackground, countUp}

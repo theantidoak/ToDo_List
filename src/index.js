@@ -9,4 +9,3 @@ renderStorageOnPage();
 displayTodoForm()
 bindProjectButtons();
 bindHomeButtons();
-
