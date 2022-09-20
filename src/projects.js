@@ -96,7 +96,7 @@ function displayProjecttodos() {
     const todoContainers = document.querySelectorAll('.todo-container');
     todoContainers.forEach(todo => {
         todo.style.display = !todo.classList.contains(projectTitle) ? 'none' : 'block';
-    })
+    });
 }
 
 function closeProjectForm() {
@@ -107,7 +107,6 @@ function closeProjectForm() {
 
 function removeProject() { 
     const projectButton = this.parentElement;
-    console.log(projectButton);
     removeProjectStorageItem(findProjectIndex(projectButton));
     projectButton.parentElement.removeChild(projectButton);
 }

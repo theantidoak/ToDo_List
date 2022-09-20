@@ -1,7 +1,7 @@
-import {openExistingForm} from './toDoForm'
-import {reOrderStorage, removeStorageItem } from './localStorage'
+import { openExistingForm } from './toDoForm'
+import { reOrderStorage, removeStorageItem, populateStorage } from './localStorage'
 
-function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID, storage) {
+function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
     
     //Cache DOM
     const main = document.querySelector('main');
@@ -72,11 +72,6 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     todoContainer.appendChild(editables);
     main.appendChild(todoContainer);
 
-    if (!storage) {
-        orderTodosChronologically();
-    } 
-    
-
     //Set parameters
     descriptionButton.otherDivClass = '.checklist-div';
     checklistButton.otherDivClass = '.description-div';
@@ -90,14 +85,19 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     removeButton.addEventListener('click', deleteTodo);
     checkBox.addEventListener('input', markCompleted);
 
+    orderTodosChronologically();
 }
 
 
 function makeChecklist(checklist, ol) {
     checklist = checklist || ['The checklist starts here!'];
     for(let i=0; i < checklist.length; i++) {
+
+        //Create elements
         const checklistLi = document.createElement('li');
         const checklistLiContent = document.createTextNode(checklist[i]);
+
+        //Render elements
         checklistLi.appendChild(checklistLiContent);
         ol.appendChild(checklistLi);
     }
@@ -105,7 +105,6 @@ function makeChecklist(checklist, ol) {
 
 
 //Editables 
-
 
 function editTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {  
     //cache DOM
@@ -131,6 +130,7 @@ function editTodoBlock(title, timeDate, dateID, description, checklist, priority
     checklistBox.replaceChild(ol, oldOl);
     priority.textContent = priorityValue;
     project.textContent = projectValue;
+    
     orderTodosChronologically();
 }
 
@@ -145,6 +145,7 @@ function displayHiddenText(e) {
     }
 }
 
+
 function deleteTodo(e) {
     const main = document.querySelector('main');
     const todoContainer = e.currentTarget.todoContainer;
@@ -152,6 +153,7 @@ function deleteTodo(e) {
     const form = todoContainer.previousSibling;
     todoContainer.parentElement.removeChild(form);
     main.removeChild(todoContainer);
+
     removeStorageItem(dataset.replace(/\D/g, ''));
     orderTodosChronologically();
 }
@@ -162,10 +164,28 @@ function markCompleted(e) {
     if (this.checked === true) {
         todoContainer.classList.add('completed-todo');
         todoContainer.classList.remove(project);
+        addCheckedToStorage(todoContainer, project);
     } else if (this.checked === false) {
         todoContainer.classList.remove('completed-todo');
         todoContainer.classList.add(project);
+        removeCheckedFromStorage(todoContainer, project);
     }
+}
+
+function addCheckedToStorage(todoContainer) {
+    const dataIndex = todoContainer.dataset.todoNum;
+    const storageIndex = dataIndex.replace(/\D/g, '');
+    const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
+    todoContainerArray.push('checked');
+    populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
+}
+
+function removeCheckedFromStorage(todoContainer) {
+    const dataIndex = todoContainer.dataset.todoNum;
+    const storageIndex = dataIndex.replace(/\D/g, '');
+    const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
+    todoContainerArray.pop();
+    populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
 
 function sortTodos(todos) {
@@ -232,4 +252,4 @@ function orderTodosChronologically() {
 }
 
 
-export { makeTodoBlock, editTodoBlock, sortTodos }
+export { makeTodoBlock, editTodoBlock, sortTodos, markCompleted }

@@ -2,7 +2,7 @@ import {makeTodoBlock, editTodoBlock } from './toDoBlock';
 import {format} from 'date-fns';
 import {populateStorage, useLocalStorageInputs} from './localStorage'
 
-function createForm(calledFromStorage, formNumber) {
+function createForm(storage, formNumber) {
 
     //Cache DOM
     const main = document.querySelector('main');
@@ -148,11 +148,10 @@ function createForm(calledFromStorage, formNumber) {
     giveDatasetNum(todoForm);
     blurBackground();
     
-    if (calledFromStorage === true) {
+    if (storage === true) {
         useLocalStorageInputs(taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, formNumber);
         createTodoFromStorage(todoForm, formNumber, addTaskButton);
     } 
-
 }
 
 function createProjectOptions(select) {
@@ -205,10 +204,8 @@ function applyForm() {
     const projectSelectValue = todoForm.querySelector('.project-div select').value
     if (projectSelectValue == '') return;
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
-    
     createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
-    makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
-    
+    makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData()); 
     exitForm.call(this);
     unBlurBackground();
     this.removeEventListener('click', applyForm);  
@@ -235,7 +232,6 @@ function addNewProjectToExistingForms(taskButton) {
 }
 
 function openExistingForm() {
-    
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
         const todoForm = taskButton.parentElement.parentElement;
@@ -268,14 +264,14 @@ function createStorageArray(title, date, dateID, description, checklist, priorit
     array.push(title, date, dateID, description, checklist, priority, project, data);
     const dataNumber = findOpenForm().dataset.todoNum;
     populateStorage(`array${dataNumber.replace(/\D/g, '')}`, JSON.stringify(array));
-    // console.log(localStorage);
-    
 }
+
+
+//Todo Inputs
 
 function setTitle() {
     const title = findOpenForm().querySelector('#task');
     return title.value; 
-    
 }
 
 function setDateAsID() {
@@ -291,11 +287,9 @@ function setDate() {
 
 function setDescription() {
     const description = findOpenForm().querySelector('#task-info');
-
     if (description.value == '') {
         description.value = 'Nothing to see here, but there could be';
     }
-
     return description.value;
 }
 
@@ -309,21 +303,19 @@ function setChecklist() {
     const fifthCLVal = findOpenForm().querySelector('#fifthchecklist').value;
     
     const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
-    let finalList = checklistArray.filter((item) => item !== ''); 
-    finalList = finalList.length === 0 ? ['Nothing to see here', 'But there could be'] : finalList; 
+    const filteredChecklist = checklistArray.filter((item) => item !== ''); 
+    const finalList = filteredChecklist.length === 0 ? ['Nothing to see here', 'But there could be'] : filteredChecklist; 
     return finalList;
 }
 
 function setPriority() {
     const priority = findOpenForm().querySelector('.priority-div select');
     return priority.value;
-
 }
 
 function setProject() {
     const project = findOpenForm().querySelector('.project-div select');
     return project.value;
-
 }
 
 function setData() {
@@ -339,4 +331,9 @@ function exitForm() {
     unBlurBackground();
 }
 
-export {createForm, openExistingForm, blurBackground, unBlurBackground, countUp}
+function displayTodoForm() {
+    const addtodoButton = document.querySelector('.add-todo');
+    addtodoButton.addEventListener('click', createForm);
+};
+
+export {createForm, displayTodoForm, openExistingForm, blurBackground, unBlurBackground, countUp}

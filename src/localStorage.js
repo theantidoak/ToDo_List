@@ -1,4 +1,4 @@
-import { makeTodoBlock } from './toDoBlock'
+import { makeTodoBlock, markCompleted } from './toDoBlock'
 import { createForm } from './toDoForm'
 import { addProjectButton } from './projects'
 
@@ -29,10 +29,21 @@ function findTodoStorageAndRender() {
     if (!localStorage.getItem('array1')) return;
     for (let i = 1; i <= amountOfItems; i++) {
         createForm(true, i);
-        makeTodoBlock(JSON.parse(localStorage.getItem(`array${i}`))[0], JSON.parse(localStorage.getItem(`array${i}`))[1], JSON.parse(localStorage.getItem(`array${i}`))[2], JSON.parse(localStorage.getItem(`array${i}`))[3], JSON.parse(localStorage.getItem(`array${i}`))[4], JSON.parse(localStorage.getItem(`array${i}`))[5], JSON.parse(localStorage.getItem(`array${i}`))[6], JSON.parse(localStorage.getItem(`array${i}`))[7], true);  
+        makeTodoBlock(JSON.parse(localStorage.getItem(`array${i}`))[0], JSON.parse(localStorage.getItem(`array${i}`))[1], JSON.parse(localStorage.getItem(`array${i}`))[2], JSON.parse(localStorage.getItem(`array${i}`))[3], JSON.parse(localStorage.getItem(`array${i}`))[4], JSON.parse(localStorage.getItem(`array${i}`))[5], JSON.parse(localStorage.getItem(`array${i}`))[6], JSON.parse(localStorage.getItem(`array${i}`))[7]);  
+        renderCheckedStorage(i);
     }
 }
 
+function renderCheckedStorage(i) {
+    if (JSON.parse(localStorage.getItem(`array${i}`))[8] != null) {
+        const todoContainer = document.querySelectorAll('.todo-container')[i-1];
+        const todoCheckbox = todoContainer.querySelector('.top input');
+        const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
+        todoCheckbox.checked = true;
+        todoContainer.classList.add('completed-todo');
+        todoContainer.classList.remove(project);
+    }
+}
 
 function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
     for (let i = 0; i < 7; i++) {
@@ -140,30 +151,4 @@ function changeDataID(sortedKeys, newStorageValueArray) {
     })
 }
 
-
-// function storageAvailable(type) {
-//     let storage;
-//     try {
-//         storage = window[type];
-//         const x = '__storage_test__';
-//         storage.setItem(x, x);
-//         storage.removeItem(x);
-//         return true;
-//     }
-//     catch (e) {
-//         return e instanceof DOMException && (
-//             // everything except Firefox
-//             e.code === 22 ||
-//             // Firefox
-//             e.code === 1014 ||
-//             // test name field too, because code might not be present
-//             // everything except Firefox
-//             e.name === 'QuotaExceededError' ||
-//             // Firefox
-//             e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-//             // acknowledge QuotaExceededError only if there's something already stored
-//             (storage && storage.length !== 0);
-//     }
-// }
-
-export {reOrderStorage, populateStorage, renderStorageOnPage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs, findTodoStorageAndRender}
+export { reOrderStorage, populateStorage, renderStorageOnPage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs }
