@@ -4,7 +4,6 @@
     --maya-blue: #50D0FF;
     --mustard: #FFD750;
     --celadon-blue: #0080AF;
-    /* --fiery-rose: #FF5079; */
 }
 
 html {
@@ -21,7 +20,6 @@ body {
 }
 
 .content {
-    /* height: 100%; */
     width: 100%;
     display: flex;
     position: relative;
@@ -59,7 +57,6 @@ aside {
     width: clamp(6rem, 20%, 8.5rem);
     padding: 1.5rem clamp(.75rem, 3vw, 1rem) 1.5rem clamp(.5rem, 2.5vw, 1rem);
     position: relative;
-    /* border-right: 2px solid var(--coral); */
 }
 
 .home, .projects {
@@ -251,7 +248,6 @@ main {
 
 .todo-container h4 {
     width: 11rem;
-    /* text-decoration: underline; */
     font-size: 1.25rem;
     margin: .75rem auto .5rem;
     text-align: center;
@@ -274,7 +270,6 @@ main {
 .todo-container .date {
     font-weight: 100;
     width: 100%;
-    /* color: var(--coral); */
     text-align: center;
     padding: 0 0 2.5rem;
 }
@@ -368,7 +363,7 @@ main {
 
 .todo-form {
     width: clamp(16rem, 75vw, 35rem);
-    max-height: 30rem;
+    max-height: 33rem;
     margin: 0 auto;
     border: 5px solid #FF8458;
     position: absolute;
@@ -379,7 +374,6 @@ main {
     background-color: #fff;
     box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
     border-radius: 15px;
-    /* overflow-y: auto; */
 }
 
 .todo-form h1 {
@@ -407,7 +401,7 @@ main {
 
 .todo-form form {
     width: 100%;
-    max-height: 23rem;
+    max-height: 27rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));;
     gap: 1.25rem;
@@ -450,8 +444,6 @@ label[for='task']::before, label[for="time-label"]::before, label[for="priority-
 
 label[for="time-label"] input {
     cursor: pointer;
-    
-    /* opacity: 0; */
 }
 
 label[for="time-label"]::before {
@@ -482,13 +474,9 @@ label[for="task-info"]::before {
     background-color: #fff;
 }
 
-/* .todo-form input:focus, .todo-form select:focus {
-    background-color: #fff;
-} */
-
 .checklist-inputs div {
     overflow-y: auto;
-    height: 100%;
+    height: 101%;
 }
 
 .checklist-inputs label {
@@ -599,10 +587,7 @@ textarea:focus, .todo-form form .checklist-inputs input:focus {
     padding: .25rem 0;
     cursor: pointer;
     border-radius: 20px;
-    position: absolute;
-    bottom: -1rem;
-    left: 0;
-    right: 0;
+    grid-column: 1 / -1;
 }
 
 .addTask-button:hover {
@@ -640,7 +625,6 @@ textarea:focus, .todo-form form .checklist-inputs input:focus {
 
 .project-exit:hover {
     color: var(--coral);
-    /* font-weight: 700; */
 }
 
 .project-form label {
@@ -694,7 +678,7 @@ textarea:focus, .todo-form form .checklist-inputs input:focus {
     background-color: rgba(0,0,0,0.5);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 550px) {
     .projects h3::before, .home h3::before {
         content: none;
     }
@@ -711,4 +695,10 @@ textarea:focus, .todo-form form .checklist-inputs input:focus {
         justify-content: center;
     }
         
+    .addTask-button {
+        position: absolute;
+        bottom: -1rem;
+        left: 0;
+        right: 0;
+    }
 }

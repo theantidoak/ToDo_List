@@ -1,27 +1,27 @@
 import {isToday, isThisWeek} from 'date-fns'
 
 function displayAlltodos() {
-    const todos = document.querySelectorAll('.todo-container');
-    todos.forEach(todo => {
-        const todoType = !todo.classList.contains('completed-todo');
-        todo.style.display = todoType ? 'block' : 'none';
+    const allTodoContainers = document.querySelectorAll('.todo-container');
+    allTodoContainers.forEach(todoContainer => {
+        const todoType = !todoContainer.classList.contains('completed-todo');
+        todoContainer.style.display = todoType ? 'block' : 'none';
     })
 }
 
 function displayUpcomingtodos(e) {
-    const todos = document.querySelectorAll('.todo-container');
-    todos.forEach((todo) => {     
-        const dueDate = todo.querySelector('.date').dataset.dateTime;
+    const allTodoContainers = document.querySelectorAll('.todo-container');
+    allTodoContainers.forEach((todoContainer) => {     
+        const dueDate = todoContainer.querySelector('.date').dataset.dateTime;
         const todoType = e.currentTarget.isUpcoming(new Date(dueDate), { weekStartsOn: 1 });
-        todo.style.display = todoType ? 'block' : 'none';
+        todoContainer.style.display = todoType ? 'block' : 'none';
     });
 }
 
 function displayCompletedtodos() {
-    const todos = document.querySelectorAll('.todo-container');
-    todos.forEach(todo => {
-        const todoType = todo.classList.contains('completed-todo');
-        todo.style.display = todoType ? 'block' : 'none';
+    const allTodoContainers = document.querySelectorAll('.todo-container');
+    allTodoContainers.forEach(todoContainer => {
+        const todoType = todoContainer.classList.contains('completed-todo');
+        todoContainer.style.display = todoType ? 'block' : 'none';
     })
 }
 
@@ -47,4 +47,4 @@ function bindHomeButtons() {
     thisWeekButton.addEventListener('click', displayUpcomingtodos);
 }
 
-export {bindHomeButtons}
+export { bindHomeButtons }

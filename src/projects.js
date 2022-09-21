@@ -1,5 +1,5 @@
 import { populateStorage, removeProjectStorageItem } from './localStorage';
-import { blurBackground, unBlurBackground, countUp } from './toDoForm'
+import { countUp, blurBackground, unBlurBackground } from './toDoForm'
 
 function createNewProjectForm() {
 
@@ -114,8 +114,8 @@ function removeProject() {
 
 function findProjectIndex(projectButton) {
     const projects = document.querySelectorAll('.titled-project-div');
-    const projectSearch = [...projects].map(project => project == projectButton);
-    const projectIndex = projectSearch.indexOf(true) + 1;
+    const projectHunt = [...projects].map(project => project == projectButton);
+    const projectIndex = projectHunt.indexOf(true) + 1;
     return projectIndex;
 }
 
@@ -125,12 +125,12 @@ function findProjectIndex(projectButton) {
 function bindProjectButtons() {
 
     //Cache DOM
-    const addProjectH3 = document.querySelector('.projects-title');
+    const projectFormButton = document.querySelector('.projects-title');
     const defaultProjectButton = document.querySelector('.default');
 
     //Bind Events
-    addProjectH3.addEventListener('click', createNewProjectForm);
+    projectFormButton.addEventListener('click', createNewProjectForm);
     defaultProjectButton.addEventListener('click', displayProjecttodos);
 }
 
-export {bindProjectButtons, createNewProjectForm, addProjectButton}
+export { createNewProjectForm, addProjectButton, bindProjectButtons }

@@ -1,7 +1,7 @@
 import { openExistingForm } from './toDoForm'
-import { reOrderStorage, removeStorageItem, populateStorage } from './localStorage'
+import { populateStorage, removeTodoStorageItem, reOrderTodoStorage } from './localStorage'
 
-function makeTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue, dataID) {
+function makeTodoBlock(title, date, dateID, description, checklist, priority, project, dataID) {
     
     //Cache DOM
     const main = document.querySelector('main');
@@ -9,15 +9,15 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     //Create Elements
     const todoContainer = document.createElement('div');
     const topDiv = document.createElement('div');
-    const checkBox = document.createElement('input');
-    const priority = document.createElement('p'); 
-    const priorityContent = document.createTextNode(priorityValue);
-    const project = document.createElement('p');
-    const projectContent = document.createTextNode(projectValue);
+    const checkbox = document.createElement('input');
+    const priorityNum = document.createElement('p'); 
+    const priorityContent = document.createTextNode(priority);
+    const projectTitle = document.createElement('p');
+    const projectContent = document.createTextNode(project);
     const task = document.createElement('h4');
     const taskContent = document.createTextNode(title);
-    const date = document.createElement('p');
-    const dateContent = document.createTextNode(timeDate);
+    const dueDate = document.createElement('p');
+    const dateContent = document.createTextNode(date);
     const editables = document.createElement('div');
     const editButton = document.createElement('button');
     const descriptionButton = document.createElement('button');
@@ -36,11 +36,11 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     todoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
     todoContainer.dataset.todoNum = dataID;
     topDiv.classList.add('top');
-    checkBox.setAttribute('type', 'checkbox');
-    priority.classList.add('priority');
-    project.classList.add('project');
-    date.classList.add('date');
-    date.dataset.dateTime = dateID;
+    checkbox.setAttribute('type', 'checkbox');
+    priorityNum.classList.add('priority');
+    projectTitle.classList.add('project');
+    dueDate.classList.add('date');
+    dueDate.dataset.dateTime = dateID;
     editables.classList.add('editables');
     editButton.classList.add('edit');
     descriptionButton.classList.add('description');
@@ -55,20 +55,20 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     descriptionButton.appendChild(descriptionDiv);
     checklistDiv.appendChild(checklistOl);
     checklistButton.appendChild(checklistDiv); 
-    priority.appendChild(priorityContent);
-    project.appendChild(projectContent);
+    priorityNum.appendChild(priorityContent);
+    projectTitle.appendChild(projectContent);
     task.appendChild(taskContent);
-    date.appendChild(dateContent);
-    topDiv.appendChild(priority);
-    topDiv.appendChild(checkBox);
+    dueDate.appendChild(dateContent);
+    topDiv.appendChild(priorityNum);
+    topDiv.appendChild(checkbox);
     editables.appendChild(editButton);
     editables.appendChild(descriptionButton);
     editables.appendChild(checklistButton);
     editables.appendChild(removeButton);
     todoContainer.appendChild(topDiv);
     todoContainer.appendChild(task);
-    todoContainer.appendChild(project);
-    todoContainer.appendChild(date);
+    todoContainer.appendChild(projectTitle);
+    todoContainer.appendChild(dueDate);
     todoContainer.appendChild(editables);
     main.appendChild(todoContainer);
 
@@ -76,14 +76,14 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
     descriptionButton.otherDivClass = '.checklist-div';
     checklistButton.otherDivClass = '.description-div';
     removeButton.todoContainer = todoContainer;
-    checkBox.todoContainer = todoContainer;
+    checkbox.todoContainer = todoContainer;
     
     //Bind Event Listeners
     editButton.addEventListener('click', openExistingForm);
     descriptionButton.addEventListener('click', displayHiddenText);
     checklistButton.addEventListener('click', displayHiddenText);
     removeButton.addEventListener('click', deleteTodo);
-    checkBox.addEventListener('input', markCompleted);
+    checkbox.addEventListener('input', markCompleted);
 
     orderTodosChronologically();
 }
@@ -91,7 +91,7 @@ function makeTodoBlock(title, timeDate, dateID, description, checklist, priority
 
 function makeChecklist(checklist, ol) {
     checklist = checklist || ['The checklist starts here!'];
-    for(let i=0; i < checklist.length; i++) {
+    for(let i = 0; i < checklist.length; i++) {
 
         //Create elements
         const checklistLi = document.createElement('li');
@@ -106,42 +106,42 @@ function makeChecklist(checklist, ol) {
 
 //Editables 
 
-function editTodoBlock(title, timeDate, dateID, description, checklist, priorityValue, projectValue) {  
+function editTodoBlock(title, date, dateID, description, checklist, priority, project) {  
     //cache DOM
-    const form = this.parentElement.parentElement;
-    const todoContainer = document.querySelectorAll(`[data-todo-num="${form.dataset.todoNum}"]`)[1];
+    const todoForm = this.parentElement.parentElement;
+    const todoContainer = document.querySelectorAll(`[data-todo-num="${todoForm.dataset.todoNum}"]`)[1];
     const task = todoContainer.querySelector('h4');
-    const date = todoContainer.querySelector('.date');
-    const descriptionBox = todoContainer.querySelector('.description-div p');
-    const checklistBox = todoContainer.querySelector('.checklist-div');
+    const dueDate = todoContainer.querySelector('.date');
+    const descriptionText = todoContainer.querySelector('.description-div p');
+    const checklistDiv = todoContainer.querySelector('.checklist-div');
     const oldOl = todoContainer.querySelector('.checklist-div ol');
-    const ol = document.createElement('ol');
-    const priority = todoContainer.querySelector('.priority');
-    const project = todoContainer.querySelector('.project');
+    const newOl = document.createElement('ol');
+    const priorityNum = todoContainer.querySelector('.priority');
+    const projectTitle = todoContainer.querySelector('.project');
 
     //Set Attributes
-    date.dataset.dateTime = dateID;
+    dueDate.dataset.dateTime = dateID;
 
     //Render data
     task.textContent = title;
-    date.textContent = timeDate;
-    descriptionBox.textContent = description;
-    makeChecklist(checklist, ol);
-    checklistBox.replaceChild(ol, oldOl);
-    priority.textContent = priorityValue;
-    project.textContent = projectValue;
+    dueDate.textContent = date;
+    descriptionText.textContent = description;
+    makeChecklist(checklist, newOl);
+    checklistDiv.replaceChild(newOl, oldOl);
+    priorityNum.textContent = priority;
+    projectTitle.textContent = project;
     
     orderTodosChronologically();
 }
 
 function displayHiddenText(e) {
-    const controlledDiv = this.firstElementChild;
+    const buttonDiv = this.firstElementChild;
     const otherDiv = this.parentElement.querySelector(e.currentTarget.otherDivClass);
-    if (controlledDiv.style.display == 'none' || controlledDiv.style.display === '') {
+    if (buttonDiv.style.display == 'none' || buttonDiv.style.display === '') {
         otherDiv.style.display = 'none';
-        controlledDiv.style.display = 'block';
+        buttonDiv.style.display = 'block';
     } else {
-        controlledDiv.style.display = 'none';
+        buttonDiv.style.display = 'none';
     }
 }
 
@@ -149,26 +149,26 @@ function displayHiddenText(e) {
 function deleteTodo(e) {
     const main = document.querySelector('main');
     const todoContainer = e.currentTarget.todoContainer;
-    const dataset = todoContainer.dataset.todoNum;
-    const form = todoContainer.previousSibling;
-    todoContainer.parentElement.removeChild(form);
+    const dataID = todoContainer.dataset.todoNum;
+    const todoForm = todoContainer.previousSibling;
+    todoContainer.parentElement.removeChild(todoForm);
     main.removeChild(todoContainer);
 
-    removeStorageItem(dataset.replace(/\D/g, ''));
+    removeTodoStorageItem(dataID.replace(/\D/g, ''));
     orderTodosChronologically();
 }
 
 function markCompleted(e) {
     const todoContainer = e.currentTarget.todoContainer;
-    const project = todoContainer.querySelector('.project').textContent.toLowerCase();
+    const projectTitle = todoContainer.querySelector('.project').textContent.toLowerCase();
     if (this.checked === true) {
         todoContainer.classList.add('completed-todo');
-        todoContainer.classList.remove(project);
-        addCheckedToStorage(todoContainer, project);
+        todoContainer.classList.remove(projectTitle);
+        addCheckedToStorage(todoContainer, projectTitle);
     } else if (this.checked === false) {
         todoContainer.classList.remove('completed-todo');
-        todoContainer.classList.add(project);
-        removeCheckedFromStorage(todoContainer, project);
+        todoContainer.classList.add(projectTitle);
+        removeCheckedFromStorage(todoContainer, projectTitle);
     }
 }
 
@@ -188,32 +188,32 @@ function removeCheckedFromStorage(todoContainer) {
     populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
 
-function sortTodos(todos) {
-    return [...todos].sort((a, b) => {
-        const timeA = a.querySelector('.date').dataset.dateTime;
-        const timeB = b.querySelector('.date').dataset.dateTime;
-        const datasetNumA = a.dataset.todoNum.replace(/\D/g, '');
-        const datasetNumB = b.dataset.todoNum.replace(/\D/g, '');
-        const todoA = new Date(timeA);
-        const todoB = new Date(timeB);
-        if (timeA != '' && timeB != '') {
-            return todoA - todoB;
-        } else if (timeA == '' && timeB == '') {
-            return datasetNumA - datasetNumB;
-        } else if (timeA == '') {
+function sortTodos(allTodoContainers) {
+    return [...allTodoContainers].sort((a, b) => {
+        const dateIDA = a.querySelector('.date').dataset.dateTime;
+        const dateIDB = b.querySelector('.date').dataset.dateTime;
+        const todoStorageIndexA = a.dataset.todoNum.replace(/\D/g, '');
+        const todoStorageIndexB = b.dataset.todoNum.replace(/\D/g, '');
+        const dueDateA = new Date(dateIDA);
+        const dueDateB = new Date(dateIDB);
+        if (dateIDA != '' && dateIDB != '') {
+            return dueDateA - dueDateB;
+        } else if (dateIDA == '' && dateIDB == '') {
+            return todoStorageIndexA - todoStorageIndexB;
+        } else if (dateIDA == '') {
             return 1
-        } else if (timeB == '') {
+        } else if (dateIDB == '') {
             return -1;
         }
     });
 }
 
-function sortForms(todoForms, sortedTodos) {
-    return [...todoForms].sort((a,b) => {
-        const datasetNumA = a.dataset.todoNum;
-        const datasetNumB = b.dataset.todoNum;
-        const correspondingTodoA = sortedTodos.map(todo => todo.dataset.todoNum == datasetNumA);
-        const correspondingTodoB = sortedTodos.map(todo => todo.dataset.todoNum == datasetNumB);
+function sortForms(allTodoForms, sortedTodos) {
+    return [...allTodoForms].sort((a,b) => {
+        const dataIDA = a.dataset.todoNum;
+        const dataIDB = b.dataset.todoNum;
+        const correspondingTodoA = sortedTodos.map(todoContainer => todoContainer.dataset.todoNum == dataIDA);
+        const correspondingTodoB = sortedTodos.map(todoContainer => todoContainer.dataset.todoNum == dataIDB);
 
         return (correspondingTodoA.indexOf(true) + 1) - (correspondingTodoB.indexOf(true) + 1);
     })
@@ -225,10 +225,10 @@ function changeTodoNum(sortedTodos) {
     }
 }
 
-function removePrevioustodos(todoForms, todos) {
+function removePreviousTodos(allTodoForms, allTodoContainers) {
     const main = document.querySelector('main');
-    [...todoForms].sort().forEach(form => main.removeChild(form));
-    [...todos].sort().forEach(todo => main.removeChild(todo));
+    [...allTodoForms].sort().forEach(todoForm => main.removeChild(todoForm));
+    [...allTodoContainers].sort().forEach(todoContainer => main.removeChild(todoContainer));
 }
 
 function appendSortedTodos(sortedForms, sortedTodos) {
@@ -240,16 +240,15 @@ function appendSortedTodos(sortedForms, sortedTodos) {
 }
 
 function orderTodosChronologically() {
-    const todos = document.querySelectorAll('.todo-container');
-    const todoForms = document.querySelectorAll('.todo-form');
-    const sortedTodos = sortTodos(todos);
-    const sortedForms = sortForms(todoForms, sortedTodos);
+    const allTodoContainers = document.querySelectorAll('.todo-container');
+    const allTodoForms = document.querySelectorAll('.todo-form');
+    const sortedTodos = sortTodos(allTodoContainers);
+    const sortedForms = sortForms(allTodoForms, sortedTodos);
     
-    removePrevioustodos(todoForms, todos);
+    removePreviousTodos(allTodoForms, allTodoContainers);
     appendSortedTodos(sortedForms, sortedTodos);
-    reOrderStorage();
+    reOrderTodoStorage();
     changeTodoNum(sortedTodos);
 }
 
-
-export { makeTodoBlock, editTodoBlock, sortTodos, markCompleted }
+export { makeTodoBlock, editTodoBlock, markCompleted, sortTodos }

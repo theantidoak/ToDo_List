@@ -1,7 +1,31 @@
 import { makeTodoBlock } from './toDoBlock'
-import { createStorageForm } from './toDoForm'
+import { createForm, unBlurBackground, applyForm, findOpenForm } from './toDoForm';
 import { addProjectButton } from './projects'
 
+function storageAvailable(type) {
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch (e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
 
 function populateStorage(callName, item) {
     if (callName == 'finalList') {
@@ -19,112 +43,82 @@ function renderStorageOnPage() {
     }
 }
 
-function findProjectStorageAndRender() {
-    const projects = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
-    projects.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
-}
+
+//Todo Storage
 
 function findTodoStorageAndRender() {
     const keys = Object.keys(localStorage).sort();
-    const laststorageItem = keys[localStorage.length-1];
-    const amountOfItems = laststorageItem.replace(/\D/g, '');
+    const lastStorageItem = keys[localStorage.length-1];
+    const amountOfStorageItems = lastStorageItem.replace(/\D/g, '');
     if (!localStorage.getItem('array1')) return;
-    for (let i = 1; i <= amountOfItems; i++) {
-        createStorageForm(JSON.parse(localStorage.getItem(`array${i}`))[7], i);
-        makeTodoBlock(JSON.parse(localStorage.getItem(`array${i}`))[0], JSON.parse(localStorage.getItem(`array${i}`))[1], JSON.parse(localStorage.getItem(`array${i}`))[2], JSON.parse(localStorage.getItem(`array${i}`))[3], JSON.parse(localStorage.getItem(`array${i}`))[4], JSON.parse(localStorage.getItem(`array${i}`))[5], JSON.parse(localStorage.getItem(`array${i}`))[6], JSON.parse(localStorage.getItem(`array${i}`))[7]);  
+    for (let i = 1; i <= amountOfStorageItems; i++) {
+        createStorageForm(input(i).dataID, i);
+        makeTodoBlock(input(i).task, input(i).date, input(i).dateID, input(i).description, input(i).checklist, input(i).priority, input(i).project, input(i).dataID);  
         renderCheckedStorage(i);
     }
+}
+
+function input(i) {
+    const task = JSON.parse(localStorage.getItem(`array${i}`))[0];
+    const date = JSON.parse(localStorage.getItem(`array${i}`))[1];
+    const dateID = JSON.parse(localStorage.getItem(`array${i}`))[2];
+    const description = JSON.parse(localStorage.getItem(`array${i}`))[3];
+    const checklist = JSON.parse(localStorage.getItem(`array${i}`))[4];
+    const priority = JSON.parse(localStorage.getItem(`array${i}`))[5];
+    const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
+    const dataID = JSON.parse(localStorage.getItem(`array${i}`))[7];
+
+    return { task, date, dateID, description, checklist, priority, project, dataID }
 }
 
 function renderCheckedStorage(i) {
     if (isCompleted(i) === true) {
         const todoContainer = document.querySelectorAll('.todo-container')[i-1];
         const todoCheckbox = todoContainer.querySelector('.top input');
-        const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
+        const projectTitle = JSON.parse(localStorage.getItem(`array${i}`))[6];
         todoCheckbox.checked = true;
         todoContainer.classList.add('completed-todo');
-        todoContainer.classList.remove(project);
+        todoContainer.classList.remove(projectTitle);
         todoContainer.style.display = 'none';
     }
 }
 
 function isCompleted(i) {
-    if (JSON.parse(localStorage.getItem(`array${i}`))[8] != null) {
+    const todoCheckboxValue = JSON.parse(localStorage.getItem(`array${i}`))[8];
+    if (todoCheckboxValue != null) {
         return true;
     }
 }
 
-function useLocalStorageInputs(task, date, description, first, second, third, fourth, fifth, priority, project, formNumber) {
-    for (let i = 0; i < 7; i++) {
-        if (i === 2) {
-            continue;
-        } else if (i === 4) {
-            for (let j = 0; j < 5; j++) {
-                arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
-            }
-        } else {
-            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
-        }   
-    }
+function removeTodoStorageItem(deletedTodoIndexNum) {
+    localStorage.removeItem(`array${deletedTodoIndexNum}`);
+    lowerTodoIndexNum(deletedTodoIndexNum);
 }
 
-
-function removeStorageItem(num) {
-    localStorage.removeItem(`array${num}`);
-    lowerDataNumbers(num);
-}
-
-function removeProjectStorageItem(num) {
-    localStorage.removeItem(`${num}project`);
-    lowerProjectDataNumbers(num);
-}
-
-function lowerProjectDataNumbers(num) {
+function lowerTodoIndexNum(deletedTodoIndexNum) {
     Object.keys(localStorage).sort().forEach(key => {
-        const keyNum = key.replace(/\D/g, '');
-        if (!Number.isInteger(+keyNum) || !Number.isInteger(+key[0])) return;
-        if (keyNum > num) {
-            const newKey = key.replace(keyNum, keyNum-1);
-            const value = localStorage[key];
-            localStorage.removeItem(key);
-            localStorage.setItem(newKey, value);
-        }
-    })
-
-} 
-
-
-function lowerDataNumbers(num) {
-    Object.keys(localStorage).sort().forEach(key => {
-        const keyNum = key.replace(/\D/g, '');
-        const numbers = key.split('')[key.split('').length-1];
-        if (!Number.isInteger(+numbers)) return;
-        if (keyNum > num) {
-            const newKey = key.replace(keyNum, keyNum-1);
-            const value = localStorage[key];
-            const valueData = JSON.parse(localStorage.getItem(key))[7];
-            const oldID = valueData.replace(/\D/g, '');
+        const keyIndexNum = key.replace(/\D/g, '');
+        const todoArrayIndex = key.split('')[key.split('').length-1];
+        if (!Number.isInteger(+todoArrayIndex)) return;
+        if (keyIndexNum > deletedTodoIndexNum) {
+            const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
+            const storageItemValue = localStorage[key];
+            const storageItemDataID = JSON.parse(localStorage.getItem(key))[7];
+            const oldID = storageItemDataID.replace(/\D/g, '');
             const newID = oldID - 1;
-            const newValueData = valueData.replace(oldID, newID);
-            const newValue = value.replace(valueData, newValueData);
+            const newStorageItemDataID = storageItemDataID.replace(oldID, newID);
+            const newStorageItemValue = storageItemValue.replace(storageItemDataID, newStorageItemDataID);
             localStorage.removeItem(key);
-            localStorage.setItem(newKey, newValue);
+            localStorage.setItem(newKeyIndex, newStorageItemValue);
         }
-      });
+    });
 }
 
-
-function reOrderStorage() {
+function reOrderTodoStorage() {
     const newStorageValueArray = [];
     const sortedKeys = sortKeysByDate();
     changeDataID(sortedKeys, newStorageValueArray);
     setNewValue(sortedKeys, newStorageValueArray);
-}
-
-function setNewValue(sortedKeys, newStorageValueArray) {
-    for (let i = 0; i < sortedKeys.length; i++) {
-        localStorage.setItem(`array${i+1}`, newStorageValueArray[i]);
-    }
 }
 
 function sortKeysByDate() {
@@ -153,42 +147,108 @@ function sortKeysByDate() {
 
 function changeDataID(sortedKeys, newStorageValueArray) {
     sortedKeys.forEach(key => {
-        const value = localStorage.getItem(key);
-        const valueData = JSON.parse(localStorage.getItem(key))[7];
-        const oldID = valueData.replace(/\D/g, '');
+        const storageItemValue = localStorage.getItem(key);
+        const storageItemDataID = JSON.parse(localStorage.getItem(key))[7];
+        const oldID = storageItemDataID.replace(/\D/g, '');
         const newID = sortedKeys.indexOf(key) + 1;    
-        const newValueData = valueData.replace(oldID, newID);
-        const newValue = value.replace(valueData, newValueData);
-        newStorageValueArray.push(newValue);   
+        const newStorageItemDataID = storageItemDataID.replace(oldID, newID);
+        const newStorageItemValue = storageItemValue.replace(storageItemDataID, newStorageItemDataID);
+        newStorageValueArray.push(newStorageItemValue);   
     })
 }
 
-
-function storageAvailable(type) {
-    let storage;
-    try {
-        storage = window[type];
-        const x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch (e) {
-        return e instanceof DOMException && (
-            // everything except Firefox
-            e.code === 22 ||
-            // Firefox
-            e.code === 1014 ||
-            // test name field too, because code might not be present
-            // everything except Firefox
-            e.name === 'QuotaExceededError' ||
-            // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            (storage && storage.length !== 0);
+function setNewValue(sortedKeys, newStorageValueArray) {
+    for (let i = 0; i < sortedKeys.length; i++) {
+        localStorage.setItem(`array${i+1}`, newStorageValueArray[i]);
     }
 }
 
 
+// Todo Form Storage 
 
-export { reOrderStorage, populateStorage, renderStorageOnPage, removeStorageItem, removeProjectStorageItem, useLocalStorageInputs }
+function createStorageArray(title, date, dateID, description, checklist, priority, project, data) {
+    const array = [];
+    const dataNumber = findOpenForm().dataset.todoNum;
+    array.push(title, date, dateID, description, checklist, priority, project, data);
+    populateStorage(`array${dataNumber.replace(/\D/g, '')}`, JSON.stringify(array));
+}
+
+
+function createStorageForm(todoFormID, formNumber) {
+    createForm();
+    const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
+    const inputArray = getInputNodes(todoForm);
+    useLocalStorageInputs(inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6], inputArray[7], inputArray[8], inputArray[9], formNumber);
+    createTodoFromStorage(todoForm, formNumber, inputArray[10]);
+}
+
+function getInputNodes(todoForm) {
+    const taskInput = todoForm.querySelector('.task-div input');
+    const dateInput = todoForm.querySelector('#time-label');
+    const textArea = todoForm.querySelector('#task-info');
+    const firstChecklistInput = todoForm.querySelector('#firstchecklist');
+    const secondChecklistInput = todoForm.querySelector('#secondchecklist');
+    const thirdChecklistInput = todoForm.querySelector('#thirdchecklist');
+    const fourthChecklistInput = todoForm.querySelector('#fourthchecklist');
+    const fifthChecklistInput = todoForm.querySelector('#fifthchecklist');
+    const prioritySelect = todoForm.querySelector('.priority-div select');
+    const projectSelect = todoForm.querySelector('.project-div select');
+    const addTaskButton = todoForm.querySelector('.addTask-button');
+    
+    const inputArray = [taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, addTaskButton];
+    return inputArray;
+}
+
+function useLocalStorageInputs(task, date, description, firstChecklist, secondChecklist, thirdChecklist, fourthChecklist, fifthChecklist, priority, project, formNumber) {
+    for (let i = 0; i < 7; i++) {
+        if (i === 2) {
+            continue;
+        } else if (i === 4) {
+            for (let j = 0; j < 5; j++) {
+                arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
+            }
+        } else {
+            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
+        }   
+    }
+}
+
+function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
+    const projectTitle = JSON.parse(localStorage.getItem(`array${formNumber}`))[7]
+    const projectClass = projectTitle.split(' ').join('').toLowerCase();
+    todoForm.classList.add(projectClass);
+    todoForm.style.display = 'none';
+    todoForm.dataset.todoNum = `todo-${formNumber}`;
+    addTaskButton.removeEventListener('click', applyForm);
+    unBlurBackground();
+}
+
+//Project Storage
+
+function findProjectStorageAndRender() {
+    const projectTitles = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
+    projectTitles.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
+}
+
+function removeProjectStorageItem(num) {
+    localStorage.removeItem(`${num}project`);
+    lowerProjectDataNumbers(num);
+}
+
+function lowerProjectDataNumbers(num) {
+    Object.keys(localStorage).sort().forEach(key => {
+        const keyIndexNum = key.replace(/\D/g, '');
+        if (!Number.isInteger(+keyIndexNum) || !Number.isInteger(+key[0])) return;
+        if (keyIndexNum > num) {
+            const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
+            const storageItemValue = localStorage[key];
+            localStorage.removeItem(key);
+            localStorage.setItem(newKeyIndex, storageItemValue);
+        }
+    })
+
+} 
+
+
+
+export { populateStorage, renderStorageOnPage, removeTodoStorageItem, reOrderTodoStorage, createStorageArray, useLocalStorageInputs, removeProjectStorageItem }

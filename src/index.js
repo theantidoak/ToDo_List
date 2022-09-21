@@ -1,11 +1,11 @@
 import './style.css'
-import { displayTodoForm } from './toDoForm'
+import { bindAddTodoButton } from './toDoForm'
 import { bindProjectButtons } from './projects'
 import { bindHomeButtons } from './homeProjects'
 import { renderStorageOnPage } from './localStorage';
 
 
 renderStorageOnPage();
-displayTodoForm()
+bindAddTodoButton();
 bindProjectButtons();
 bindHomeButtons();
