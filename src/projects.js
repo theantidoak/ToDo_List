@@ -23,6 +23,7 @@ function createNewProjectForm() {
     projectLabel.setAttribute('for', 'projects-title');
     projectInput.setAttribute('type', 'text');
     projectInput.id = 'project-title';
+    projectInput.setAttribute('autocomplete', 'off');
     projectButtonDiv.classList.add('project-button-div');
     projectButton.classList.add('addProject');
     projectButton.setAttribute('type', 'button');

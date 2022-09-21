@@ -170,7 +170,7 @@ aside {
 }
 
 main {
-    padding: 3.5rem 2rem 1rem clamp(1rem, 7%, 3rem);
+    padding: 3.5rem clamp(1.25rem, 6vw, 2rem) 1rem clamp(1rem, 7%, 3rem);
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, clamp(12rem, 30%, 14rem));
@@ -205,8 +205,7 @@ main {
 /*---To Do Container---*/
 
 .todo-container {
-    width: 12rem;
-    height: 12.25rem;
+    width: clamp(11rem, 50vw, 12rem);
     margin: 0 auto;
     border: 3px solid var(--coral);
     position: relative;
@@ -368,30 +367,28 @@ main {
 /*---To Do Form---*/
 
 .todo-form {
-    width: clamp(14rem, 90%, 35rem);
-    height: auto;
-    padding: .5rem 2rem 1rem;
+    width: clamp(16rem, 75vw, 35rem);
+    max-height: 30rem;
     margin: 0 auto;
     border: 5px solid #FF8458;
     position: absolute;
-    top: .25rem;
+    top: -3rem;
     left: 0;
     right: 0;
     z-index: 4;
     background-color: #fff;
     box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
     border-radius: 15px;
-    /* filter: blur(5px); */
-    
+    /* overflow-y: auto; */
 }
 
 .todo-form h1 {
     width: 100%;
-    margin: 0;
-    margin-bottom: 2.5rem;
     text-align: center;
+    font-size: clamp(1.5rem, 5.75vw, 2rem);
     border-bottom: 2px solid var(--celadon-blue);
     color: var(--celadon-blue);
+    margin: 1rem 0 0;
 }
 
 .todo-form h1 span {
@@ -409,16 +406,20 @@ main {
 }
 
 .todo-form form {
-    width: clamp(14rem, 100%, 35rem);
-    height: 100%;
+    width: 100%;
+    max-height: 23rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));;
+    gap: 1.25rem;
+    overflow: auto;
+    padding: clamp(2rem, 6vw, 2.5rem) clamp(.5rem, 4%, 2rem) 1rem;
+    margin-bottom: 1rem;
 }
 
 .todo-form form input, select {
-    width: clamp(14rem, 100%, 40rem);
+    width: clamp(11rem, 100%, 40rem);
     height: 2rem;
+    border-radius: 6px;
 }
 
 select {
@@ -431,15 +432,16 @@ select {
 
 label {
     display: flex;
+    
 }
 
 label[for='task'], label[for="time-label"], label[for="priority-label"], label[for="project-label"], label[for="task-info"], .checklist-inputs {
     position: relative;
-    margin: 0 auto 1rem;
+    margin: 0 auto clamp(.5rem, 2vw, 1rem);
 }
 
 label[for='task']::before, label[for="time-label"]::before, label[for="priority-label"]::before, label[for="project-label"]::before, label[for="task-info"]::before, .checklist-inputs::before {
-    content: 'Title:';
+    content: 'Task:';
     position: absolute;
     left: 0;
     top: -1.5rem;
@@ -464,6 +466,7 @@ label[for="project-label"]::before {
     content: 'Project:'
 }
 
+
 .checklist-inputs::before {
     content: 'Add to Checklist';
 }
@@ -483,15 +486,14 @@ label[for="task-info"]::before {
     background-color: #fff;
 } */
 
+.checklist-inputs div {
+    overflow-y: auto;
+    height: 100%;
+}
+
 .checklist-inputs label {
     flex-direction: column;
     gap: 0rem;
-}
-
-#task-info-label {
-    height: 10rem;
-    width: clamp(14rem, 100%, 40rem);
-
 }
 
 .checklist-inputs p {
@@ -510,8 +512,8 @@ textarea, .checklist-inputs {
     border-style: none solid solid none;
     border-width: medium 1px 1px medium;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
-    height: 10rem;
-    width: clamp(14rem, 100%, 40rem);
+    height: clamp(3rem, 13vw, 10rem);  
+    width: clamp(11rem, 100%, 40rem);
 }
 
 textarea {
@@ -519,18 +521,23 @@ textarea {
     padding: .75rem;
 }
 
+#task-info-label {
+    height: clamp(3rem, 13.5vw, 10rem);
+    width: clamp(11rem, 100%, 40rem);
+}
 
-.checklist-inputs input {
+
+.todo-form form .checklist-inputs input {
     position: absolute;
     border: none;
     width: 100%;
     height: 100%;
     background: none repeat scroll 0 0 #50D0FF20;
     padding: 0 .5rem 0 1.75rem;   
-    /* color: white; */
+    border-radius: 0px;
 }
 
-textarea:focus, .checklist-inputs input:focus {
+textarea:focus, .todo-form form .checklist-inputs input:focus {
     background: none repeat scroll 0 0 transparent;
     outline-width: 0;
     
@@ -591,8 +598,11 @@ textarea:focus, .checklist-inputs input:focus {
     width: 6rem;
     padding: .25rem 0;
     cursor: pointer;
-    grid-column: 1/-1;
     border-radius: 20px;
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    right: 0;
 }
 
 .addTask-button:hover {
@@ -677,23 +687,14 @@ textarea:focus, .checklist-inputs input:focus {
 .overlay {
     display: none;
     position: fixed;
-    height: 100vh;
+    top: -78px;
+    height: calc(100vh + 78px);
     width: 100vw;
     z-index: 3;
     background-color: rgba(0,0,0,0.5);
 }
 
-.overlayed-header {
-    height: 100%;
-    width: 100%;
-    display: none;
-    position: absolute;
-    z-index: 4;
-    background-color: rgba(0,0,0,0.5);
-    top: 0;
-}
-
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 600px) {
     .projects h3::before, .home h3::before {
         content: none;
     }
@@ -709,4 +710,5 @@ textarea:focus, .checklist-inputs input:focus {
     main {
         justify-content: center;
     }
+        
 }

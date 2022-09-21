@@ -20,19 +20,6 @@ function createForm() {
     const dateDiv = document.createElement('div');
     const dateLabel = document.createElement('label');
     const dateInput = document.createElement('input');
-    const descriptionLabel = document.createElement('label');
-    const textArea = document.createElement('textarea');
-    const checkListInputs = document.createElement('div');
-    const firstChecklist = document.createElement('label');
-    const firstChecklistInput = document.createElement('input');
-    const secondChecklist = document.createElement('label');
-    const secondChecklistInput = document.createElement('input');
-    const thirdChecklist = document.createElement('label');
-    const thirdChecklistInput = document.createElement('input');
-    const fourthChecklist = document.createElement('label');
-    const fourthChecklistInput = document.createElement('input');
-    const fifthChecklist = document.createElement('label');
-    const fifthChecklistInput = document.createElement('input');
     const priorityDiv = document.createElement('div');
     const priorityLabel = document.createElement('label');
     const prioritySelect = document.createElement('select');
@@ -45,6 +32,21 @@ function createForm() {
     const projectDiv = document.createElement('div');
     const projectLabel = document.createElement('label');
     const projectSelect = document.createElement('select');
+    const descriptionLabel = document.createElement('label');
+    const textArea = document.createElement('textarea');
+    const checkListInputs = document.createElement('div');
+    const checklistDiv = document.createElement('div');
+    const firstChecklist = document.createElement('label');
+    const firstChecklistInput = document.createElement('input');
+    const secondChecklist = document.createElement('label');
+    const secondChecklistInput = document.createElement('input');
+    const thirdChecklist = document.createElement('label');
+    const thirdChecklistInput = document.createElement('input');
+    const fourthChecklist = document.createElement('label');
+    const fourthChecklistInput = document.createElement('input');
+    const fifthChecklist = document.createElement('label');
+    const fifthChecklistInput = document.createElement('input');
+    
     const addTaskButton = document.createElement('button');
     const taskButtonContent = document.createTextNode('Add Task');
 
@@ -55,10 +57,13 @@ function createForm() {
     taskLabel.setAttribute('for', 'task');
     taskInput.setAttribute('type', 'text');
     taskInput.id = 'task';
+    taskInput.setAttribute('autocomplete', "off");
     dateDiv.classList.add('date-div');
     dateLabel.setAttribute('for', 'time-label');
     dateInput.setAttribute('type', 'datetime-local');
     dateInput.id = 'time-label';
+    projectDiv.classList.add('project-div');
+    projectLabel.setAttribute('for', 'project-label');
     descriptionLabel.setAttribute('for', 'task-info');
     descriptionLabel.id = 'task-info-label';
     textArea.setAttribute('type', 'text');
@@ -94,8 +99,7 @@ function createForm() {
     high.value = '1';
     medium.value = '2';
     low.value = '3';
-    projectDiv.classList.add('project-div');
-    projectLabel.setAttribute('for', 'project-label');
+    
     addTaskButton.setAttribute('type', 'button');
     addTaskButton.classList.add('addTask-button');
 
@@ -108,17 +112,6 @@ function createForm() {
     taskDiv.appendChild(taskLabel);
     dateLabel.appendChild(dateInput);
     dateDiv.appendChild(dateLabel);
-    descriptionLabel.appendChild(textArea);
-    firstChecklist.appendChild(firstChecklistInput);
-    checkListInputs.appendChild(firstChecklist);
-    secondChecklist.appendChild(secondChecklistInput);
-    checkListInputs.appendChild(secondChecklist);
-    thirdChecklist.appendChild(thirdChecklistInput);
-    checkListInputs.appendChild(thirdChecklist);
-    fourthChecklist.appendChild(fourthChecklistInput);
-    checkListInputs.appendChild(fourthChecklist);
-    fifthChecklist.appendChild(fifthChecklistInput);
-    checkListInputs.appendChild(fifthChecklist);
     high.appendChild(highContent);
     medium.appendChild(mediumContent);
     low.appendChild(lowContent);
@@ -130,13 +123,28 @@ function createForm() {
     createProjectOptions(projectSelect);
     projectLabel.appendChild(projectSelect);
     projectDiv.appendChild(projectLabel);
+    descriptionLabel.appendChild(textArea);
+    firstChecklist.appendChild(firstChecklistInput);
+    checklistDiv.appendChild(firstChecklist);
+    secondChecklist.appendChild(secondChecklistInput);
+    checklistDiv.appendChild(secondChecklist);
+    thirdChecklist.appendChild(thirdChecklistInput);
+    checklistDiv.appendChild(thirdChecklist);
+    fourthChecklist.appendChild(fourthChecklistInput);
+    checklistDiv.appendChild(fourthChecklist);
+    fifthChecklist.appendChild(fifthChecklistInput);
+    checklistDiv.appendChild(fifthChecklist)
+    checkListInputs.appendChild(checklistDiv)
+    
+    
     addTaskButton.appendChild(taskButtonContent);
     form.appendChild(taskDiv);
     form.appendChild(dateDiv);
-    form.appendChild(descriptionLabel);
-    form.appendChild(checkListInputs);
+    
     form.appendChild(priorityDiv);
     form.appendChild(projectDiv);
+    form.appendChild(descriptionLabel);
+    form.appendChild(checkListInputs);
     form.appendChild(addTaskButton);
     todoForm.appendChild(form);
     main.appendChild(todoForm);
@@ -274,16 +282,12 @@ function openExistingForm() {
 
 function blurBackground() {
     const overlay = document.querySelector('.overlay');
-    const overlayedHeader = document.querySelector('.overlayed-header');
     overlay.style.display = 'block';
-    overlayedHeader.style.display = 'block';
 }
 
 function unBlurBackground() {
     const overlay = document.querySelector('.overlay');
-    const overlayedHeader = document.querySelector('.overlayed-header');
     overlay.style.display = 'none';
-    overlayedHeader.style.display = 'none';
 }
 
 function createStorageArray(title, date, dateID, description, checklist, priority, project, data) {
