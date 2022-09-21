@@ -120,6 +120,11 @@ function editTodoBlock(title, date, dateID, description, checklist, priority, pr
     const projectTitle = todoContainer.querySelector('.project');
 
     //Set Attributes
+    console.log(todoForm);
+    console.log(todoContainer);
+    console.log(dueDate);
+    console.log(dateID);
+    console.log(checklist);
     dueDate.dataset.dateTime = dateID;
 
     //Render data
@@ -219,9 +224,10 @@ function sortForms(allTodoForms, sortedTodos) {
     })
 }
 
-function changeTodoNum(sortedTodos) {
+function changeTodoNum(sortedTodos, sortedForms) {
     for (let i = 0; i < sortedTodos.length; i++) {
         sortedTodos[i].dataset.todoNum = `todo-${i+1}`;
+        sortedForms[i].dataset.todoNum = `todo-${i+1}`;
     }
 }
 
@@ -248,7 +254,7 @@ function orderTodosChronologically() {
     removePreviousTodos(allTodoForms, allTodoContainers);
     appendSortedTodos(sortedForms, sortedTodos);
     reOrderTodoStorage();
-    changeTodoNum(sortedTodos);
+    changeTodoNum(sortedTodos, sortedForms);
 }
 
 export { makeTodoBlock, editTodoBlock, markCompleted, sortTodos }

@@ -222,19 +222,24 @@ function applyForm() {
 
 function editForm() {
     //Add to storage, Edit Todo, Exit Form, Unblur
-    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    
     editTodoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     exitForm.call(this);
     unBlurBackground();
 }
 
 function openExistingForm() {
+    
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
         const todoForm = taskButton.parentElement.parentElement;
         const todoContainer = this.parentElement.parentElement;
+        console.log(todoForm.dataset.todoNum);
+            console.log(todoContainer.dataset.todoNum);
         if (todoForm.dataset.todoNum === todoContainer.dataset.todoNum) {
             addNewProjectToExistingForms(taskButton);
+            
             todoForm.style.display = 'block';
             taskButton.addEventListener('click', editForm);
         }
