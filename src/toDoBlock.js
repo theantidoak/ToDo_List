@@ -120,11 +120,6 @@ function editTodoBlock(title, date, dateID, description, checklist, priority, pr
     const projectTitle = todoContainer.querySelector('.project');
 
     //Set Attributes
-    console.log(todoForm);
-    console.log(todoContainer);
-    console.log(dueDate);
-    console.log(dateID);
-    console.log(checklist);
     dueDate.dataset.dateTime = dateID;
 
     //Render data

@@ -235,11 +235,8 @@ function openExistingForm() {
     addTaskButton.forEach((taskButton) => {
         const todoForm = taskButton.parentElement.parentElement;
         const todoContainer = this.parentElement.parentElement;
-        console.log(todoForm.dataset.todoNum);
-            console.log(todoContainer.dataset.todoNum);
         if (todoForm.dataset.todoNum === todoContainer.dataset.todoNum) {
             addNewProjectToExistingForms(taskButton);
-            
             todoForm.style.display = 'block';
             taskButton.addEventListener('click', editForm);
         }
