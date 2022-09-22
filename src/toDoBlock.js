@@ -149,7 +149,6 @@ function displayHiddenText(e) {
 }
 
 function changePriorityColor(topDiv) {
-    console.log(topDiv);
     const todoForm = topDiv.parentElement.previousSibling;
     const prioritySelect = todoForm.querySelector('.priority-div select')
     if (prioritySelect.value == 1) {

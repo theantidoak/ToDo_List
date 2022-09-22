@@ -57,6 +57,7 @@ function createForm() {
     taskLabel.setAttribute('for', 'task');
     taskInput.setAttribute('type', 'text');
     taskInput.id = 'task';
+    taskInput.required = true;
     taskInput.setAttribute('autocomplete', "off");
     dateDiv.classList.add('date-div');
     dateLabel.setAttribute('for', 'time-label');
@@ -214,8 +215,8 @@ function applyForm() {
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
     
     //Add to Storage, Make Todo, Exit Form, Unblur, Remove applyForm event listener before adding editForm 
-    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
-    makeTodoBlock(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData()); 
+    createStorageArray(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    makeTodoBlock(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData()); 
     exitForm.call(this);
     unBlurBackground();
     this.removeEventListener('click', applyForm);  
@@ -224,8 +225,8 @@ function applyForm() {
 function editForm() {
     //Add to storage, Edit Todo, Exit Form, Unblur
     
-    editTodoBlock.call(this, setTitle(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
-    createStorageArray(setTitle(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    editTodoBlock.call(this, setTask(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
+    createStorageArray(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     exitForm.call(this);
     unBlurBackground();
 }
@@ -280,9 +281,9 @@ function findOpenForm() {
 
 //Todo Inputs
 
-function setTitle() {
-    const title = findOpenForm().querySelector('#task');
-    return title.value; 
+function setTask() {
+    const task = findOpenForm().querySelector('#task');
+    return task.value; 
 }
 
 function setDateAsID() {
