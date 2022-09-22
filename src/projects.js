@@ -57,6 +57,8 @@ function addProjectButton(newProjectTitle) {
     const newProjectButtonContent = document.createTextNode(newProjectTitle);
     const deleteProjectButton = document.createElement('span');
     const deleteProjectButtonContent = document.createTextNode('-');
+    const deleteProjectButtonContent2 = document.createTextNode('-');
+    const deleteProjectButtonContent3 = document.createTextNode('-');
 
     //Set Attributes
     newProjectDiv.classList.add('titled-project-div');
@@ -66,6 +68,10 @@ function addProjectButton(newProjectTitle) {
 
     //Render Elements
     deleteProjectButton.appendChild(deleteProjectButtonContent);
+    deleteProjectButton.appendChild(deleteProjectButtonContent2);
+
+    deleteProjectButton.appendChild(deleteProjectButtonContent3);
+
     newProjectButton.appendChild(newProjectButtonContent);
     newProjectDiv.appendChild(newProjectButton);
     newProjectDiv.appendChild(deleteProjectButton);

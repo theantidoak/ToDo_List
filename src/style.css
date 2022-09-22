@@ -107,12 +107,15 @@ aside {
 }
 
 .delete-span {
-    transform: scale(2) translateY(-2px);
+    /* transform: scale(2) translateY(-2px); */
     cursor: pointer;
+    font-weight: 700;
+    letter-spacing: -2px;
 }
 
 .delete-span:hover {
     color: var(--coral);
+    transform: scale(1.2);
 }
 
 .home h3 {
@@ -194,12 +197,13 @@ main {
     padding: 0;
     font-weight: 200;
     color: var(--maya-blue);
-    transition: all ease 1s;
+    transition: all ease 1s, background-color 1ms;
     transform-origin: 50% 67.5%;
 }
 
 .add-todo:hover {
     color: var(--celadon-blue);
+    transform: scale(1.2);
 }
 
 .add-todo:focus {
@@ -242,14 +246,19 @@ main {
     appearance: none;
     width: .75rem;
     height: .75rem;
-    outline: 1px solid var(--celadon-blue);
+    outline: 1px solid white;
     background-color: white;
     position: relative;
-    top: -.2rem;
-    right: -.2rem;
+    top: -.25rem;
+    right: 0;
     cursor: pointer;
     position: relative;
     top: -.125rem;
+    transition: all ease .25s;
+}
+
+.top input:hover {
+    transform: scale(1.25);
 }
 
 .top input:checked {
@@ -423,6 +432,7 @@ main {
 
 .todo-form h1 span:hover {
     color: var(--coral);
+    transform: scale(1.25);
 }
 
 .todo-form form {
@@ -430,10 +440,10 @@ main {
     max-height: 27rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));;
-    gap: 1.25rem;
+    column-gap: 1.25rem;
     overflow: auto;
     padding: clamp(2rem, 6vw, 2.5rem) clamp(.5rem, 4%, 2rem) 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: .25rem;
 }
 
 .todo-form form input, select {
@@ -458,6 +468,14 @@ label {
 label[for='task'], label[for="time-label"], label[for="priority-label"], label[for="project-label"], label[for="task-info"], .checklist-inputs {
     position: relative;
     margin: 0 auto clamp(.5rem, 2vw, 1rem);
+}
+
+.task-div, .date-div, .priority-div, .project-div, .checklist-inputs, #task-info-label {
+    margin-bottom: 1.25rem;
+}
+
+.checklist-inputs, #task-info-label {
+    margin-top: .5rem;
 }
 
 label[for='task']::before, label[for="time-label"]::before, label[for="priority-label"]::before, label[for="project-label"]::before, label[for="task-info"]::before, .checklist-inputs::before {

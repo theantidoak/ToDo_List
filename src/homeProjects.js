@@ -4,7 +4,7 @@ function displayAlltodos() {
     const allTodoContainers = document.querySelectorAll('.todo-container');
     allTodoContainers.forEach(todoContainer => {
         const todoType = !todoContainer.classList.contains('completed-todo');
-        todoContainer.style.display = todoType ? 'block' : 'none';
+        todoContainer.style.display = todoType ? 'flex' : 'none';
     })
 }
 
@@ -13,7 +13,7 @@ function displayUpcomingtodos(e) {
     allTodoContainers.forEach((todoContainer) => {     
         const dueDate = todoContainer.querySelector('.date').dataset.dateTime;
         const todoType = e.currentTarget.isUpcoming(new Date(dueDate), { weekStartsOn: 1 });
-        todoContainer.style.display = todoType ? 'block' : 'none';
+        todoContainer.style.display = todoType ? 'flex' : 'none';
     });
 }
 
@@ -21,7 +21,7 @@ function displayCompletedtodos() {
     const allTodoContainers = document.querySelectorAll('.todo-container');
     allTodoContainers.forEach(todoContainer => {
         const todoType = todoContainer.classList.contains('completed-todo');
-        todoContainer.style.display = todoType ? 'block' : 'none';
+        todoContainer.style.display = todoType ? 'flex' : 'none';
     })
 }
 
