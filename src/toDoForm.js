@@ -1,4 +1,4 @@
-import { makeTodoBlock, editTodoBlock } from './toDoBlock';
+import { makeTodoBlock, editTodoBlock} from './toDoBlock';
 import { format } from 'date-fns';
 import { createStorageArray } from './localStorage'
 
@@ -98,6 +98,7 @@ function createForm() {
     priorityLabel.setAttribute('for', 'priority-label');
     highOption.value = '1';
     mediumOption.value = '2';
+    mediumOption.setAttribute('selected', 'selected');
     lowOption.value = '3';
     addTaskButton.setAttribute('type', 'button');
     addTaskButton.classList.add('addTask-button');

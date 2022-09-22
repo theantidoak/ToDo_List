@@ -86,6 +86,7 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
     checkbox.addEventListener('input', markCompleted);
 
     orderTodosChronologically();
+    changePriorityColor(topDiv);
 }
 
 
@@ -109,7 +110,8 @@ function makeChecklist(checklist, ol) {
 function editTodoBlock(title, date, dateID, description, checklist, priority, project) {  
     //cache DOM
     const todoForm = this.parentElement.parentElement;
-    const todoContainer = document.querySelectorAll(`[data-todo-num="${todoForm.dataset.todoNum}"]`)[1];
+    const todoContainer = todoForm.nextSibling;
+    const topDiv = todoContainer.querySelector('.top');
     const task = todoContainer.querySelector('h4');
     const dueDate = todoContainer.querySelector('.date');
     const descriptionText = todoContainer.querySelector('.description-div p');
@@ -132,6 +134,7 @@ function editTodoBlock(title, date, dateID, description, checklist, priority, pr
     projectTitle.textContent = project;
     
     orderTodosChronologically();
+    changePriorityColor(topDiv)
 }
 
 function displayHiddenText(e) {
@@ -142,6 +145,19 @@ function displayHiddenText(e) {
         buttonDiv.style.display = 'block';
     } else {
         buttonDiv.style.display = 'none';
+    }
+}
+
+function changePriorityColor(topDiv) {
+    console.log(topDiv);
+    const todoForm = topDiv.parentElement.previousSibling;
+    const prioritySelect = todoForm.querySelector('.priority-div select')
+    if (prioritySelect.value == 1) {
+        topDiv.style.backgroundColor = 'var(--celadon-blue)';
+    } else if (prioritySelect.value == 2) {
+        topDiv.style.backgroundColor = 'var(--coral)';
+    } else if (prioritySelect.value == 3) {
+        topDiv.style.backgroundColor = 'var(--maya-blue)';
     }
 }
 
@@ -171,6 +187,9 @@ function markCompleted(e) {
         removeCheckedFromStorage(todoContainer, projectTitle);
     }
 }
+
+
+//Checkbox Input Value to Storage
 
 function addCheckedToStorage(todoContainer) {
     const dataIndex = todoContainer.dataset.todoNum;
