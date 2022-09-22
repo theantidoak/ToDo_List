@@ -54,7 +54,7 @@ header h1 {
 
 aside {
     background-color: var(--maya-blue);
-    width: clamp(6rem, 20%, 8.5rem);
+    width: clamp(6rem, 30%, 12rem);
     padding: 1.5rem clamp(.75rem, 3vw, 1rem) 1.5rem clamp(.5rem, 2.5vw, 1rem);
     position: relative;
 }
@@ -62,18 +62,25 @@ aside {
 .home, .projects {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: clamp(.5rem, 1vw, .75rem);
     margin-bottom: 1.5rem;
 }
 
 .home button, .projects button {
     color: var(--celadon-blue);
     padding-left: 0;
+    font-size: clamp(.85rem, 3vw, 1.15rem);
+    font-weight: 700;
 }
 
 .home button:hover, .projects button:not(.projects-title button):hover {
     transform: scale(1.1);
     font-weight: 600;
+}
+
+.projects-title {
+    display: flex;
+    gap: .5rem;
 }
 
 .projects-title button {
@@ -85,11 +92,10 @@ aside {
 .titled-project-div {
     display: flex;
     position: relative;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    max-width: 6rem;
+    max-width: 9rem;
 }
 
 .projects button {
@@ -125,6 +131,7 @@ aside {
 .home h3::before {
     content: 'Home';
     cursor: pointer;
+    font-size: clamp(1.25rem, 4vw, 2rem);
 }
 
 .projects h3 {
@@ -146,15 +153,16 @@ aside {
 .projects h3 button {
     mask-image: url('photos/folder-plus.svg');
     -webkit-mask-image: url('photos/folder-plus.svg');
-    mask-size: contain;
-    -webkit-mask-size: contain;
+    mask-size: cover;
+    -webkit-mask-size:cover;
     mask-repeat: no-repeat;
     -webkit-mask-repeat: no-repeat;
     mask-position: center;
     -webkit-mask-position: center;
     background-color: white;
-    height: 1.5rem;
-    width: 1.5rem;
+
+    width: 2rem;
+    height: 2rem;
 }
 
 .projects h3 button:hover {
@@ -163,15 +171,15 @@ aside {
 
 .projects h3::before {
     content: 'Projects';
-    margin-right: .5rem;
+    font-size: clamp(1.25rem, 4vw, 2rem);
 }
 
 main {
     padding: 3.5rem clamp(1.25rem, 6vw, 2rem) 1rem clamp(1rem, 7%, 3rem);
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, clamp(12rem, 30%, 14rem));
-    grid-auto-rows: 12.25rem;
+    grid-template-columns: repeat(auto-fit, clamp(12.5rem, 45%, 16rem));
+    grid-auto-rows: clamp(12.25rem, 30vw, 16rem);
     gap: 2rem;
 }
 
@@ -202,23 +210,28 @@ main {
 /*---To Do Container---*/
 
 .todo-container {
-    width: clamp(11rem, 50vw, 12rem);
+    width: clamp(11rem, 30vw, 15rem);
+    height: clamp(12rem, 30vw, 15rem);
     margin: 0 auto;
     border: 3px solid var(--coral);
     position: relative;
     overflow: hidden;
     z-index: 1;
     box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(.5rem, 1.75vw, 1rem);
 }
 
 .todo-container .top {
     padding: .25rem;
-    margin-bottom: .5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--coral);
     color: white;
+    width: 100%;
 }
 
 .todo-container .top p {
@@ -247,51 +260,66 @@ main {
 }
 
 .todo-container h4 {
-    width: 11rem;
-    font-size: 1.25rem;
-    margin: .75rem auto .5rem;
+    width: 100%;
+    font-size: clamp(1.25rem, 3.35vw, 1.5rem);
+    margin: 0;
+    padding: 0 .5rem;
     text-align: center;
     overflow: auto;
     padding-bottom: 1rem;
-    height: 3rem;
+    height: clamp(3rem, 8vw, 3.75rem);
+    text-decoration: underline;
 }
 
 .todo-container p {
     margin-bottom: 0;
     width: fit-content;
+    padding: 0 .25rem;
 }
 
 .todo-container .project {
-    margin: 0 auto;
     text-transform: capitalize;
     color: var(--celadon-blue);
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 92.5%;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    flex: 1;
+    min-height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    
 }
 
 .todo-container .date {
     font-weight: 100;
     width: 100%;
-    text-align: center;
-    padding: 0 0 2.5rem;
+    margin: 0;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 .todo-container .editables {
-    position: absolute;
-    bottom: 0;
     outline: 1px solid var(--coral);
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 2rem;
+    min-height: 2rem;
     padding: .25rem 0;
+    margin-top: auto;
 }
 
 .todo-container .editables button {
     width: 1.25rem;
-    height: 100%;
+    min-height: 100%;
     margin: 0 .5rem;
     padding: 0;
-    position: relative;
 }
 
 .todo-container .editables button:hover {
@@ -329,18 +357,14 @@ main {
 .description-div, .checklist-div {
     display: none;
     position: absolute;
-    top: -8.25rem;
-    left: -3.55rem;
-    height: 7.9rem;
-    width: 11.5rem;
+    top: 1.75rem;
+    left: .25rem;
+    height: calc(100% - 4rem);
+    width: clamp(10.5rem, 30vw, 14rem);
     overflow: auto;
     background-color: #fff;
     color: black;
     z-index: 2;
-}
-
-.checklist-div {
-    left: -6.7rem;
 }
 
 .description-div p {
@@ -688,8 +712,8 @@ textarea:focus, .todo-form form .checklist-inputs input:focus {
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2rem;
+        height: 2rem;
     }
     main {
         justify-content: center;
