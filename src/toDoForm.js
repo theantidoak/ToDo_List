@@ -159,8 +159,8 @@ function createProjectOptions(select) {
     const projectTitles = document.querySelectorAll('.project-name');
     for(let i = 0; i < projectTitles.length; i++) {
         const projectOption = document.createElement('option');
-        const optionContent = document.createTextNode(projectTitles[i].textContent);
-        projectOption.value = projectTitles[i].textContent;
+        const optionContent = document.createTextNode(projectTitles[i].textContent.toLowerCase());
+        projectOption.value = projectTitles[i].textContent.toLowerCase();
         projectOption.appendChild(optionContent);
         select.appendChild(projectOption);
     }
@@ -185,8 +185,8 @@ function countUp(indicator) {
         counter = todoContainers.length || 0;
         return ++counter;
     } else {
-        const projectTitles = document.querySelectorAll('.titled-project-div')
-        counter = projectTitles.length || 0;
+        const projectTitles = document.querySelectorAll('.project-name')
+        counter = projectTitles.length - 1 || 0;
         return counter++;
     }
 }
@@ -237,6 +237,7 @@ function openExistingForm() {
         const todoContainer = this.parentElement.parentElement;
         if (todoForm.dataset.todoNum === todoContainer.dataset.todoNum) {
             addNewProjectToExistingForms(taskButton);
+            setProjectSelectValue(todoForm, todoContainer);
             todoForm.style.display = 'block';
             taskButton.addEventListener('click', editForm);
         }
@@ -251,6 +252,12 @@ function addNewProjectToExistingForms(taskButton) {
         projectSelect.removeChild(projectSelect.lastChild);
     }
     createProjectOptions(projectSelect);
+}
+
+function setProjectSelectValue(todoForm, todoContainer) {
+    const projectSelect = todoForm.querySelector('.project-div select');
+    const projectTitle = todoContainer.querySelector('.project').textContent.toLowerCase();
+    projectSelect.value = projectTitle;
 }
 
 function bindAddTodoButton() {

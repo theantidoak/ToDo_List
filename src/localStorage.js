@@ -178,7 +178,7 @@ function createStorageForm(todoFormID, formNumber) {
     createForm();
     const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
     const inputArray = getInputNodes(todoForm);
-    useLocalStorageInputs(inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6], formNumber);
+    useLocalStorageInputs(formNumber, inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6]);
     createTodoFromStorage(todoForm, formNumber, inputArray[7]);
 }
 
@@ -201,11 +201,11 @@ function getInputNodes(todoForm) {
     return inputArray;
 }
 
-function useLocalStorageInputs(task, date, dateID, description, checklist, priority, project, formNumber) {
+function useLocalStorageInputs(formNumber, ...args) {
     for (let i = 0; i < 7; i++) {
         if (i === 1) {
             //date
-            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i+1];
+            args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i+1];
         } else if (i === 2) {
             //dateID
             continue;
@@ -215,10 +215,10 @@ function useLocalStorageInputs(task, date, dateID, description, checklist, prior
                 if (JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j] == undefined) {
                     continue;
                 }
-                arguments[i][j].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
+                args[i][j].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
             }
         } else {
-            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
+            args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
         }   
         
     }
@@ -233,6 +233,7 @@ function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
     addTaskButton.removeEventListener('click', applyForm);
     unBlurBackground();
 }
+
 
 //Project Storage
 

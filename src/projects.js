@@ -78,7 +78,8 @@ function addProjectButton(newProjectTitle) {
 
 function renderProjectToPage() {
     const projectForm = document.querySelector('#project-title');
-    const projectTitle = projectForm.value || 'No name';
+    const projectTitleAmount = document.querySelector('.projects').children.length - 1;
+    const projectTitle = projectForm.value || `No name${projectTitleAmount}`;
     addProjectButton(projectTitle);
     closeProjectForm();
     unBlurBackground();
@@ -107,15 +108,16 @@ function closeProjectForm() {
 }
 
 function removeProject() { 
-    const projectButton = this.parentElement;
+    const projectButtonDiv = this.parentElement;
+    const projectButton = this.previousSibling;
     removeProjectStorageItem(findProjectIndex(projectButton));
-    projectButton.parentElement.removeChild(projectButton);
+    projectButtonDiv.parentElement.removeChild(projectButtonDiv);
 }
 
 function findProjectIndex(projectButton) {
-    const projects = document.querySelectorAll('.titled-project-div');
+    const projects = document.querySelectorAll('.project-name');
     const projectHunt = [...projects].map(project => project == projectButton);
-    const projectIndex = projectHunt.indexOf(true) + 1;
+    const projectIndex = projectHunt.indexOf(true);
     return projectIndex;
 }
 
