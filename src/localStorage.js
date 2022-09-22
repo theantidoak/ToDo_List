@@ -178,13 +178,14 @@ function createStorageForm(todoFormID, formNumber) {
     createForm();
     const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
     const inputArray = getInputNodes(todoForm);
-    useLocalStorageInputs(inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6], inputArray[7], inputArray[8], inputArray[9], formNumber);
-    createTodoFromStorage(todoForm, formNumber, inputArray[10]);
+    useLocalStorageInputs(inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6], formNumber);
+    createTodoFromStorage(todoForm, formNumber, inputArray[7]);
 }
 
 function getInputNodes(todoForm) {
     const taskInput = todoForm.querySelector('.task-div input');
     const dateInput = todoForm.querySelector('#time-label');
+    const dateID = '';
     const textArea = todoForm.querySelector('#task-info');
     const firstChecklistInput = todoForm.querySelector('#firstchecklist');
     const secondChecklistInput = todoForm.querySelector('#secondchecklist');
@@ -195,21 +196,31 @@ function getInputNodes(todoForm) {
     const projectSelect = todoForm.querySelector('.project-div select');
     const addTaskButton = todoForm.querySelector('.addTask-button');
     
-    const inputArray = [taskInput, dateInput, textArea, firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput, prioritySelect, projectSelect, addTaskButton];
+    const checklist = [firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput]
+    const inputArray = [taskInput, dateInput, dateID, textArea, checklist, prioritySelect, projectSelect, addTaskButton];
     return inputArray;
 }
 
-function useLocalStorageInputs(task, date, description, firstChecklist, secondChecklist, thirdChecklist, fourthChecklist, fifthChecklist, priority, project, formNumber) {
+function useLocalStorageInputs(task, date, dateID, description, checklist, priority, project, formNumber) {
     for (let i = 0; i < 7; i++) {
-        if (i === 2) {
+        if (i === 1) {
+            //date
+            arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i+1];
+        } else if (i === 2) {
+            //dateID
             continue;
         } else if (i === 4) {
+            //checklist
             for (let j = 0; j < 5; j++) {
-                arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
+                if (JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j] == undefined) {
+                    continue;
+                }
+                arguments[i][j].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
             }
         } else {
             arguments[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
         }   
+        
     }
 }
 
