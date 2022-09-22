@@ -296,6 +296,7 @@ main {
 
 .todo-container .date {
     font-weight: 100;
+    font-size: clamp(.85rem, 2.5vw, 1.1rem);
     width: 100%;
     margin: 0;
     flex: 1;
