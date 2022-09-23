@@ -26,7 +26,7 @@ function createNewProjectForm() {
     projectInput.setAttribute('autocomplete', 'off');
     projectButtonDiv.classList.add('project-button-div');
     projectButton.classList.add('addProject');
-    projectButton.setAttribute('type', 'button');
+    projectButton.setAttribute('type', 'submit');
 
     //Render Elements
     exitButton.appendChild(exitButtonContent);
