@@ -101,7 +101,7 @@ function createForm() {
     mediumOption.value = '2';
     mediumOption.setAttribute('selected', 'selected');
     lowOption.value = '3';
-    addTaskButton.setAttribute('type', 'submit');
+    addTaskButton.setAttribute('type', 'button');
     addTaskButton.classList.add('addTask-button');
 
     //Render elements
