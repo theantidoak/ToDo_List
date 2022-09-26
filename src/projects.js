@@ -2,11 +2,10 @@ import { populateStorage, removeProjectStorageItem } from './localStorage';
 import { countUp, blurBackground, unBlurBackground } from './toDoForm'
 
 function createNewProjectForm() {
-
-    //Cache DOM
+    // Cache DOM
     const main = document.querySelector('main');
 
-    //Create Elements
+    // Create Elements
     const projectFormDiv = document.createElement('div');
     const exitButton = document.createElement('button');
     const exitButtonContent = document.createTextNode('X');
@@ -17,7 +16,7 @@ function createNewProjectForm() {
     const projectButton = document.createElement('button');
     const projectButtonContent = document.createTextNode('Add');
 
-    //Set Attributes
+    // Set Attributes
     projectFormDiv.classList.add('project-form');
     exitButton.classList.add('project-exit');
     projectLabel.setAttribute('for', 'projects-title');
@@ -28,7 +27,7 @@ function createNewProjectForm() {
     projectButton.classList.add('addProject');
     projectButton.setAttribute('type', 'submit');
 
-    //Render Elements
+    // Render Elements
     exitButton.appendChild(exitButtonContent);
     projectButton.appendChild(projectButtonContent);
     projectButtonDiv.appendChild(projectButton);
@@ -39,7 +38,7 @@ function createNewProjectForm() {
     projectFormDiv.appendChild(projectForm);
     main.appendChild(projectFormDiv);
 
-    //Bind Event Listeners
+    // Bind Event Listeners
     projectButton.addEventListener('click', renderProjectToPage);
     exitButton.addEventListener('click', closeProjectForm);
     
@@ -47,11 +46,10 @@ function createNewProjectForm() {
 }
 
 function addProjectButton(newProjectTitle) {
-
-    //Cache DOM
+    // Cache DOM
     const projects = document.querySelector('.projects');
 
-    //Create Elements
+    // Create Elements
     const newProjectDiv = document.createElement('div');
     const newProjectButton = document.createElement('button');
     const newProjectButtonContent = document.createTextNode(newProjectTitle);
@@ -60,24 +58,22 @@ function addProjectButton(newProjectTitle) {
     const deleteProjectButtonContent2 = document.createTextNode('-');
     const deleteProjectButtonContent3 = document.createTextNode('-');
 
-    //Set Attributes
+    // Set Attributes
     newProjectDiv.classList.add('titled-project-div');
     newProjectButton.classList.add('project-name');
     newProjectButton.classList.add(makeProjectNameIntoID(newProjectTitle));
     deleteProjectButton.classList.add('delete-span');
 
-    //Render Elements
+    // Render Elements
     deleteProjectButton.appendChild(deleteProjectButtonContent);
     deleteProjectButton.appendChild(deleteProjectButtonContent2);
-
     deleteProjectButton.appendChild(deleteProjectButtonContent3);
-
     newProjectButton.appendChild(newProjectButtonContent);
     newProjectDiv.appendChild(newProjectButton);
     newProjectDiv.appendChild(deleteProjectButton);
     projects.appendChild(newProjectDiv);
     
-    //Bind Event Listeners
+    // Bind Event Listeners
     newProjectButton.addEventListener('click', displayProjecttodos);
     deleteProjectButton.addEventListener('click', removeProject);
 }
@@ -92,18 +88,16 @@ function renderProjectToPage() {
     populateStorage(`${countUp()}project`, projectTitle);
 }
 
-
 function makeProjectNameIntoID(projectTitle) {
     return projectTitle.toLowerCase().split(' ').join('');
 }
 
-//Project Form and Button Functions
-
+//  Project Form and Button Functions
 function displayProjecttodos() {
     const projectTitle = this.getAttribute('class').split(' ')[1];
     const todoContainers = document.querySelectorAll('.todo-container');
     todoContainers.forEach(todo => {
-        todo.style.display = !todo.classList.contains(projectTitle) ? 'none' : 'block';
+        todo.style.display = !todo.classList.contains(projectTitle) ? 'none' : 'flex';
     });
 }
 
@@ -128,17 +122,18 @@ function findProjectIndex(projectButton) {
 }
 
 
-//Bind Functions
-
+// Bind Functions
 function bindProjectButtons() {
-
-    //Cache DOM
+    // Cache DOM
     const projectFormButton = document.querySelector('.projects-title');
     const defaultProjectButton = document.querySelector('.default');
 
-    //Bind Events
+    // Bind Events
     projectFormButton.addEventListener('click', createNewProjectForm);
     defaultProjectButton.addEventListener('click', displayProjecttodos);
 }
 
-export { createNewProjectForm, addProjectButton, bindProjectButtons }
+export { 
+    createNewProjectForm,
+    addProjectButton,
+    bindProjectButtons }

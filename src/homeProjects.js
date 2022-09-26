@@ -26,25 +26,22 @@ function displayCompletedtodos() {
 }
 
 
-function bindHomeButtons() {
-
-    //Cache DOM
+export default function bindHomeButtons() {
+    // Cache DOM
     const allButton = document.querySelector('.all');
     const homeButton = document.querySelector('.home-title');
     const todayButton = document.querySelector('.today');
     const thisWeekButton = document.querySelector('.upcoming');
     const completedButton = document.querySelector('.completed');
 
-    //Set Date modification parameters
+    // Set Date modification parameters
     todayButton.isUpcoming = isToday;
     thisWeekButton.isUpcoming = isThisWeek;
     
-    //Bind events
+    // Bind events
     allButton.addEventListener('click', displayAlltodos);
     homeButton.addEventListener('click', displayAlltodos);
     completedButton.addEventListener('click', displayCompletedtodos);
     todayButton.addEventListener('click', displayUpcomingtodos);
     thisWeekButton.addEventListener('click', displayUpcomingtodos);
 }
-
-export { bindHomeButtons }

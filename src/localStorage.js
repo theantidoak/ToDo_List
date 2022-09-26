@@ -11,6 +11,7 @@ function storageAvailable(type) {
         storage.removeItem(x);
         return true;
     }
+    
     catch (e) {
         return e instanceof DOMException && (
             // everything except Firefox
@@ -38,19 +39,19 @@ function populateStorage(callName, item) {
 function renderStorageOnPage() {  
     if (storageAvailable('localStorage')) {
         if (localStorage.length == 0) return;
+
         findProjectStorageAndRender();
         findTodoStorageAndRender();
     }
 }
 
-
-//Todo Storage
-
+// Todo Storage
 function findTodoStorageAndRender() {
     const keys = Object.keys(localStorage).sort();
     const lastStorageItem = keys[localStorage.length-1];
     const amountOfStorageItems = lastStorageItem.replace(/\D/g, '');
     if (!localStorage.getItem('array1')) return;
+
     for (let i = 1; i <= amountOfStorageItems; i++) {
         createStorageForm(input(i).dataID, i);
         makeTodoBlock(input(i).task, input(i).date, input(i).dateID, input(i).description, input(i).checklist, input(i).priority, input(i).project, input(i).dataID);  
@@ -67,20 +68,19 @@ function input(i) {
     const priority = JSON.parse(localStorage.getItem(`array${i}`))[5];
     const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
     const dataID = JSON.parse(localStorage.getItem(`array${i}`))[7];
-
     return { task, date, dateID, description, checklist, priority, project, dataID }
 }
 
 function renderCheckedStorage(i) {
-    if (isCompleted(i) === true) {
-        const todoContainer = document.querySelectorAll('.todo-container')[i-1];
-        const todoCheckbox = todoContainer.querySelector('.top input');
-        const projectTitle = JSON.parse(localStorage.getItem(`array${i}`))[6];
-        todoCheckbox.checked = true;
-        todoContainer.classList.add('completed-todo');
-        todoContainer.classList.remove(projectTitle);
-        todoContainer.style.display = 'none';
-    }
+    if (isCompleted(i) !== true) return;
+
+    const todoContainer = document.querySelectorAll('.todo-container')[i-1];
+    const todoCheckbox = todoContainer.querySelector('.top input');
+    const projectTitle = JSON.parse(localStorage.getItem(`array${i}`))[6];
+    todoCheckbox.checked = true;
+    todoContainer.classList.add('completed-todo');
+    todoContainer.classList.remove(projectTitle);
+    todoContainer.style.display = 'none';
 }
 
 function isCompleted(i) {
@@ -100,6 +100,7 @@ function lowerTodoIndexNum(deletedTodoIndexNum) {
         const keyIndexNum = key.replace(/\D/g, '');
         const todoArrayIndex = key.split('')[key.split('').length-1];
         if (!Number.isInteger(+todoArrayIndex)) return;
+
         if (keyIndexNum > deletedTodoIndexNum) {
             const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
             const storageItemValue = localStorage[key];
@@ -142,6 +143,7 @@ function sortKeysByDate() {
             }
         }
     });
+
     return sortedKeys;
 }
 
@@ -163,9 +165,7 @@ function setNewValue(sortedKeys, newStorageValueArray) {
     }
 }
 
-
 // Todo Form Storage 
-
 function createStorageArray(title, date, dateID, description, checklist, priority, project, data) {
     const array = [];
     const dataNumber = findOpenForm().dataset.todoNum;
@@ -176,6 +176,7 @@ function createStorageArray(title, date, dateID, description, checklist, priorit
 
 function createStorageForm(todoFormID, formNumber) {
     createForm();
+
     const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
     const inputArray = getInputNodes(todoForm);
     useLocalStorageInputs(formNumber, inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4], inputArray[5], inputArray[6]);
@@ -195,7 +196,8 @@ function getInputNodes(todoForm) {
     const prioritySelect = todoForm.querySelector('.priority-div select');
     const projectSelect = todoForm.querySelector('.project-div select');
     const addTaskButton = todoForm.querySelector('.addTask-button');
-    
+   
+    // Create argument array for useLocalStorageInputs
     const checklist = [firstChecklistInput, secondChecklistInput, thirdChecklistInput, fourthChecklistInput, fifthChecklistInput]
     const inputArray = [taskInput, dateInput, dateID, textArea, checklist, prioritySelect, projectSelect, addTaskButton];
     return inputArray;
@@ -204,13 +206,16 @@ function getInputNodes(todoForm) {
 function useLocalStorageInputs(formNumber, ...args) {
     for (let i = 0; i < 7; i++) {
         if (i === 1) {
-            //date
+
+            // date
             args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i+1];
         } else if (i === 2) {
-            //dateID
+
+            // dateID
             continue;
         } else if (i === 4) {
-            //checklist
+
+            // checklist
             for (let j = 0; j < 5; j++) {
                 if (JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j] == undefined) {
                     continue;
@@ -235,8 +240,7 @@ function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
 }
 
 
-//Project Storage
-
+// Project Storage
 function findProjectStorageAndRender() {
     const projectTitles = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
     projectTitles.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
@@ -251,6 +255,7 @@ function lowerProjectDataNumbers(num) {
     Object.keys(localStorage).sort().forEach(key => {
         const keyIndexNum = key.replace(/\D/g, '');
         if (!Number.isInteger(+keyIndexNum) || !Number.isInteger(+key[0])) return;
+
         if (keyIndexNum > num) {
             const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
             const storageItemValue = localStorage[key];
@@ -258,9 +263,16 @@ function lowerProjectDataNumbers(num) {
             localStorage.setItem(newKeyIndex, storageItemValue);
         }
     })
-
 } 
 
 
 
-export { populateStorage, renderStorageOnPage, removeTodoStorageItem, reOrderTodoStorage, createStorageArray, useLocalStorageInputs, removeProjectStorageItem }
+export { 
+    populateStorage, 
+    renderStorageOnPage, 
+    removeTodoStorageItem, 
+    reOrderTodoStorage, 
+    createStorageArray, 
+    useLocalStorageInputs, 
+    removeProjectStorageItem 
+}

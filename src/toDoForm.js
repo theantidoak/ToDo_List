@@ -3,11 +3,10 @@ import { format } from 'date-fns';
 import { createStorageArray } from './localStorage'
 
 function createForm() {
-
-    //Cache DOM
+    // Cache DOM
     const main = document.querySelector('main');
 
-    //Create elements
+    // Create elements
     const todoForm = document.createElement('div');
     const newTask = document.createElement('h1');
     const exitSpan = document.createElement('span');
@@ -45,12 +44,11 @@ function createForm() {
     const fourthChecklist = document.createElement('label');
     const fourthChecklistInput = document.createElement('input');
     const fifthChecklist = document.createElement('label');
-    const fifthChecklistInput = document.createElement('input');
-    
+    const fifthChecklistInput = document.createElement('input');  
     const addTaskButton = document.createElement('button');
     const taskButtonContent = document.createTextNode('Add Task');
 
-    //Set attributes
+    // Set attributes
     todoForm.classList.add('todo-form');
     todoForm.classList.add('storable');
     taskDiv.classList.add('task-div');
@@ -104,7 +102,7 @@ function createForm() {
     addTaskButton.setAttribute('type', 'button');
     addTaskButton.classList.add('addTask-button');
 
-    //Render elements
+    // Render elements
     exitSpan.appendChild(exitContent);
     newTask.appendChild(newTaskContent);
     newTask.appendChild(exitSpan);
@@ -147,7 +145,7 @@ function createForm() {
     todoForm.appendChild(form);
     main.appendChild(todoForm);
 
-    //Bind events
+    // Bind events
     exitSpan.addEventListener('click', exitForm);
     addTaskButton.addEventListener('click', applyForm);
 
@@ -155,8 +153,7 @@ function createForm() {
     blurBackground(); 
 }
 
-//Create Form Functions
-
+// Create Form Functions
 function createProjectOptions(select) {
     const projectTitles = document.querySelectorAll('.project-name');
     for(let i = 0; i < projectTitles.length; i++) {
@@ -186,11 +183,11 @@ function countUp(indicator) {
         const todoContainers = document.querySelectorAll('.todo-container')
         counter = todoContainers.length || 0;
         return ++counter;
-    } else {
-        const projectTitles = document.querySelectorAll('.project-name')
-        counter = projectTitles.length - 1 || 0;
-        return counter++;
-    }
+    } 
+
+    const projectTitles = document.querySelectorAll('.project-name')
+    counter = projectTitles.length - 1 || 0;
+    return counter++;
 }
 
 function blurBackground() {
@@ -203,18 +200,16 @@ function unBlurBackground() {
     overlay.style.display = 'none';
 }
 
-
 function applyForm() {
-
-    //Cache DOM
+    // Cache DOM
     const todoForm = this.parentElement.parentElement;
     const projectSelectValue = todoForm.querySelector('.project-div select').value
     if (projectSelectValue == '') return;
 
-    //Set attributes
+    // Set attributes
     todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
     
-    //Add to Storage, Make Todo, Exit Form, Unblur, Remove applyForm event listener before adding editForm 
+    // Add to Storage, Make Todo, Exit Form, Unblur, Remove applyForm event listener before adding editForm 
     createStorageArray(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     makeTodoBlock(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData()); 
     exitForm.call(this);
@@ -223,16 +218,14 @@ function applyForm() {
 }
 
 function editForm() {
-    //Add to storage, Edit Todo, Exit Form, Unblur
-    
+    // Add to storage, Edit Todo, Exit Form, Unblur 
     editTodoBlock.call(this, setTask(), setDate(), setDateAsID(), setDescription(), setChecklist(), setPriority(), setProject(), setData());
     createStorageArray(setTask(), setDate(), setDateAsID(),setDescription(), setChecklist(), setPriority(), setProject(), setData());
     exitForm.call(this);
     unBlurBackground();
 }
 
-function openExistingForm() {
-    
+function openExistingForm() { 
     const addTaskButton = document.querySelectorAll('.addTask-button');
     addTaskButton.forEach((taskButton) => {
         const todoForm = taskButton.parentElement.parentElement;
@@ -244,6 +237,7 @@ function openExistingForm() {
             taskButton.addEventListener('click', editForm);
         }
     })
+    
     blurBackground();
 }
 
@@ -253,6 +247,7 @@ function addNewProjectToExistingForms(taskButton) {
     while (projectSelect.firstChild) {
         projectSelect.removeChild(projectSelect.lastChild);
     }
+    
     createProjectOptions(projectSelect);
 }
 
@@ -276,10 +271,11 @@ function findOpenForm() {
             return button;
         }
     });
+
     return openedForm[0].parentElement.parentElement;
 }
 
-//Todo Inputs
+// Todo Inputs
 
 function setTask() {
     const task = findOpenForm().querySelector('#task');
@@ -302,18 +298,19 @@ function setDescription() {
     if (description.value == '') {
         description.value = 'Nothing to see here, but there could be';
     }
+
     return description.value;
 }
 
 function setChecklist() {
-
-    //Cache DOM
+    // Cache DOM
     const firstCLVal = findOpenForm().querySelector('#firstchecklist').value;
     const secondCLVal = findOpenForm().querySelector('#secondchecklist').value;
     const thirdCLVal = findOpenForm().querySelector('#thirdchecklist').value;
     const fourthCLVal = findOpenForm().querySelector('#fourthchecklist').value;
     const fifthCLVal = findOpenForm().querySelector('#fifthchecklist').value;
-    
+   
+    // Create final list
     const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
     const filteredChecklist = checklistArray.filter((item) => item !== ''); 
     const finalList = filteredChecklist.length === 0 ? ['Nothing to see here', 'But there could be'] : filteredChecklist; 
@@ -335,4 +332,13 @@ function setData() {
     return dataSet;
 }
 
-export { createForm, countUp, blurBackground, unBlurBackground, applyForm, openExistingForm, bindAddTodoButton, findOpenForm }
+export { 
+    createForm, 
+    countUp, 
+    blurBackground, 
+    unBlurBackground, 
+    applyForm, 
+    openExistingForm, 
+    bindAddTodoButton, 
+    findOpenForm 
+}

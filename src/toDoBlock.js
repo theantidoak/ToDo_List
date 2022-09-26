@@ -3,10 +3,10 @@ import { populateStorage, removeTodoStorageItem, reOrderTodoStorage } from './lo
 
 function makeTodoBlock(title, date, dateID, description, checklist, priority, project, dataID) {
     
-    //Cache DOM
+    // Cache DOM
     const main = document.querySelector('main');
 
-    //Create Elements
+    // Create Elements
     const todoContainer = document.createElement('div');
     const topDiv = document.createElement('div');
     const checkbox = document.createElement('input');
@@ -27,10 +27,10 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
     const checklistButton = document.createElement('button');
     const checklistDiv = document.createElement('div');
     const checklistOl = document.createElement('ol');
-    makeChecklist(checklist, checklistOl);
+    makeChecklist(checklistOl, checklist);
     const removeButton = document.createElement('button');
     
-    //Set Attributes
+    // Set Attributes
     todoContainer.classList.add('todo-container');
     todoContainer.classList.add('storable');
     todoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
@@ -49,7 +49,7 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
     checklistDiv.classList.add('checklist-div');
     removeButton.classList.add('remove');
     
-    //Render Elements
+    // Render Elements
     descriptionText.appendChild(descriptionTextContent);
     descriptionDiv.appendChild(descriptionText);
     descriptionButton.appendChild(descriptionDiv);
@@ -72,13 +72,13 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
     todoContainer.appendChild(editables);
     main.appendChild(todoContainer);
 
-    //Set parameters
+    // Set parameters
     descriptionButton.otherDivClass = '.checklist-div';
     checklistButton.otherDivClass = '.description-div';
     removeButton.todoContainer = todoContainer;
     checkbox.todoContainer = todoContainer;
     
-    //Bind Event Listeners
+    // Bind Event Listeners
     editButton.addEventListener('click', openExistingForm);
     descriptionButton.addEventListener('click', displayHiddenText);
     checklistButton.addEventListener('click', displayHiddenText);
@@ -90,25 +90,24 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
 }
 
 
-function makeChecklist(checklist, ol) {
-    checklist = checklist || ['The checklist starts here!'];
+function makeChecklist(ol, checklist = ['The checklist starts here!']) {
     for(let i = 0; i < checklist.length; i++) {
 
-        //Create elements
+        // Create elements
         const checklistLi = document.createElement('li');
         const checklistLiContent = document.createTextNode(checklist[i]);
 
-        //Render elements
+        // Render elements
         checklistLi.appendChild(checklistLiContent);
         ol.appendChild(checklistLi);
     }
 }
 
 
-//Editables 
+// Editables 
 
 function editTodoBlock(title, date, dateID, description, checklist, priority, project) {  
-    //cache DOM
+    // cache DOM
     const todoForm = this.parentElement.parentElement;
     const todoContainer = todoForm.nextSibling;
     const topDiv = todoContainer.querySelector('.top');
@@ -121,14 +120,14 @@ function editTodoBlock(title, date, dateID, description, checklist, priority, pr
     const priorityNum = todoContainer.querySelector('.priority');
     const projectTitle = todoContainer.querySelector('.project');
 
-    //Set Attributes
+    // Set Attributes
     dueDate.dataset.dateTime = dateID;
 
-    //Render data
+    // Render data
     task.textContent = title;
     dueDate.textContent = date;
     descriptionText.textContent = description;
-    makeChecklist(checklist, newOl);
+    makeChecklist(newOl, checklist);
     checklistDiv.replaceChild(newOl, oldOl);
     priorityNum.textContent = priority;
     projectTitle.textContent = project;
@@ -188,7 +187,7 @@ function markCompleted(e) {
 }
 
 
-//Checkbox Input Value to Storage
+// Checkbox Input Value to Storage
 
 function addCheckedToStorage(todoContainer) {
     const dataIndex = todoContainer.dataset.todoNum;
@@ -270,4 +269,9 @@ function orderTodosChronologically() {
     changeTodoNum(sortedTodos, sortedForms);
 }
 
-export { makeTodoBlock, editTodoBlock, markCompleted, sortTodos }
+export { 
+    makeTodoBlock, 
+    editTodoBlock, 
+    markCompleted, 
+    sortTodos 
+}
