@@ -99,7 +99,7 @@ function lowerTodoIndexNum(deletedTodoIndexNum) {
     Object.keys(localStorage).sort().forEach(key => {
         const keyIndexNum = key.replace(/\D/g, '');
         const todoArrayIndex = key.split('')[key.split('').length-1];
-        if (!Number.isInteger(+todoArrayIndex)) return;
+        if (!isInteger(todoArrayIndex)) return;
 
         if (keyIndexNum > deletedTodoIndexNum) {
             const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
@@ -125,9 +125,9 @@ function reOrderTodoStorage() {
 function sortKeysByDate() {
     const todoArrayKeys = Object.keys(localStorage).filter(key => !Number.isInteger(+key[0]));
     const sortedKeys = todoArrayKeys.sort((a,b) => {
-        if (Number.isInteger(+a[0]) === true) {
+        if (isInteger(a[0])) {
             return 1;
-        } else if (Number.isInteger(+b[0]) === true) {
+        } else if (isInteger(b[0])) {
             return -1;
         } else {
             const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
@@ -242,7 +242,7 @@ function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
 
 // Project Storage
 function findProjectStorageAndRender() {
-    const projectTitles = Object.keys(localStorage).filter(key => Number.isInteger(+key[0]));
+    const projectTitles = Object.keys(localStorage).filter(key => isInteger(key[0]));
     projectTitles.sort().forEach(project => addProjectButton(localStorage.getItem(project)));  
 }
 
@@ -254,7 +254,7 @@ function removeProjectStorageItem(num) {
 function lowerProjectDataNumbers(num) {
     Object.keys(localStorage).sort().forEach(key => {
         const keyIndexNum = key.replace(/\D/g, '');
-        if (!Number.isInteger(+keyIndexNum) || !Number.isInteger(+key[0])) return;
+        if (!isInteger(keyIndexNum) || !isInteger(key[0])) return;
 
         if (keyIndexNum > num) {
             const newKeyIndex = key.replace(keyIndexNum, keyIndexNum-1);
@@ -265,7 +265,10 @@ function lowerProjectDataNumbers(num) {
     })
 } 
 
-
+function isInteger(val) {
+    if (Number.isInteger(Number(val))) return true;
+    return false;
+}
 
 export { 
     populateStorage, 
