@@ -1,7 +1,11 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 import { openExistingForm } from './toDoForm';
-import { populateStorage, removeTodoStorageItem, reOrderTodoStorage } from './localStorage';
+import {
+  populateStorage,
+  removeTodoStorageItem,
+  reOrderTodoStorage,
+} from './localStorage';
 
 function sortTodos(allTodoContainers) {
   return [...allTodoContainers].sort((a, b) => {
@@ -38,14 +42,19 @@ function sortForms(allTodoForms, sortedTodos) {
       (todoContainer) => todoContainer.dataset.todoNum === dataIDB,
     );
 
-    return (correspondingTodoA.indexOf(true) + 1) - (correspondingTodoB.indexOf(true) + 1);
+    return (
+      (correspondingTodoA.indexOf(true) + 1)
+      - (correspondingTodoB.indexOf(true) + 1)
+    );
   });
 }
 
 function removePreviousTodos(allTodoForms, allTodoContainers) {
   const main = document.querySelector('main');
   [...allTodoForms].sort().forEach((todoForm) => main.removeChild(todoForm));
-  [...allTodoContainers].sort().forEach((todoContainer) => main.removeChild(todoContainer));
+  [...allTodoContainers]
+    .sort()
+    .forEach((todoContainer) => main.removeChild(todoContainer));
 }
 
 function appendSortedTodos(sortedForms, sortedTodos) {
@@ -99,7 +108,15 @@ function changePriorityColor(topDiv) {
   }
 }
 
-function editTodoBlock(title, date, dateID, description, checklist, priority, project) {
+function editTodoBlock(
+  title,
+  date,
+  dateID,
+  description,
+  checklist,
+  priority,
+  project,
+) {
   // cache DOM
   const todoForm = this.parentElement.parentElement;
   const todoContainer = todoForm.nextSibling;
@@ -131,7 +148,9 @@ function editTodoBlock(title, date, dateID, description, checklist, priority, pr
 
 function displayHiddenText(e) {
   const buttonDiv = this.firstElementChild;
-  const otherDiv = this.parentElement.querySelector(e.currentTarget.otherDivClass);
+  const otherDiv = this.parentElement.querySelector(
+    e.currentTarget.otherDivClass,
+  );
   if (buttonDiv.style.display === 'none' || buttonDiv.style.display === '') {
     otherDiv.style.display = 'none';
     buttonDiv.style.display = 'block';
@@ -155,7 +174,9 @@ function deleteTodo(e) {
 function addCheckedToStorage(todoContainer) {
   const dataIndex = todoContainer.dataset.todoNum;
   const storageIndex = dataIndex.replace(/\D/g, '');
-  const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
+  const todoContainerArray = JSON.parse(
+    localStorage.getItem(`array${storageIndex}`),
+  );
   todoContainerArray.push('checked');
   populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
@@ -163,14 +184,18 @@ function addCheckedToStorage(todoContainer) {
 function removeCheckedFromStorage(todoContainer) {
   const dataIndex = todoContainer.dataset.todoNum;
   const storageIndex = dataIndex.replace(/\D/g, '');
-  const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
+  const todoContainerArray = JSON.parse(
+    localStorage.getItem(`array${storageIndex}`),
+  );
   todoContainerArray.pop();
   populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
 
 function markCompleted(e) {
   const todoContainer = e.currentTarget.selectedTodoContainer;
-  const projectTitle = todoContainer.querySelector('.project').textContent.toLowerCase();
+  const projectTitle = todoContainer
+    .querySelector('.project')
+    .textContent.toLowerCase();
   if (this.checked === true) {
     todoContainer.classList.add('completed-todo');
     todoContainer.classList.remove(projectTitle);
@@ -182,7 +207,16 @@ function markCompleted(e) {
   }
 }
 
-function makeTodoBlock(title, date, dateID, description, checklist, priority, project, dataID) {
+function makeTodoBlock(
+  title,
+  date,
+  dateID,
+  description,
+  checklist,
+  priority,
+  project,
+  dataID,
+) {
   // Cache DOM
   const main = document.querySelector('main');
 
@@ -213,7 +247,9 @@ function makeTodoBlock(title, date, dateID, description, checklist, priority, pr
   // Set Attributes
   todoContainer.classList.add('todo-container');
   todoContainer.classList.add('storable');
-  todoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
+  todoContainer.classList.add(
+    projectContent.textContent.split(' ').join('').toLowerCase(),
+  );
   todoContainer.dataset.todoNum = dataID;
   topDiv.classList.add('top');
   checkbox.setAttribute('type', 'checkbox');

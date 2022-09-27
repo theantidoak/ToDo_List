@@ -8,7 +8,9 @@ function createProjectOptions(select) {
   const projectTitles = document.querySelectorAll('.project-name');
   for (let i = 0; i < projectTitles.length; i += 1) {
     const projectOption = document.createElement('option');
-    const optionContent = document.createTextNode(projectTitles[i].textContent.toLowerCase());
+    const optionContent = document.createTextNode(
+      projectTitles[i].textContent.toLowerCase(),
+    );
     projectOption.value = projectTitles[i].textContent.toLowerCase();
     projectOption.appendChild(optionContent);
     select.appendChild(projectOption);
@@ -60,7 +62,9 @@ function setDateAsID() {
 
 function setDate() {
   const date = findOpenForm().querySelector('#time-label');
-  const value = date.value !== '' ? format(new Date(date.value), 'EE, dd/MM/yyyy HH:mm') : date.value;
+  const value = date.value !== ''
+    ? format(new Date(date.value), 'EE, dd/MM/yyyy HH:mm')
+    : date.value;
   return value;
 }
 
@@ -82,9 +86,17 @@ function setChecklist() {
   const fifthCLVal = findOpenForm().querySelector('#fifthchecklist').value;
 
   // Create final list
-  const checklistArray = [firstCLVal, secondCLVal, thirdCLVal, fourthCLVal, fifthCLVal];
+  const checklistArray = [
+    firstCLVal,
+    secondCLVal,
+    thirdCLVal,
+    fourthCLVal,
+    fifthCLVal,
+  ];
   const filteredChecklist = checklistArray.filter((item) => item !== '');
-  const finalList = filteredChecklist.length === 0 ? ['Nothing to see here', 'But there could be'] : filteredChecklist;
+  const finalList = filteredChecklist.length === 0
+    ? ['Nothing to see here', 'But there could be']
+    : filteredChecklist;
   return finalList;
 }
 
@@ -106,7 +118,9 @@ function setData() {
 function applyForm() {
   // Cache DOM
   const todoForm = this.parentElement.parentElement;
-  const projectSelectValue = todoForm.querySelector('.project-div select').value;
+  const projectSelectValue = todoForm.querySelector(
+    '.project-div select',
+  ).value;
   if (projectSelectValue === '') return;
 
   // Set attributes
@@ -347,7 +361,9 @@ function addNewProjectToExistingForms(taskButton) {
 
 function setProjectSelectValue(todoForm, todoContainer) {
   const projectSelect = todoForm.querySelector('.project-div select');
-  const projectTitle = todoContainer.querySelector('.project').textContent.toLowerCase();
+  const projectTitle = todoContainer
+    .querySelector('.project')
+    .textContent.toLowerCase();
   projectSelect.value = projectTitle;
 }
 

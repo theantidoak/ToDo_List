@@ -13,7 +13,9 @@ function displayUpcomingtodos(e) {
   const allTodoContainers = document.querySelectorAll('.todo-container');
   allTodoContainers.forEach((todoContainer) => {
     const dueDate = todoContainer.querySelector('.date').dataset.dateTime;
-    const todoType = e.currentTarget.isUpcoming(new Date(dueDate), { weekStartsOn: 1 });
+    const todoType = e.currentTarget.isUpcoming(new Date(dueDate), {
+      weekStartsOn: 1,
+    });
     todoContainer.style.display = todoType ? 'flex' : 'none';
   });
 }
@@ -27,7 +29,7 @@ function displayCompletedtodos() {
 }
 
 function bindHomeButtons() {
-// Cache DOM
+  // Cache DOM
   const allButton = document.querySelector('.all');
   const homeButton = document.querySelector('.home-title');
   const todayButton = document.querySelector('.today');

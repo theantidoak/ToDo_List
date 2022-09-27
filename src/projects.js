@@ -11,7 +11,9 @@ function displayProjecttodos() {
   const projectTitle = this.getAttribute('class').split(' ')[1];
   const todoContainers = document.querySelectorAll('.todo-container');
   todoContainers.forEach((todo) => {
-    todo.style.display = !todo.classList.contains(projectTitle) ? 'none' : 'flex';
+    todo.style.display = !todo.classList.contains(projectTitle)
+      ? 'none'
+      : 'flex';
   });
 }
 
@@ -133,8 +135,4 @@ function bindProjectButtons() {
   defaultProjectButton.addEventListener('click', displayProjecttodos);
 }
 
-export {
-  createNewProjectForm,
-  addProjectButton,
-  bindProjectButtons,
-};
+export { createNewProjectForm, addProjectButton, bindProjectButtons };

@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To Do List</title>
-<script defer src="bundle.js"></script></head>
-<body>
+    <script defer src="bundle.js"></script>
+  </head>
+  <body>
     <header>
-        <h1>To Do List</h1>
+      <h1>To Do List</h1>
     </header>
     <div class="content">
-        <aside>
-            <div class="home">
-                <h3 class='home-title'></h3>
-                <div class="titled-project-div"><button class="all">All</button></div>
-                <div class="titled-project-div"><button class="today">Today</button></div>
-                <div class="titled-project-div"><button class="upcoming">This week</button></div>
-                <div class="titled-project-div"><button class="completed">Completed</button></div>
-            </div>
-            <div class="projects">
-                <h3 class="projects-title"><button></button></h3>
-                <div class="titled-project-div">
-                    <button class="project-name default" selected="selected">Default</button>
-                </div>
-            </div>
-            <button class="add-todo">+</button>
-        </aside>
-        <main>
-        </main>
-        <div class="overlay"></div>
+      <aside>
+        <div class="home">
+          <h3 class="home-title"></h3>
+          <div class="titled-project-div"><button class="all">All</button></div>
+          <div class="titled-project-div">
+            <button class="today">Today</button>
+          </div>
+          <div class="titled-project-div">
+            <button class="upcoming">This week</button>
+          </div>
+          <div class="titled-project-div">
+            <button class="completed">Completed</button>
+          </div>
+        </div>
+        <div class="projects">
+          <h3 class="projects-title"><button></button></h3>
+          <div class="titled-project-div">
+            <button class="project-name default" selected="selected">
+              Default
+            </button>
+          </div>
+        </div>
+        <button class="add-todo">+</button>
+      </aside>
+      <main></main>
+      <div class="overlay"></div>
     </div>
-    
-</body>
+  </body>
 </html>

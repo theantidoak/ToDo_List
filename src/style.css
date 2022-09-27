@@ -1,751 +1,764 @@
 * {
-    box-sizing: border-box;
-    --coral: #FF8458;
-    --maya-blue: #50D0FF;
-    --mustard: #FFD750;
-    --celadon-blue: #0080AF;
+  box-sizing: border-box;
+  --coral: #ff8458;
+  --maya-blue: #50d0ff;
+  --mustard: #ffd750;
+  --celadon-blue: #0080af;
 }
 
 html {
-    width: 100%;
-    height: 100%;
- }
+  width: 100%;
+  height: 100%;
+}
 
 body {
-    width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .content {
-    width: 100%;
-    display: flex;
-    position: relative;
-    display: flex;
-    flex: 1;
-    z-index: 2;
+  width: 100%;
+  display: flex;
+  position: relative;
+  display: flex;
+  flex: 1;
+  z-index: 2;
 }
 
 button {
-    border: none;
-    background-color: transparent;
-    text-align: start;
-    margin-left: clamp(.25rem, 12%, 1rem);
-    cursor: pointer;
+  border: none;
+  background-color: transparent;
+  text-align: start;
+  margin-left: clamp(0.25rem, 12%, 1rem);
+  cursor: pointer;
 }
 
 header {
-    background-color: var(--celadon-blue);
-    color: var(--maya-blue);
-    font-size: 1.25rem;
-    z-index: 2;
-    position: relative;
+  background-color: var(--celadon-blue);
+  color: var(--maya-blue);
+  font-size: 1.25rem;
+  z-index: 2;
+  position: relative;
 }
 
 header h1 {
-    margin: 0;
-    padding: 1rem 0 1rem 1.5rem;
-    color: #fff;
+  margin: 0;
+  padding: 1rem 0 1rem 1.5rem;
+  color: #fff;
 }
-
-
 
 aside {
-    background-color: var(--maya-blue);
-    width: clamp(6rem, 30%, 12rem);
-    padding: 1.5rem clamp(.75rem, 3vw, 1rem) 1.5rem clamp(.5rem, 2.5vw, 1rem);
-    position: relative;
+  background-color: var(--maya-blue);
+  width: clamp(6rem, 30%, 12rem);
+  padding: 1.5rem clamp(0.75rem, 3vw, 1rem) 1.5rem clamp(0.5rem, 2.5vw, 1rem);
+  position: relative;
 }
 
-.home, .projects {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(.5rem, 1vw, .75rem);
-    margin-bottom: 1.5rem;
+.home,
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  margin-bottom: 1.5rem;
 }
 
-.home button, .projects button {
-    color: var(--celadon-blue);
-    padding-left: 0;
-    font-size: clamp(.85rem, 3vw, 1.15rem);
-    font-weight: 700;
-    overflow-x: auto;
+.home button,
+.projects button {
+  color: var(--celadon-blue);
+  padding-left: 0;
+  font-size: clamp(0.85rem, 3vw, 1.15rem);
+  font-weight: 700;
+  overflow-x: auto;
 }
 
-.home button:hover, .projects button:not(.projects-title button):hover {
-    transform: scale(1.1);
-    font-weight: 600;
+.home button:hover,
+.projects button:not(.projects-title button):hover {
+  transform: scale(1.1);
+  font-weight: 600;
 }
 
 .projects-title {
-    display: flex;
-    gap: .5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .projects-title button {
-    min-width: 1.5rem;
-    margin: 0;
-    padding-right: 0;
+  min-width: 1.5rem;
+  margin: 0;
+  padding-right: 0;
 }
 
 .titled-project-div {
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    max-width: 9rem;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  max-width: 9rem;
 }
 
 .projects button {
-    line-break:auto;
+  line-break: auto;
 }
 
 .project-name {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 .delete-span {
-    /* transform: scale(2) translateY(-2px); */
-    cursor: pointer;
-    font-weight: 700;
-    letter-spacing: -2px;
-    line-break: normal;
-    white-space: nowrap;
+  /* transform: scale(2) translateY(-2px); */
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-break: normal;
+  white-space: nowrap;
 }
 
 .delete-span:hover {
-    color: var(--coral);
-    transform: scale(1.2);
+  color: var(--coral);
+  transform: scale(1.2);
 }
 
 .home h3 {
-    color: #fff;
-    margin: 0 0 .5rem;
+  color: #fff;
+  margin: 0 0 0.5rem;
 }
 
 .home h3:hover {
-    color: var(--celadon-blue);
+  color: var(--celadon-blue);
 }
 
 .home button {
-    font-size: (.8rem, 1vw, 1rem);
+  font-size: (0.8rem, 1vw, 1rem);
 }
 
 .home h3::before {
-    content: 'Home';
-    cursor: pointer;
-    font-size: clamp(1.25rem, 4vw, 2rem);
+  content: "Home";
+  cursor: pointer;
+  font-size: clamp(1.25rem, 4vw, 2rem);
 }
 
 .projects h3 {
-    display: flex;
-    align-items: center;
-    margin: 0 0 .5rem;
-    color: #fff;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.5rem;
+  color: #fff;
+  cursor: pointer;
 }
 
 .projects h3:hover {
-    color: var(--celadon-blue);
+  color: var(--celadon-blue);
 }
 
 .projects h3:hover button {
-    background-color: var(--celadon-blue);
+  background-color: var(--celadon-blue);
 }
 
 .projects h3 button {
-    mask-image: url('photos/folder-plus.svg');
-    -webkit-mask-image: url('photos/folder-plus.svg');
-    mask-size: cover;
-    -webkit-mask-size:cover;
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    mask-position: center;
-    -webkit-mask-position: center;
-    background-color: white;
+  mask-image: url("photos/folder-plus.svg");
+  -webkit-mask-image: url("photos/folder-plus.svg");
+  mask-size: cover;
+  -webkit-mask-size: cover;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  background-color: white;
 
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 .projects h3 button:hover {
-    background-color: var(--celadon-blue);
+  background-color: var(--celadon-blue);
 }
 
 .projects h3::before {
-    content: 'Projects';
-    font-size: clamp(1.25rem, 4vw, 2rem);
+  content: "Projects";
+  font-size: clamp(1.25rem, 4vw, 2rem);
 }
 
 main {
-    padding: 3.5rem clamp(1.25rem, 6vw, 2rem) 1rem clamp(1rem, 7%, 3rem);
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, clamp(12.5rem, 45%, 16rem));
-    grid-auto-rows: clamp(12.25rem, 30vw, 16rem);
-    gap: 2rem;
+  padding: 3.5rem clamp(1.25rem, 6vw, 2rem) 1rem clamp(1rem, 7%, 3rem);
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, clamp(12.5rem, 45%, 16rem));
+  grid-auto-rows: clamp(12.25rem, 30vw, 16rem);
+  gap: 2rem;
 }
 
 .add-todo {
-    font-family: unset;
-    position: absolute;
-    height: 2.5rem;
-    top: 0;
-    right: -2.25rem;
-    font-size: 2.5rem;
-    margin: 0;
-    padding: 0;
-    font-weight: 200;
-    color: var(--maya-blue);
-    transition: all ease 1s, background-color 1ms;
-    transform-origin: 50% 67.5%;
+  font-family: unset;
+  position: absolute;
+  height: 2.5rem;
+  top: 0;
+  right: -2.25rem;
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 0;
+  font-weight: 200;
+  color: var(--maya-blue);
+  transition: all ease 1s, background-color 1ms;
+  transform-origin: 50% 67.5%;
 }
 
 .add-todo:hover {
-    color: var(--celadon-blue);
-    transform: scale(1.2);
+  color: var(--celadon-blue);
+  transform: scale(1.2);
 }
 
 .add-todo:focus {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
-
 
 /*---To Do Container---*/
 
 .todo-container {
-    width: clamp(11rem, 30vw, 15rem);
-    height: clamp(12rem, 30vw, 15rem);
-    margin: 0 auto;
-    border: 3px solid var(--coral);
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(.5rem, 1.75vw, 1rem);
+  width: clamp(11rem, 30vw, 15rem);
+  height: clamp(12rem, 30vw, 15rem);
+  margin: 0 auto;
+  border: 3px solid var(--coral);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 1.75vw, 1rem);
 }
 
 .todo-container .top {
-    padding: .25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--coral);
-    color: white;
-    width: 100%;
+  padding: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--coral);
+  color: white;
+  width: 100%;
 }
 
 .todo-container .top p {
-    margin: 0;
+  margin: 0;
 }
 
 .top input {
-    appearance: none;
-    width: .75rem;
-    height: .75rem;
-    outline: 1px solid white;
-    background-color: white;
-    position: relative;
-    top: -.25rem;
-    right: 0;
-    cursor: pointer;
-    position: relative;
-    top: -.125rem;
-    transition: all ease .25s;
+  appearance: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  outline: 1px solid white;
+  background-color: white;
+  position: relative;
+  top: -0.25rem;
+  right: 0;
+  cursor: pointer;
+  position: relative;
+  top: -0.125rem;
+  transition: all ease 0.25s;
 }
 
 .top input:hover {
-    transform: scale(1.25);
+  transform: scale(1.25);
 }
 
 .top input:checked {
-    background-color: var(--celadon-blue);
-    background-image: url('photos/check.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
+  background-color: var(--celadon-blue);
+  background-image: url("photos/check.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .todo-container h4 {
-    width: 100%;
-    font-size: clamp(1.25rem, 3.35vw, 1.5rem);
-    margin: 0;
-    padding: 0 .5rem;
-    text-align: center;
-    overflow: auto;
-    padding-bottom: 1rem;
-    height: clamp(3rem, 8vw, 3.75rem);
-    text-decoration: underline;
+  width: 100%;
+  font-size: clamp(1.25rem, 3.35vw, 1.5rem);
+  margin: 0;
+  padding: 0 0.5rem;
+  text-align: center;
+  overflow: auto;
+  padding-bottom: 1rem;
+  height: clamp(3rem, 8vw, 3.75rem);
+  text-decoration: underline;
 }
 
 .todo-container p {
-    margin-bottom: 0;
-    width: fit-content;
-    padding: 0 .25rem;
+  margin-bottom: 0;
+  width: fit-content;
+  padding: 0 0.25rem;
 }
 
 .todo-container .project {
-    text-transform: capitalize;
-    color: var(--celadon-blue);
-    padding: 0;
-    margin: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 92.5%;
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    flex: 1;
-    min-height: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    
+  text-transform: capitalize;
+  color: var(--celadon-blue);
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 92.5%;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  flex: 1;
+  min-height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .todo-container .date {
-    font-weight: 100;
-    font-size: clamp(.85rem, 2.5vw, 1.1rem);
-    width: 100%;
-    margin: 0;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    text-align: center;
+  font-weight: 100;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  width: 100%;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
 }
 
 .todo-container .editables {
-    outline: 1px solid var(--coral);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    min-height: 2rem;
-    padding: .25rem 0;
-    margin-top: auto;
+  outline: 1px solid var(--coral);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 2rem;
+  padding: 0.25rem 0;
+  margin-top: auto;
 }
 
 .todo-container .editables button {
-    width: 1.25rem;
-    min-height: 100%;
-    margin: 0 .5rem;
-    padding: 0;
+  width: 1.25rem;
+  min-height: 100%;
+  margin: 0 0.5rem;
+  padding: 0;
 }
 
 .todo-container .editables button:hover {
-    background-size: 1.45rem; 
+  background-size: 1.45rem;
 }
 
-.edit  {
-    background-image: url('photos/edit.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+.edit {
+  background-image: url("photos/edit.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .description {
-    background-image: url('photos/info.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  background-image: url("photos/info.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .checklist {
-    background-image: url('photos/list.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  background-image: url("photos/list.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .remove {
-    background-image: url('photos/trash-2.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  background-image: url("photos/trash-2.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-.description-div, .checklist-div {
-    display: none;
-    position: absolute;
-    top: 1.75rem;
-    left: .25rem;
-    height: calc(100% - 4rem);
-    width: clamp(10.5rem, 30vw, 14rem);
-    overflow: auto;
-    background-color: #fff;
-    color: black;
-    z-index: 2;
+.description-div,
+.checklist-div {
+  display: none;
+  position: absolute;
+  top: 1.75rem;
+  left: 0.25rem;
+  height: calc(100% - 4rem);
+  width: clamp(10.5rem, 30vw, 14rem);
+  overflow: auto;
+  background-color: #fff;
+  color: black;
+  z-index: 2;
 }
 
 .description-div p {
-    margin: 0;
-    padding: .25rem .5rem .5rem; 
+  margin: 0;
+  padding: 0.25rem 0.5rem 0.5rem;
 }
 
 .checklist-div ol {
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-    margin: 0;
-    padding-left: 1.75rem;
-    padding: .25rem 1rem .5rem 1.75rem 
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding-left: 1.75rem;
+  padding: 0.25rem 1rem 0.5rem 1.75rem;
 }
-
-
 
 /*---To Do Form---*/
 
 .todo-form {
-    width: clamp(16rem, 75vw, 35rem);
-    max-height: 33rem;
-    margin: 0 auto;
-    border: 5px solid #FF8458;
-    position: absolute;
-    top: -3rem;
-    left: 0;
-    right: 0;
-    z-index: 4;
-    background-color: #fff;
-    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
-    border-radius: 15px;
+  width: clamp(16rem, 75vw, 35rem);
+  max-height: 33rem;
+  margin: 0 auto;
+  border: 5px solid #ff8458;
+  position: absolute;
+  top: -3rem;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  background-color: #fff;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
 }
 
 .todo-form h1 {
-    width: 100%;
-    text-align: center;
-    font-size: clamp(1.5rem, 5.75vw, 2rem);
-    border-bottom: 2px solid var(--celadon-blue);
-    color: var(--celadon-blue);
-    margin: 1rem 0 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(1.5rem, 5.75vw, 2rem);
+  border-bottom: 2px solid var(--celadon-blue);
+  color: var(--celadon-blue);
+  margin: 1rem 0 0;
 }
 
 .todo-form h1 span {
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    font-size: 1rem;
-    color: var(--celadon-blue);
-    padding: 0 .25rem;
-    cursor: pointer;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  color: var(--celadon-blue);
+  padding: 0 0.25rem;
+  cursor: pointer;
 }
 
 .todo-form h1 span:hover {
-    color: var(--coral);
-    transform: scale(1.25);
+  color: var(--coral);
+  transform: scale(1.25);
 }
 
 .todo-form form {
-    width: 100%;
-    max-height: 27rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));;
-    column-gap: 1.25rem;
-    overflow: auto;
-    padding: clamp(2rem, 6vw, 2.5rem) clamp(.5rem, 4%, 2rem) 1rem;
-    margin-bottom: .25rem;
+  width: 100%;
+  max-height: 27rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  column-gap: 1.25rem;
+  overflow: auto;
+  padding: clamp(2rem, 6vw, 2.5rem) clamp(0.5rem, 4%, 2rem) 1rem;
+  margin-bottom: 0.25rem;
 }
 
-.todo-form form input, select {
-    width: clamp(11rem, 100%, 40rem);
-    height: 2rem;
-    border-radius: 6px;
+.todo-form form input,
+select {
+  width: clamp(11rem, 100%, 40rem);
+  height: 2rem;
+  border-radius: 6px;
 }
 
 select {
-    cursor: pointer;
-    background-image: url('photos/chevron-down.svg');
-    background-size: 1rem;
-    background-position: right 3% center;
-    background-repeat: no-repeat;
+  cursor: pointer;
+  background-image: url("photos/chevron-down.svg");
+  background-size: 1rem;
+  background-position: right 3% center;
+  background-repeat: no-repeat;
 }
 
 label {
-    display: flex;
-    
+  display: flex;
 }
 
-label[for='task'], label[for="time-label"], label[for="priority-label"], label[for="project-label"], label[for="task-info"], .checklist-inputs {
-    position: relative;
-    margin: 0 auto clamp(.5rem, 2vw, 1rem);
+label[for="task"],
+label[for="time-label"],
+label[for="priority-label"],
+label[for="project-label"],
+label[for="task-info"],
+.checklist-inputs {
+  position: relative;
+  margin: 0 auto clamp(0.5rem, 2vw, 1rem);
 }
 
-.task-div, .date-div, .priority-div, .project-div, .checklist-inputs, #task-info-label {
-    margin-bottom: 1.25rem;
+.task-div,
+.date-div,
+.priority-div,
+.project-div,
+.checklist-inputs,
+#task-info-label {
+  margin-bottom: 1.25rem;
 }
 
-.checklist-inputs, #task-info-label {
-    margin-top: .5rem;
+.checklist-inputs,
+#task-info-label {
+  margin-top: 0.5rem;
 }
 
-label[for='task']::before, label[for="time-label"]::before, label[for="priority-label"]::before, label[for="project-label"]::before, label[for="task-info"]::before, .checklist-inputs::before {
-    content: 'Task:';
-    position: absolute;
-    left: 0;
-    top: -1.5rem;
-    color: var(--coral);
+label[for="task"]::before,
+label[for="time-label"]::before,
+label[for="priority-label"]::before,
+label[for="project-label"]::before,
+label[for="task-info"]::before,
+.checklist-inputs::before {
+  content: "Task:";
+  position: absolute;
+  left: 0;
+  top: -1.5rem;
+  color: var(--coral);
 }
 
 label[for="time-label"] input {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 label[for="time-label"]::before {
-    content: 'Due Date:'
+  content: "Due Date:";
 }
 
 label[for="priority-label"]::before {
-    content: 'Priority:';
-} 
-
-label[for="project-label"]::before {
-    content: 'Project:'
+  content: "Priority:";
 }
 
+label[for="project-label"]::before {
+  content: "Project:";
+}
 
 .checklist-inputs::before {
-    content: 'Add to Checklist';
+  content: "Add to Checklist";
 }
 
 label[for="task-info"]::before {
-    content: 'Description:';
+  content: "Description:";
 }
 
-.todo-form input, .todo-form select {
-    appearance: none;
-    border: 1px solid var(--celadon-blue);
-    padding: 0 1rem;
-    background-color: #fff;
+.todo-form input,
+.todo-form select {
+  appearance: none;
+  border: 1px solid var(--celadon-blue);
+  padding: 0 1rem;
+  background-color: #fff;
 }
 
 .checklist-inputs div {
-    overflow-y: auto;
-    height: 101%;
+  overflow-y: auto;
+  height: 101%;
 }
 
 .checklist-inputs label {
-    flex-direction: column;
-    gap: 0rem;
+  flex-direction: column;
+  gap: 0rem;
 }
 
 .checklist-inputs p {
-    margin: 0;
+  margin: 0;
 }
 
 .checklist-inputs .addList {
-    background-color: var(--coral);
-    font-size: 1rem;
-    position: absolute;
+  background-color: var(--coral);
+  font-size: 1rem;
+  position: absolute;
 }
 
-
-textarea, .checklist-inputs {
-    border-radius: 6px;
-    border-style: none solid solid none;
-    border-width: medium 1px 1px medium;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
-    height: clamp(3rem, 13vw, 10rem);  
-    width: clamp(11rem, 100%, 40rem);
+textarea,
+.checklist-inputs {
+  border-radius: 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  height: clamp(3rem, 13vw, 10rem);
+  width: clamp(11rem, 100%, 40rem);
 }
 
 textarea {
-    background: none repeat scroll 0 0 #50D0FF20;
-    padding: .75rem;
+  background: none repeat scroll 0 0 #50d0ff20;
+  padding: 0.75rem;
 }
 
 #task-info-label {
-    height: clamp(3rem, 13.5vw, 10rem);
-    width: clamp(11rem, 100%, 40rem);
+  height: clamp(3rem, 13.5vw, 10rem);
+  width: clamp(11rem, 100%, 40rem);
 }
-
 
 .todo-form form .checklist-inputs input {
-    position: absolute;
-    border: none;
-    width: 100%;
-    height: 100%;
-    background: none repeat scroll 0 0 #50D0FF20;
-    padding: 0 .5rem 0 1.75rem;   
-    border-radius: 0px;
+  position: absolute;
+  border: none;
+  width: 100%;
+  height: 100%;
+  background: none repeat scroll 0 0 #50d0ff20;
+  padding: 0 0.5rem 0 1.75rem;
+  border-radius: 0px;
 }
 
-textarea:focus, .todo-form form .checklist-inputs input:focus {
-    background: none repeat scroll 0 0 transparent;
-    outline-width: 0;
-    
+textarea:focus,
+.todo-form form .checklist-inputs input:focus {
+  background: none repeat scroll 0 0 transparent;
+  outline-width: 0;
 }
 
 .checklist-inputs label {
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    position: relative;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
-.checklist-inputs label[for='firstchecklist'] input {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+.checklist-inputs label[for="firstchecklist"] input {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
 
-.checklist-inputs label[for='fifthchecklist'] input {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+.checklist-inputs label[for="fifthchecklist"] input {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .checklist-inputs label::before {
-    margin-left: .5rem;
-    color:var(--coral);
+  margin-left: 0.5rem;
+  color: var(--coral);
 }
 
-.checklist-inputs label[for='firstchecklist']::before {
-    content: '1.';
-    width: fit-content;
+.checklist-inputs label[for="firstchecklist"]::before {
+  content: "1.";
+  width: fit-content;
 }
 
-.checklist-inputs label[for='secondchecklist']::before {
-    content: '2.';
-    width: fit-content;
+.checklist-inputs label[for="secondchecklist"]::before {
+  content: "2.";
+  width: fit-content;
 }
 
-.checklist-inputs label[for='thirdchecklist']::before {
-    content: '3.';
-    width: fit-content;
+.checklist-inputs label[for="thirdchecklist"]::before {
+  content: "3.";
+  width: fit-content;
 }
-.checklist-inputs label[for='fourthchecklist']::before {
-    content: '4.';
-    width: fit-content;
+.checklist-inputs label[for="fourthchecklist"]::before {
+  content: "4.";
+  width: fit-content;
 }
-.checklist-inputs label[for='fifthchecklist']::before {
-    content: '5.';
-    width: fit-content;
+.checklist-inputs label[for="fifthchecklist"]::before {
+  content: "5.";
+  width: fit-content;
 }
 
 .addTask-button {
-    border: 2px solid var(--celadon-blue);
-    background-color: #fff;
-    font-size: 1rem;
-    color: var(--celadon-blue);
-    text-align: center;
-    margin: 0 auto;
-    width: 6rem;
-    padding: .25rem 0;
-    cursor: pointer;
-    border-radius: 20px;
-    grid-column: 1 / -1;
+  border: 2px solid var(--celadon-blue);
+  background-color: #fff;
+  font-size: 1rem;
+  color: var(--celadon-blue);
+  text-align: center;
+  margin: 0 auto;
+  width: 6rem;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  border-radius: 20px;
+  grid-column: 1 / -1;
 }
 
 .addTask-button:hover {
-    border-color: var(--coral);
-    color: var(--coral);
+  border-color: var(--coral);
+  color: var(--coral);
 }
-
 
 /*---Project-Form---*/
 
 .project-form {
-    background-color: var(--maya-blue);
-    width: 16rem;
-    padding: .5rem 1rem;
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    top: 2rem;
-    z-index: 4;
-    border-radius: 10px;
-    border: 8px solid var(--celadon-blue);
-    box-shadow: 0 5px 15px 0 rgba(0,0,0,.25);
+  background-color: var(--maya-blue);
+  width: 16rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 2rem;
+  z-index: 4;
+  border-radius: 10px;
+  border: 8px solid var(--celadon-blue);
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.25);
 }
 
 .project-exit {
-    position: absolute;
-    right: .5rem;
-    width: 1rem;
-    padding: 0;
-    text-align: center;
-    color: #fff;
-    margin: 0;
+  position: absolute;
+  right: 0.5rem;
+  width: 1rem;
+  padding: 0;
+  text-align: center;
+  color: #fff;
+  margin: 0;
 }
 
 .project-exit:hover {
-    color: var(--coral);
+  color: var(--coral);
 }
 
 .project-form label {
-    margin: 2.5rem auto 1rem;
-    height: 2rem; 
-    width: 12rem;
-    position: relative;
+  margin: 2.5rem auto 1rem;
+  height: 2rem;
+  width: 12rem;
+  position: relative;
 }
 
 .project-form label::before {
-    content: 'Project Title:';
-    position: absolute;
-    top: -2rem;
-    left: 3rem;
-    color: #fff;
-    font-size: 1.25rem;
+  content: "Project Title:";
+  position: absolute;
+  top: -2rem;
+  left: 3rem;
+  color: #fff;
+  font-size: 1.25rem;
 }
 
 .project-form input {
-    width: 100%;
-    height: 2rem;
-    padding: 0 1rem;
+  width: 100%;
+  height: 2rem;
+  padding: 0 1rem;
 }
 
 .project-button-div {
-    width: 3.5rem;
-    margin: 0 auto;
+  width: 3.5rem;
+  margin: 0 auto;
 }
 
 .project-form button:not(.project-exit) {
-    border: 2px solid #fff;
-    width: 3.5rem;
-    margin: 0 auto;
-    text-align: center;
-    color: #fff;
-    border-radius: 20px;
+  border: 2px solid #fff;
+  width: 3.5rem;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+  border-radius: 20px;
 }
 
 .project-form button:not(.project-exit):hover {
-    color: var(--celadon-blue);
-    border-color: var(--celadon-blue);
+  color: var(--celadon-blue);
+  border-color: var(--celadon-blue);
 }
 
 .overlay {
-    display: none;
-    position: fixed;
-    top: -78px;
-    height: calc(100vh + 78px);
-    width: 100vw;
-    z-index: 3;
-    background-color: rgba(0,0,0,0.5);
+  display: none;
+  position: fixed;
+  top: -78px;
+  height: calc(100vh + 78px);
+  width: 100vw;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 550px) {
-    .projects h3::before, .home h3::before {
-        content: none;
-    }
+  .projects h3::before,
+  .home h3::before {
+    content: none;
+  }
 
-    .home h3 {
-        background-image: url(photos/home.svg);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        width: 2rem;
-        height: 2rem;
-    }
-    main {
-        justify-content: center;
-    }
-        
-    .addTask-button {
-        position: absolute;
-        bottom: -1rem;
-        left: 0;
-        right: 0;
-    }
+  .home h3 {
+    background-image: url(photos/home.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 2rem;
+    height: 2rem;
+  }
+  main {
+    justify-content: center;
+  }
+
+  .addTask-button {
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    right: 0;
+  }
 }

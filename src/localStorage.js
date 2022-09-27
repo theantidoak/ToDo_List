@@ -3,7 +3,10 @@
 /* eslint-disable no-param-reassign */
 import { makeTodoBlock } from './toDoBlock';
 import {
-  createForm, unBlurBackground, applyForm, findOpenForm,
+  createForm,
+  unBlurBackground,
+  applyForm,
+  findOpenForm,
 } from './toDoForm';
 import { addProjectButton } from './projects';
 
@@ -27,18 +30,21 @@ function storageAvailable(type) {
     storage.removeItem(x);
     return true;
   } catch (e) {
-    return e instanceof DOMException && (
-    // everything except Firefox
-      e.code === 22
-            // Firefox
-            || e.code === 1014
-            // test name field too, because code might not be present
-            // everything except Firefox
-            || e.name === 'QuotaExceededError'
-            // Firefox
-            || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')
-            // acknowledge QuotaExceededError only if there's something already stored
-            && (storage && storage.length !== 0);
+    return (
+      e instanceof DOMException
+      // everything except Firefox
+      && (e.code === 22
+        // Firefox
+        || e.code === 1014
+        // test name field too, because code might not be present
+        // everything except Firefox
+        || e.name === 'QuotaExceededError'
+        // Firefox
+        || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')
+      // acknowledge QuotaExceededError only if there's something already stored
+      && storage
+      && storage.length !== 0
+    );
   }
 }
 
@@ -51,23 +57,28 @@ function populateStorage(callName, item) {
 }
 
 function lowerTodoIndexNum(deletedTodoIndexNum) {
-  Object.keys(localStorage).sort().forEach((key) => {
-    const keyIndexNum = key.replace(/\D/g, '');
-    const todoArrayIndex = key.split('')[key.split('').length - 1];
-    if (!isInteger(todoArrayIndex)) return;
+  Object.keys(localStorage)
+    .sort()
+    .forEach((key) => {
+      const keyIndexNum = key.replace(/\D/g, '');
+      const todoArrayIndex = key.split('')[key.split('').length - 1];
+      if (!isInteger(todoArrayIndex)) return;
 
-    if (keyIndexNum > deletedTodoIndexNum) {
-      const newKeyIndex = key.replace(keyIndexNum, keyIndexNum - 1);
-      const storageItemValue = localStorage[key];
-      const storageItemDataID = JSON.parse(localStorage.getItem(key))[7];
-      const oldID = storageItemDataID.replace(/\D/g, '');
-      const newID = oldID - 1;
-      const newStorageItemDataID = storageItemDataID.replace(oldID, newID);
-      const newStorageItemValue = storageItemValue.replace(storageItemDataID, newStorageItemDataID);
-      localStorage.removeItem(key);
-      localStorage.setItem(newKeyIndex, newStorageItemValue);
-    }
-  });
+      if (keyIndexNum > deletedTodoIndexNum) {
+        const newKeyIndex = key.replace(keyIndexNum, keyIndexNum - 1);
+        const storageItemValue = localStorage[key];
+        const storageItemDataID = JSON.parse(localStorage.getItem(key))[7];
+        const oldID = storageItemDataID.replace(/\D/g, '');
+        const newID = oldID - 1;
+        const newStorageItemDataID = storageItemDataID.replace(oldID, newID);
+        const newStorageItemValue = storageItemValue.replace(
+          storageItemDataID,
+          newStorageItemDataID,
+        );
+        localStorage.removeItem(key);
+        localStorage.setItem(newKeyIndex, newStorageItemValue);
+      }
+    });
 }
 
 function removeTodoStorageItem(deletedTodoIndexNum) {
@@ -76,7 +87,9 @@ function removeTodoStorageItem(deletedTodoIndexNum) {
 }
 
 function sortKeysByDate() {
-  const todoArrayKeys = Object.keys(localStorage).filter((key) => !isInteger(key[0]));
+  const todoArrayKeys = Object.keys(localStorage).filter(
+    (key) => !isInteger(key[0]),
+  );
   const sortedKeys = todoArrayKeys.sort((a, b) => {
     if (isInteger(a[0])) {
       return 1;
@@ -111,7 +124,10 @@ function changeDataID(sortedKeys, newStorageValueArray) {
     const oldID = storageItemDataID.replace(/\D/g, '');
     const newID = sortedKeys.indexOf(key) + 1;
     const newStorageItemDataID = storageItemDataID.replace(oldID, newID);
-    const newStorageItemValue = storageItemValue.replace(storageItemDataID, newStorageItemDataID);
+    const newStorageItemValue = storageItemValue.replace(
+      storageItemDataID,
+      newStorageItemDataID,
+    );
     newStorageValueArray.push(newStorageItemValue);
   });
 }
@@ -130,11 +146,32 @@ function reOrderTodoStorage() {
 }
 
 // Todo Form Storage
-function createStorageArray(title, date, dateID, description, checklist, priority, project, data) {
+function createStorageArray(
+  title,
+  date,
+  dateID,
+  description,
+  checklist,
+  priority,
+  project,
+  data,
+) {
   const array = [];
   const dataNumber = findOpenForm().dataset.todoNum;
-  array.push(title, date, dateID, description, checklist, priority, project, data);
-  populateStorage(`array${dataNumber.replace(/\D/g, '')}`, JSON.stringify(array));
+  array.push(
+    title,
+    date,
+    dateID,
+    description,
+    checklist,
+    priority,
+    project,
+    data,
+  );
+  populateStorage(
+    `array${dataNumber.replace(/\D/g, '')}`,
+    JSON.stringify(array),
+  );
 }
 
 function getInputNodes(todoForm) {
@@ -176,17 +213,24 @@ function useLocalStorageInputs(formNumber, ...args) {
   for (let i = 0; i < 7; i += 1) {
     if (i === 1) {
       // date
-      args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i + 1];
+      args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[
+        i + 1
+      ];
     } else if (i === 2) {
       // dateID
       continue;
     } else if (i === 4) {
       // checklist
       for (let j = 0; j < 5; j += 1) {
-        if (JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j] === undefined) {
+        if (
+          JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j]
+          === undefined
+        ) {
           continue;
         }
-        args[i][j].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i][j];
+        args[i][j].value = JSON.parse(
+          localStorage.getItem(`array${formNumber}`),
+        )[i][j];
       }
     } else {
       args[i].value = JSON.parse(localStorage.getItem(`array${formNumber}`))[i];
@@ -195,7 +239,9 @@ function useLocalStorageInputs(formNumber, ...args) {
 }
 
 function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
-  const projectTitle = JSON.parse(localStorage.getItem(`array${formNumber}`))[7];
+  const projectTitle = JSON.parse(
+    localStorage.getItem(`array${formNumber}`),
+  )[7];
   const projectClass = projectTitle.split(' ').join('').toLowerCase();
   todoForm.classList.add(projectClass);
   todoForm.style.display = 'none';
@@ -207,7 +253,9 @@ function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
 function createStorageForm(todoFormID, formNumber) {
   createForm();
 
-  const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
+  const todoForm = document.querySelectorAll(
+    `[data-todo-num='${todoFormID}']`,
+  )[0];
   const inputArray = getInputNodes(todoForm);
   useLocalStorageInputs(
     formNumber,
@@ -232,7 +280,14 @@ function input(i) {
   const project = JSON.parse(localStorage.getItem(`array${i}`))[6];
   const dataID = JSON.parse(localStorage.getItem(`array${i}`))[7];
   return {
-    task, date, dateID, description, checklist, priority, project, dataID,
+    task,
+    date,
+    dateID,
+    description,
+    checklist,
+    priority,
+    project,
+    dataID,
   };
 }
 
@@ -273,21 +328,25 @@ function findTodoStorageAndRender() {
 // Project Storage
 function findProjectStorageAndRender() {
   const projectTitles = Object.keys(localStorage).filter((key) => isInteger(key[0]));
-  projectTitles.sort().forEach((project) => addProjectButton(localStorage.getItem(project)));
+  projectTitles
+    .sort()
+    .forEach((project) => addProjectButton(localStorage.getItem(project)));
 }
 
 function lowerProjectDataNumbers(num) {
-  Object.keys(localStorage).sort().forEach((key) => {
-    const keyIndexNum = key.replace(/\D/g, '');
-    if (!isInteger(keyIndexNum) || !isInteger(key[0])) return;
+  Object.keys(localStorage)
+    .sort()
+    .forEach((key) => {
+      const keyIndexNum = key.replace(/\D/g, '');
+      if (!isInteger(keyIndexNum) || !isInteger(key[0])) return;
 
-    if (keyIndexNum > num) {
-      const newKeyIndex = key.replace(keyIndexNum, keyIndexNum - 1);
-      const storageItemValue = localStorage[key];
-      localStorage.removeItem(key);
-      localStorage.setItem(newKeyIndex, storageItemValue);
-    }
-  });
+      if (keyIndexNum > num) {
+        const newKeyIndex = key.replace(keyIndexNum, keyIndexNum - 1);
+        const storageItemValue = localStorage[key];
+        localStorage.removeItem(key);
+        localStorage.setItem(newKeyIndex, storageItemValue);
+      }
+    });
 }
 
 function renderStorageOnPage() {
