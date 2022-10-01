@@ -118,7 +118,6 @@ function applyForm() {
   const todoForm = this.parentElement.parentElement;
   const projectSelectValue = todoForm.querySelector('.project-div select').value;
   if (projectSelectValue === '') return;
-
   // Set attributes
   todoForm.classList.add(projectSelectValue.split(' ').join('').toLowerCase());
 
