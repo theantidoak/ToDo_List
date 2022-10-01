@@ -8,9 +8,7 @@ function createProjectOptions(select) {
   const projectTitles = document.querySelectorAll('.project-name');
   for (let i = 0; i < projectTitles.length; i += 1) {
     const projectOption = document.createElement('option');
-    const optionContent = document.createTextNode(
-      projectTitles[i].textContent.toLowerCase(),
-    );
+    const optionContent = document.createTextNode(projectTitles[i].textContent.toLowerCase());
     projectOption.value = projectTitles[i].textContent.toLowerCase();
     projectOption.appendChild(optionContent);
     select.appendChild(projectOption);
@@ -118,9 +116,7 @@ function setData() {
 function applyForm() {
   // Cache DOM
   const todoForm = this.parentElement.parentElement;
-  const projectSelectValue = todoForm.querySelector(
-    '.project-div select',
-  ).value;
+  const projectSelectValue = todoForm.querySelector('.project-div select').value;
   if (projectSelectValue === '') return;
 
   // Set attributes

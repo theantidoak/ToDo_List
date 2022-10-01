@@ -253,9 +253,7 @@ function createTodoFromStorage(todoForm, formNumber, addTaskButton) {
 function createStorageForm(todoFormID, formNumber) {
   createForm();
 
-  const todoForm = document.querySelectorAll(
-    `[data-todo-num='${todoFormID}']`,
-  )[0];
+  const todoForm = document.querySelectorAll(`[data-todo-num='${todoFormID}']`)[0];
   const inputArray = getInputNodes(todoForm);
   useLocalStorageInputs(
     formNumber,

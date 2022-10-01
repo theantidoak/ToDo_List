@@ -148,9 +148,7 @@ function editTodoBlock(
 
 function displayHiddenText(e) {
   const buttonDiv = this.firstElementChild;
-  const otherDiv = this.parentElement.querySelector(
-    e.currentTarget.otherDivClass,
-  );
+  const otherDiv = this.parentElement.querySelector(e.currentTarget.otherDivClass);
   if (buttonDiv.style.display === 'none' || buttonDiv.style.display === '') {
     otherDiv.style.display = 'none';
     buttonDiv.style.display = 'block';
@@ -174,9 +172,7 @@ function deleteTodo(e) {
 function addCheckedToStorage(todoContainer) {
   const dataIndex = todoContainer.dataset.todoNum;
   const storageIndex = dataIndex.replace(/\D/g, '');
-  const todoContainerArray = JSON.parse(
-    localStorage.getItem(`array${storageIndex}`),
-  );
+  const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
   todoContainerArray.push('checked');
   populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
@@ -184,9 +180,7 @@ function addCheckedToStorage(todoContainer) {
 function removeCheckedFromStorage(todoContainer) {
   const dataIndex = todoContainer.dataset.todoNum;
   const storageIndex = dataIndex.replace(/\D/g, '');
-  const todoContainerArray = JSON.parse(
-    localStorage.getItem(`array${storageIndex}`),
-  );
+  const todoContainerArray = JSON.parse(localStorage.getItem(`array${storageIndex}`));
   todoContainerArray.pop();
   populateStorage(`array${storageIndex}`, JSON.stringify(todoContainerArray));
 }
@@ -247,9 +241,7 @@ function makeTodoBlock(
   // Set Attributes
   todoContainer.classList.add('todo-container');
   todoContainer.classList.add('storable');
-  todoContainer.classList.add(
-    projectContent.textContent.split(' ').join('').toLowerCase(),
-  );
+  todoContainer.classList.add(projectContent.textContent.split(' ').join('').toLowerCase());
   todoContainer.dataset.todoNum = dataID;
   topDiv.classList.add('top');
   checkbox.setAttribute('type', 'checkbox');
