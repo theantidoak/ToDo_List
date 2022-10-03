@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 import { openExistingForm } from './toDoForm';
@@ -97,13 +98,12 @@ function makeChecklist(ol, checklist = ['The checklist starts here!']) {
 }
 
 function changePriorityColor(topDiv) {
-  const todoForm = topDiv.parentElement.previousSibling;
-  const prioritySelect = todoForm.querySelector('.priority-div select');
-  if (prioritySelect.value === 1) {
+  const prioritySelect = topDiv.firstChild;
+  if (prioritySelect.textContent == 1) {
     topDiv.style.backgroundColor = 'var(--celadon-blue)';
-  } else if (prioritySelect.value === 2) {
+  } else if (prioritySelect.textContent == 2) {
     topDiv.style.backgroundColor = 'var(--coral)';
-  } else if (prioritySelect.value === 3) {
+  } else if (prioritySelect.textContent == 3) {
     topDiv.style.backgroundColor = 'var(--maya-blue)';
   }
 }

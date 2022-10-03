@@ -91,24 +91,26 @@ function sortKeysByDate() {
     (key) => !isInteger(key[0]),
   );
   const sortedKeys = todoArrayKeys.sort((a, b) => {
-    if (isInteger(a[0])) {
-      return 1;
-    }
-    if (isInteger(b[0])) {
-      return -1;
-    }
+    // if (isInteger(a[0])) {
+    //   return 1;
+    // }
+    // if (isInteger(b[0])) {
+    //   return -1;
+    // }
     const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
     const dateB = new Date(JSON.parse(localStorage.getItem(b))[2]);
-    if (dateA !== 'Invalid Date' && dateB !== 'Invalid Date') {
+    if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
+      console.log(dateA);
+      console.log(dateB);
       return dateA - dateB;
     }
-    if (dateA === 'Invalid Date' && dateB === 'Invalid Date') {
+    if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
       return a.replace(/\D/g, '') - b.replace(/\D/g, '');
     }
-    if (dateA === 'Invalid Date') {
+    if (dateA == 'Invalid Date') {
       return 1;
     }
-    if (dateB === 'Invalid Date') {
+    if (dateB == 'Invalid Date') {
       return -1;
     }
     return 1;
