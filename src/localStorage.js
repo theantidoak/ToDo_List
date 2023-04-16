@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-continue */
 /* eslint-disable no-param-reassign */
@@ -91,17 +92,9 @@ function sortKeysByDate() {
     (key) => !isInteger(key[0]),
   );
   const sortedKeys = todoArrayKeys.sort((a, b) => {
-    // if (isInteger(a[0])) {
-    //   return 1;
-    // }
-    // if (isInteger(b[0])) {
-    //   return -1;
-    // }
     const dateA = new Date(JSON.parse(localStorage.getItem(a))[2]);
     const dateB = new Date(JSON.parse(localStorage.getItem(b))[2]);
     if (dateA != 'Invalid Date' && dateB != 'Invalid Date') {
-      console.log(dateA);
-      console.log(dateB);
       return dateA - dateB;
     }
     if (dateA == 'Invalid Date' && dateB == 'Invalid Date') {
